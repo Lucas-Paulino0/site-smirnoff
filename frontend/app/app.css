@@ -1,0 +1,35 @@
+html,
+body {
+  --background-primary: #0e1625;
+  --background-secondary: #0a101b;
+  --button-background-primary: #3772be;
+  --button-background-secondary: #4c347a;
+  --button-background-disabled: #4c4c4c;
+
+  margin: 0;
+  height: 100%;
+  background-color: var(--background-primary);
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 6px;
+  border: 3px solid var(--background-secondary);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #555 var(--background-secondary);
+}
+
+*:focus {
+  outline: none;
+}
