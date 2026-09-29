@@ -118,10 +118,6 @@ const ARTICLE_LIST: WikiArticle[] = [
                 A cada nível você ganha pontos para distribuir entre os{" "}
                 <WikiLink to="atributos">atributos</WikiLink>.
               </li>
-              <li>
-                Marque sua casa com <Cmd>/sethome</Cmd> para voltar a ela com{" "}
-                <Cmd>/home</Cmd>.
-              </li>
             </ol>
           </>
         ),
@@ -697,7 +693,7 @@ const ARTICLE_LIST: WikiArticle[] = [
     title: "Comandos",
     icon: classIcon("arsenalist"),
     summary: "Os comandos disponíveis para jogadores.",
-    keywords: "comando home sethome tpa spawn msg afk helpop",
+    keywords: "comando spawn msg afk helpop",
     sections: [
       {
         id: "lista",
@@ -708,14 +704,6 @@ const ARTICLE_LIST: WikiArticle[] = [
             rows={[
               [<Cmd>/menu</Cmd>, "Abre o menu principal"],
               [<Cmd>/spawn</Cmd>, "Volta para o spawn (após 5 segundos)"],
-              [<Cmd>/sethome [nome]</Cmd>, "Marca uma casa onde você está"],
-              [<Cmd>/home [nome]</Cmd>, "Teleporta para sua casa (após 5 segundos)"],
-              [<Cmd>/delhome [nome]</Cmd>, "Apaga uma casa"],
-              [
-                <Cmd>/tpa &lt;jogador&gt;</Cmd>,
-                "Pede para teleportar até um jogador (o pedido expira em 1min20s)",
-              ],
-              [<Cmd>/tpaccept</Cmd>, "Aceita um pedido de teleporte (teleporta em 10 segundos)"],
               [<Cmd>/msg &lt;jogador&gt; &lt;mensagem&gt;</Cmd>, "Mensagem privada"],
               [<Cmd>/afk</Cmd>, "Marca você como ausente"],
               [
@@ -731,11 +719,8 @@ const ARTICLE_LIST: WikiArticle[] = [
         title: "Limites",
         body: (
           <Table
-            head={["", "Jogador", "VIP", "Premium"]}
-            rows={[
-              ["Casas (/sethome)", "1", "2", "3"],
-              ["Intervalo entre mensagens no chat", "3s", "2s", "1s"],
-            ]}
+            head={["", "Aventureiro", "Herói, Monarca e Divindade"]}
+            rows={[["Intervalo entre mensagens no chat", "5s", "Sem intervalo"]]}
           />
         ),
       },
@@ -862,7 +847,7 @@ const ARTICLE_LIST: WikiArticle[] = [
     title: "Loja e VIP",
     icon: rarityIcon("divinas"),
     summary: "O que a loja oferece, benefícios de VIP e como funciona a entrega.",
-    keywords: "loja comprar vip premium pagamento entrega reembolso divina",
+    keywords: "loja comprar vip heroi herói monarca divindade pagamento entrega reembolso divina",
     sections: [
       {
         id: "produtos",
@@ -874,8 +859,8 @@ const ARTICLE_LIST: WikiArticle[] = [
               Divina, com desbloqueio permanente.
             </li>
             <li>
-              <strong>VIP e Premium:</strong> vantagens de conforto por 30
-              dias.
+              <strong>VIPs:</strong> Herói, Monarca e Divindade, com vantagens
+              de conforto por 30 dias.
             </li>
             <li>
               <strong>Tickets de troca</strong> de classe.
@@ -888,16 +873,26 @@ const ARTICLE_LIST: WikiArticle[] = [
       },
       {
         id: "vip",
-        title: "VIP e Premium",
+        title: "VIPs",
         body: (
-          <Table
-            head={["Benefício", "VIP", "Premium"]}
-            rows={[
-              ["Casas (/sethome)", "2", "3"],
-              ["Intervalo do chat", "2s", "1s"],
-              ["Duração", "30 dias", "30 dias"],
-            ]}
-          />
+          <>
+            <p>
+              Cada VIP tem tudo o que o anterior oferece. A tag aparece no
+              chat, no TAB e acima do seu nome.
+            </p>
+            <Table
+              head={["Benefício", "Herói", "Monarca", "Divindade"]}
+              rows={[
+                ["Tag", "[Herói]", "[Monarca]", "[Divindade]"],
+                ["Chat sem intervalo (jogadores: 5s)", "Sim", "Sim", "Sim"],
+                [<Cmd>/enderchest</Cmd>, "Não", "Sim", "Sim"],
+                [<Cmd>/anvil</Cmd>, "Não", "Sim", "Sim"],
+                [<Cmd>/back</Cmd>, "Não", "Sim", "Sim"],
+                [<Cmd>/repair</Cmd>, "Não", "Não", "Sim"],
+                ["Duração", "30 dias", "30 dias", "30 dias"],
+              ]}
+            />
+          </>
         ),
       },
       {

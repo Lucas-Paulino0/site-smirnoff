@@ -18,6 +18,8 @@ module.exports = (sequelize, DataTypes) => {
       approvedDate: DataTypes.DATE,
       delivered: DataTypes.BOOLEAN,
       productId: DataTypes.INTEGER,
+      price: DataTypes.FLOAT,
+      refunded: DataTypes.BOOLEAN,
     },
     {
       sequelize,

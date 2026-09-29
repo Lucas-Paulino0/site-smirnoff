@@ -17,7 +17,7 @@ type CartContext = {
 
 export const CartContext = createContext({} as CartContext);
 
-const STORAGE_KEY = "smirnoff-cart";
+const STORAGE_KEY = "hail-cart";
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [cart, setCart] = useState<Product[]>([]);

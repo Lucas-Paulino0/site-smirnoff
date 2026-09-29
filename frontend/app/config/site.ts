@@ -1,5 +1,5 @@
 export const SITE = {
-  name: "Smirnoff",
+  name: "Hail",
   tagline: "Servidor de Minecraft RPG",
   serverIp: process.env.PUBLIC_SERVER_IP || "server1.halahost.net",
   minecraftVersion: "Java 26.1.2",

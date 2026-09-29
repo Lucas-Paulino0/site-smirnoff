@@ -1,0 +1,123 @@
+# HailLoja: entrega no jogo o que foi comprado no site.
+#
+# De tempos em tempos o plugin pergunta ao backend quais compras foram pagas
+# e ainda não entregues, roda os comandos do produto pelo console e avisa o
+# backend do que foi entregue.
+
+# Chave geral. Deixe false até conferir os comandos de cada produto abaixo;
+# enquanto estiver false o plugin não consulta o site nem entrega nada.
+enabled: false
+
+# Endereço público do backend (o mesmo PUBLIC_API_URL do site), sem barra no final
+api-url: "http://localhost:3000"
+
+# O mesmo SECRET_ACCESS_TOKEN do backend/src/.env
+token: ""
+
+# Intervalo entre as consultas, em segundos
+interval-seconds: 30
+
+# Mensagem para o jogador quando um produto é entregue ({product} = nome do produto)
+delivered-message: "&6[Loja] &eSua compra &f{product} &efoi entregue. Obrigado por apoiar o servidor!"
+
+# Um bloco por produto, com a chave igual ao internalName do produto no banco
+# (backend/src/seeders/demo-products.js).
+#
+# commands: rodados pelo console, em ordem. {player} = nick do comprador.
+# require-online: true espera o jogador entrar no servidor para entregar.
+#   Use true quando os comandos só funcionam com o jogador online.
+# name: nome mostrado na mensagem de entrega.
+#
+# Produto que não estiver aqui, ou sem comandos, NÃO é entregue: fica na fila
+# do site e aparece um aviso no console, até ser configurado.
+#
+# Comandos do RPGCore conhecidos em 2026-09-29: rpg class set e rpg money.
+# O RPGCore ainda está só no Teste. O resto está comentado com o que falta.
+products:
+  # PROVISÓRIO: "rpg class set" troca a classe atual do jogador; o RPGCore
+  # ainda não tem "desbloquear para sempre", que é o que a loja promete.
+  # Sem a opção de forçar, o comando respeita o nível mínimo (o Necromancer
+  # pede nível 100). Troque pelo comando de desbloqueio quando ele existir.
+  classe_martial_artist:
+    name: "Classe Martial Artist"
+    require-online: true
+    commands:
+      - "rpg class set {player} martial_artist"
+  classe_thunder_ronin:
+    name: "Classe Thunder Ronin"
+    require-online: true
+    commands:
+      - "rpg class set {player} thunder_ronin"
+  classe_water_samurai:
+    name: "Classe Water Samurai"
+    require-online: true
+    commands:
+      - "rpg class set {player} water_samurai"
+  classe_bloodmoon_vampire:
+    name: "Classe Bloodmoon Vampire"
+    require-online: true
+    commands:
+      - "rpg class set {player} bloodmoon_vampire"
+  classe_dragon_warrior:
+    name: "Classe Dragon Warrior"
+    require-online: true
+    commands:
+      - "rpg class set {player} dragon_warrior"
+  classe_necromancer:
+    name: "Classe Necromancer"
+    require-online: true
+    commands:
+      - "rpg class set {player} necromancer"
+
+  # VIPs: grupos do LuckPerms (heroi < monarca < divindade, trilha "vip").
+  # "accumulate" soma os 30 dias a um VIP igual que ainda não venceu; sem ele o
+  # LuckPerms recusa a renovação. require-online porque o LuckPerms só acha
+  # pelo nick quem já entrou no servidor.
+  heroi_30d:
+    name: "Herói (30 dias)"
+    require-online: true
+    commands:
+      - "lp user {player} parent addtemp heroi 30d accumulate"
+  monarca_30d:
+    name: "Monarca (30 dias)"
+    require-online: true
+    commands:
+      - "lp user {player} parent addtemp monarca 30d accumulate"
+  divindade_30d:
+    name: "Divindade (30 dias)"
+    require-online: true
+    commands:
+      - "lp user {player} parent addtemp divindade 30d accumulate"
+
+  # FALTA: o RPGCore ainda não tem tickets de troca (%rpg_tickets% e o comando
+  # estão no pedido-rpgcore, sem entrega). Quando existir:
+  # ticket_1:
+  #   name: "1 Ticket de troca"
+  #   require-online: true
+  #   commands:
+  #     - "<comando de dar ticket> {player} 1"
+  # ticket_3:
+  #   name: "3 Tickets de troca"
+  #   require-online: true
+  #   commands:
+  #     - "<comando de dar ticket> {player} 3"
+
+  # Tostões: dinheiro do RPGCore (%rpg_money%), "rpg money <jogador> add <valor>".
+  # require-online: true é obrigatório: o comando não funciona com o jogador
+  # offline (testado em 2026-09-29), e o plugin não tem como saber se o comando
+  # deu certo. Só troque para false se o RPGCore passar a aceitar offline.
+  tostoes_1000:
+    name: "1.000 Tostões"
+    require-online: true
+    commands:
+      - "rpg money {player} add 1000"
+  tostoes_5000:
+    name: "5.000 Tostões"
+    require-online: true
+    commands:
+      - "rpg money {player} add 5000"
+  tostoes_20000:
+    name: "20.000 Tostões"
+    require-online: true
+    commands:
+      - "rpg money {player} add 20000"

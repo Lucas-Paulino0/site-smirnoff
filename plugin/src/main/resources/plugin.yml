@@ -1,0 +1,16 @@
+name: HailLoja
+version: 1.0.0
+main: dev.hail.loja.HailLoja
+api-version: "1.21"
+# O Hail roda Folia: sem esta linha o plugin não carrega
+folia-supported: true
+description: Entrega no jogo as compras aprovadas na loja do site.
+commands:
+  loja-entregas:
+    description: Mostra o estado das entregas ou recarrega a config.
+    usage: "/loja-entregas <status|verificar|reload>"
+    permission: hailloja.admin
+permissions:
+  hailloja.admin:
+    description: Usar /loja-entregas
+    default: op

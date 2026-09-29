@@ -12,6 +12,13 @@ module.exports = {
       ],
       {}
     );
+    // No Postgres, inserir ids fixos não avança a sequência: sem isto a
+    // próxima categoria criada tentaria usar o id 1 de novo
+    if (queryInterface.sequelize.getDialect() === "postgres") {
+      await queryInterface.sequelize.query(
+        `SELECT setval(pg_get_serial_sequence('"Categories"', 'id'), (SELECT MAX(id) FROM "Categories"))`
+      );
+    }
   },
 
   async down(queryInterface, Sequelize) {

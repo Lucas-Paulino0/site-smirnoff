@@ -1,8 +1,9 @@
 "use strict";
 
-// Catálogo inicial da loja. Os preços ainda não foram definidos pela equipe:
-// todo produto entra com price 0 e enabled false (aparece como "Em breve").
-// Para lançar um produto, defina o preço e mude enabled para true.
+// Catálogo inicial da loja, com os preços de 2026-09-29. Só os VIPs entram
+// ativos: Classes, Tickets e Tostões dependem do RPGCore, que ainda não está no
+// servidor principal (enabled false aparece no site como "Em breve").
+// Para lançar um produto, mude enabled para true.
 //
 // internalName é o que o plugin de entrega recebe em POST /purchases/approved
 // para saber o que entregar. items usa "|" para separar as linhas da lista.
@@ -14,10 +15,12 @@ const DIVINE_CLASSES = [
   { id: "bloodmoon_vampire", name: "Bloodmoon Vampire" },
   { id: "dragon_warrior", name: "Dragon Warrior" },
   // Na config do RPGCore o Necromancer exige nível 100 (as outras, nível 1)
-  { id: "necromancer", name: "Necromancer", level: 100 },
+  { id: "necromancer", name: "Necromancer", level: 100, price: 29.9 },
 ];
 
-const placeholder = { price: 0, enabled: false };
+// Ativo = o plugin de entrega já sabe entregar no servidor principal
+const soon = (price) => ({ price, enabled: false });
+const live = (price) => ({ price, enabled: true });
 
 const products = [
   ...DIVINE_CLASSES.map((c) => ({
@@ -31,25 +34,36 @@ const products = [
       c.level ? `|Requer nível ${c.level}` : ""
     }`,
     category: 1,
-    ...placeholder,
+    ...soon(c.price || 24.9),
   })),
+  // VIPs = grupos do LuckPerms (heroi < monarca < divindade); cada um herda
+  // as vantagens do anterior
   {
-    internalName: "vip_30d",
-    name: "VIP (30 dias)",
-    description: "Vantagens de conforto por 30 dias.",
-    image: "produtos/vip.png",
-    items: "2 homes em vez de 1|Intervalo de chat de 2s em vez de 3s|Duração: 30 dias",
+    internalName: "heroi_30d",
+    name: "Herói (30 dias)",
+    description: "O primeiro VIP: tag de Herói e chat sem espera.",
+    image: "produtos/heroi.png",
+    items: "Tag [Herói] no chat, no TAB e acima do nome|Chat sem intervalo entre mensagens (jogadores: 5s)|Duração: 30 dias",
     category: 2,
-    ...placeholder,
+    ...live(9.9),
   },
   {
-    internalName: "premium_30d",
-    name: "Premium (30 dias)",
-    description: "O pacote completo de conforto por 30 dias.",
-    image: "produtos/premium.png",
-    items: "3 homes em vez de 1|Intervalo de chat de 1s em vez de 3s|Duração: 30 dias",
+    internalName: "monarca_30d",
+    name: "Monarca (30 dias)",
+    description: "Tudo do Herói, mais baú do fim, bigorna e /back de qualquer lugar.",
+    image: "produtos/monarca.png",
+    items: "Tudo do Herói, com a tag [Monarca]|/enderchest: seu baú do fim de qualquer lugar|/anvil: bigorna de qualquer lugar|/back: volta ao último lugar, inclusive onde você morreu|Duração: 30 dias",
     category: 2,
-    ...placeholder,
+    ...live(19.9),
+  },
+  {
+    internalName: "divindade_30d",
+    name: "Divindade (30 dias)",
+    description: "O VIP máximo: tudo do Monarca, mais /repair.",
+    image: "produtos/divindade.png",
+    items: "Tudo do Monarca, com a tag [Divindade]|/repair: conserta o item na mão|Duração: 30 dias",
+    category: 2,
+    ...live(34.9),
   },
   {
     internalName: "ticket_1",
@@ -59,7 +73,7 @@ const products = [
     image: "produtos/ticket.png",
     items: "1 Ticket de troca de classe",
     category: 3,
-    ...placeholder,
+    ...soon(4.9),
   },
   {
     internalName: "ticket_3",
@@ -68,7 +82,7 @@ const products = [
     image: "produtos/ticket.png",
     items: "3 Tickets de troca de classe",
     category: 3,
-    ...placeholder,
+    ...soon(12.9),
   },
   {
     internalName: "tostoes_1000",
@@ -77,7 +91,7 @@ const products = [
     image: "produtos/tostoes_1.png",
     items: "1.000 Tostões",
     category: 4,
-    ...placeholder,
+    ...soon(4.9),
   },
   {
     internalName: "tostoes_5000",
@@ -86,7 +100,7 @@ const products = [
     image: "produtos/tostoes_2.png",
     items: "5.000 Tostões",
     category: 4,
-    ...placeholder,
+    ...soon(19.9),
   },
   {
     internalName: "tostoes_20000",
@@ -95,7 +109,7 @@ const products = [
     image: "produtos/tostoes_3.png",
     items: "20.000 Tostões",
     category: 4,
-    ...placeholder,
+    ...soon(69.9),
   },
 ];
 

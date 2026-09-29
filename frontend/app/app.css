@@ -1,3 +1,14 @@
+/* Os números da Pixelify Sans são difíceis de ler (o 5 parece um S, o 4 some).
+   Esta fonte cobre só os dígitos (unicode-range) e vem antes dela na pilha,
+   então preços, níveis e o IP usam a Cinzel e as letras seguem pixeladas. */
+@font-face {
+  font-family: "Hail Digits";
+  src: url("/fonts/cinzel-700-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0030-0039;
+}
+
 /* Paleta tirada dos menus do jogo: madeira escura, pergaminho, dourado e carmesim */
 :root {
   --bg: #150d07;
@@ -19,7 +30,8 @@
   --online: #7bc96f;
   --offline: #e0625c;
 
-  --font-pixel: "Pixelify Sans", "Inter", system-ui, sans-serif;
+  --font-pixel: "Hail Digits", "Pixelify Sans", "Inter", system-ui,
+    sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
 
   --page-width: 1140px;
