@@ -10,6 +10,7 @@ const LINKS = [
   { to: "/", label: "Início", end: true },
   { to: "/classes", label: "Classes" },
   { to: "/mapa", label: "Mapa" },
+  { to: "/wiki", label: "Wiki" },
   { to: "/loja", label: "Loja" },
 ];
 

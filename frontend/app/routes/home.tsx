@@ -8,7 +8,7 @@ export function meta({}: Route.MetaArgs) {
     {
       name: "description",
       content:
-        "Servidor de Minecraft RPG com 30 classes, nível até 100, chefes e um mundo medieval para explorar.",
+        "Servidor de Minecraft RPG com 30 classes, 8 atributos, chefes e um mundo medieval para explorar.",
     },
   ];
 }

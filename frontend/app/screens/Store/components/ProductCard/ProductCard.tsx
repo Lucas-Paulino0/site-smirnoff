@@ -20,7 +20,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       return;
     }
     if (!product.enabled) {
-      showError("Produto indisponível!");
+      showError("Esse produto ainda não está à venda.");
       return;
     }
     addToCart(product);
@@ -32,7 +32,9 @@ export default function ProductCard({ product }: ProductCardProps) {
       <article className="frame product">
         <div className="product__image">
           <img src={fileUrl(product.image)} alt="" loading="lazy" />
-          <span className="product__price">{formatPrice(product.price)}</span>
+          <span className="product__price">
+            {product.enabled ? formatPrice(product.price) : "Em breve"}
+          </span>
         </div>
         <div className="product__body">
           <h3 className="title product__name">{product.name}</h3>
@@ -42,7 +44,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             disabled={!product.enabled}
             onClick={handleAdd}
           >
-            {product.enabled ? "Comprar" : "Indisponível"}
+            {product.enabled ? "Comprar" : "Em breve"}
           </button>
           <button
             type="button"

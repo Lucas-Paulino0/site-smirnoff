@@ -9,6 +9,10 @@ export default [
   index("routes/home.tsx"),
   route("classes", "routes/classes.tsx"),
   route("mapa", "routes/map.tsx"),
+  ...prefix("wiki", [
+    index("routes/wiki.tsx"),
+    route(":slug", "routes/wiki_article.tsx"),
+  ]),
   route("termos", "routes/terms.tsx"),
   ...prefix("loja", [
     index("routes/store.tsx"),

@@ -35,5 +35,6 @@ server.pem
 .DS_Store
 Thumbs.db
 
-# Files
+# Files (uploads). Product images shipped with the seeders are versioned.
 src/files/*
+!src/files/produtos/

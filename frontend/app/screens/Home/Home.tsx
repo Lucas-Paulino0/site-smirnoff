@@ -21,8 +21,8 @@ const FEATURES = [
   },
   {
     icon: rarityIcon("lendarias"),
-    title: "Nível 100",
-    text: `Ganhe experiência, suba de nível e distribua pontos entre ${ATTRIBUTES.length} atributos para montar seu estilo de jogo.`,
+    title: "Progressão",
+    text: `Ganhe experiência, suba de nível e receba 3 pontos a cada nível para distribuir entre ${ATTRIBUTES.length} atributos.`,
   },
   {
     icon: classIcon("dragon_warrior"),
@@ -72,8 +72,8 @@ export default function Home() {
           <Wordmark size="large" />
           <p className="hero__tagline font-pixel">{SITE.tagline}</p>
           <p className="hero__lead">
-            Escolha sua classe, evolua até o nível 100 e explore um mundo
-            medieval cheio de chefes, segredos e regiões para descobrir.
+            Escolha sua classe, suba de nível e explore um mundo medieval
+            cheio de chefes, segredos e regiões para descobrir.
           </p>
           <ServerAddress />
           <div className="hero__actions">

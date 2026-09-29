@@ -49,7 +49,7 @@ export default function ProductModal({
                 >
                   {product.enabled
                     ? `Comprar por ${formatPrice(product.price)}`
-                    : "Indisponível"}
+                    : "Em breve"}
                 </button>
               )}
               <button

@@ -13,6 +13,7 @@ export default function Footer() {
         <nav className="footer__links" aria-label="Rodapé">
           <Link to="/classes">Classes</Link>
           <Link to="/mapa">Mapa</Link>
+          <Link to="/wiki">Wiki</Link>
           <Link to="/loja">Loja</Link>
           <Link to="/termos">Termos de uso</Link>
           {SITE.discordUrl && (
