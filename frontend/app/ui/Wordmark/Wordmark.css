@@ -1,0 +1,43 @@
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.wordmark__text {
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  text-shadow: 2px 2px 0 var(--wood-950);
+}
+
+.wordmark--large {
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wordmark--large .wordmark__icon {
+  animation: float 3s ease-in-out infinite;
+  filter: drop-shadow(0 6px 0 rgba(0, 0, 0, 0.4));
+}
+
+.wordmark--large .wordmark__text {
+  font-size: clamp(52px, 12vw, 108px);
+  letter-spacing: clamp(3px, 1vw, 8px);
+  line-height: 1;
+  background: linear-gradient(
+    180deg,
+    var(--gold-light) 0%,
+    var(--gold) 55%,
+    #b9832a 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(4px 4px 0 var(--wood-950))
+    drop-shadow(0 0 18px rgba(232, 185, 73, 0.25));
+}

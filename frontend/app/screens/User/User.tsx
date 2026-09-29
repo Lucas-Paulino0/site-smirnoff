@@ -1,67 +1,67 @@
-import { Box, Button, Card, TextField, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { MINECRAFT_USERNAME } from "~/context/UserContext/UserProvider";
 import { useUser } from "~/context/UserContext/useUser";
-import PageContainer from "~/ui/PageContainer/PageContainer";
+import SectionHeading from "~/ui/SectionHeading/SectionHeading";
+import "../Store/Store.css";
 
 export default function User() {
-  const { username, setUsername } = useUser();
+  const { username, ready, setUsername } = useUser();
+  const [nick, setNick] = useState("");
+  const [touched, setTouched] = useState(false);
+  const navigate = useNavigate();
 
-  const handleContinue = () => {
-    if (!username) {
-      return;
-    }
+  useEffect(() => {
+    if (ready && username) setNick(username);
+  }, [ready]);
 
-    window.location.href = "carrinho";
+  const valid = MINECRAFT_USERNAME.test(nick);
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    setTouched(true);
+    if (!valid) return;
+
+    setUsername(nick);
+    navigate("/loja/carrinho");
   };
 
   return (
-    <PageContainer title="Usuário" video="home_video.mp4" logoClickable>
-      <Box
-        sx={{
-          width: { xs: "90%", sm: "fit-content" },
-          margin: "0 auto",
-          marginTop: 8,
-        }}
-      >
-        <Card
-          sx={{
-            padding: 2,
-            backgroundColor: "var(--background-primary)",
-            border: "1px solid rgb(41, 53, 75)",
-          }}
-        >
-          <Box
-            sx={{
-              padding: 1,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "flex-end",
-              gap: 2,
-            }}
-          >
-            <Typography
-              color="primary"
-              variant="h5"
-              textAlign={"center"}
-              sx={{ width: "100%", marginBottom: 2 }}
-            >
-              Informação
-            </Typography>
-            <TextField
-              focused
-              error={!username}
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              sx={{ width: { xs: "100%", sm: 350 } }}
-              label="Usuário"
-              placeholder="Nick no jogo"
-            />
-            <Button variant="contained" onClick={handleContinue}>
-              Continuar
-            </Button>
-          </Box>
-        </Card>
-      </Box>
-    </PageContainer>
+    <main className="page">
+      <SectionHeading
+        as="h1"
+        title="Seu nick"
+        subtitle="Os produtos são entregues na conta com esse nome. Confira com atenção."
+      />
+      <form className="parchment user-form" onSubmit={handleSubmit}>
+        <img
+          src={`https://mc-heads.net/avatar/${valid ? encodeURIComponent(nick) : "MHF_Steve"}/96`}
+          alt=""
+          width={96}
+          height={96}
+        />
+        <label htmlFor="nick">Nick no Minecraft</label>
+        <input
+          id="nick"
+          value={nick}
+          maxLength={16}
+          autoComplete="off"
+          spellCheck={false}
+          placeholder="Steve"
+          onChange={(e) => setNick(e.target.value.trim())}
+          onBlur={() => setTouched(true)}
+          aria-invalid={touched && !valid}
+          aria-describedby="nick-error"
+        />
+        <p id="nick-error" className="user-form__error">
+          {touched && !valid
+            ? "Use de 3 a 16 caracteres: letras, números e _"
+            : ""}
+        </p>
+        <button type="submit" className="btn btn--block">
+          Continuar
+        </button>
+      </form>
+    </main>
   );
 }

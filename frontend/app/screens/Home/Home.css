@@ -1,0 +1,220 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 4px solid var(--wood-950);
+  box-shadow: inset 0 -2px 0 var(--gold-dim);
+}
+
+.hero__bg {
+  position: absolute;
+  inset: -8px;
+  background: url("/mapa-do-mundo.png") center / cover no-repeat;
+  image-rendering: pixelated;
+  filter: blur(2px) saturate(0.8);
+  transform: scale(1.05);
+}
+
+.hero__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, rgba(21, 13, 7, 0.55), rgba(21, 13, 7, 0.92) 75%),
+    linear-gradient(180deg, rgba(21, 13, 7, 0.3), var(--bg));
+}
+
+.hero__content {
+  position: relative;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 56px var(--gutter) 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 18px;
+}
+
+.hero__tagline {
+  margin: 0;
+  font-size: clamp(18px, 3vw, 24px);
+  color: var(--parchment);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0 var(--wood-950);
+}
+
+.hero__lead {
+  margin: 0 0 12px;
+  max-width: 560px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  font-size: 17px;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+/* recursos */
+
+.feature {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  color: inherit;
+  text-decoration: none;
+}
+
+.feature--link {
+  transition: transform 0.15s ease;
+}
+
+.feature--link:hover {
+  transform: translateY(-3px);
+}
+
+.feature__icon {
+  flex-shrink: 0;
+  filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.4));
+}
+
+.feature__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 22px;
+}
+
+.feature__text {
+  margin: 8px 0 0;
+  line-height: 1.55;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+/* raridades */
+
+.rarities {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 16px;
+}
+
+.rarity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 20px 12px;
+  text-decoration: none;
+  background: var(--wood-900);
+  border: 4px solid var(--wood-950);
+  box-shadow: inset 0 0 0 2px var(--wood-700);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.rarity:hover {
+  transform: translateY(-3px);
+  box-shadow: inset 0 0 0 2px var(--gold-dim);
+}
+
+.rarity__name {
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 22px;
+  text-shadow: 2px 2px 0 var(--wood-950);
+}
+
+.rarity__how {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* atributos */
+
+.attributes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px 28px;
+}
+
+.attribute {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 12px;
+  border-left: 4px solid var(--crimson);
+}
+
+.attribute__name {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.attribute__text {
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+/* como entrar */
+
+.steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.step {
+  padding-top: 32px;
+}
+
+.step__number {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  font-weight: 700;
+  background: var(--gold);
+  color: var(--ink);
+  border: 3px solid var(--wood-950);
+}
+
+.step .title {
+  text-align: center;
+}
+
+.step p {
+  text-align: center;
+  line-height: 1.55;
+  margin: 10px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.whitelist {
+  margin-top: 28px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.whitelist a {
+  color: var(--crimson);
+  font-weight: 700;
+}

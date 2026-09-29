@@ -1,11 +1,9 @@
 import api from "./api";
 import type { Product } from "~/domain/Product";
 
-export const getProductsByServer = async (
-  serverId: number
-): Promise<Array<Product>> => {
+export const getProducts = async (): Promise<Array<Product>> => {
   try {
-    const result = await api.get(`/products/${serverId}`);
+    const result = await api.get(`/products`);
     return result.data;
   } catch (error) {
     console.log(error);
@@ -13,12 +11,11 @@ export const getProductsByServer = async (
   }
 };
 
-export const getProductsByServerCategory = async (
-  serverId: number,
+export const getProductsByCategory = async (
   categoryId: number
 ): Promise<Array<Product>> => {
   try {
-    const result = await api.get(`/products/${serverId}/${categoryId}`);
+    const result = await api.get(`/products/category/${categoryId}`);
     return result.data;
   } catch (error) {
     console.log(error);

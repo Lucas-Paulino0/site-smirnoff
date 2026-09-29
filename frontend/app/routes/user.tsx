@@ -1,10 +1,11 @@
 import User from "~/screens/User/User";
-import type { Route } from "./+types/store";
+import { pageTitle } from "~/config/site";
+import type { Route } from "./+types/user";
 
 export function meta({}: Route.MetaArgs) {
-  return [{ title: "Smirnoff" }, { name: "description", content: "Loja" }];
+  return [{ title: pageTitle("Seu nick") }];
 }
 
-export default function StoreRoute({ params }: Route.ComponentProps) {
+export default function UserRoute() {
   return <User />;
 }

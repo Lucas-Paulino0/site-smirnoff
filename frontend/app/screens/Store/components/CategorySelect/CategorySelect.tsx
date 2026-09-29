@@ -1,4 +1,3 @@
-import { Divider, List, ListItem, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import type { Category } from "~/domain/Category";
 import { getAllCategories } from "~/services/categoryServices";
@@ -12,21 +11,6 @@ export default function CategorySelect({ setCategory }: CategorySelectProps) {
   const [selected, setSelected] = useState<Category | undefined>(undefined);
 
   useEffect(() => {
-    const category = categories?.find(
-      (category) => category.name === window.location.hash.replace("#", "")
-    );
-    setSelected(category);
-  }, [categories]);
-
-  useEffect(() => {
-    if (selected) {
-      window.history.replaceState(null, "", `#${selected.name}`);
-    }
-
-    setCategory(selected);
-  }, [selected]);
-
-  useEffect(() => {
     const fetchCategories = async () => {
       const fetchedCategories: Category[] = await getAllCategories();
       setCategories(fetchedCategories);
@@ -35,96 +19,46 @@ export default function CategorySelect({ setCategory }: CategorySelectProps) {
     fetchCategories();
   }, []);
 
+  // Restaura a categoria do link (#Nome) quando as categorias chegam
   useEffect(() => {
+    const fromHash = decodeURIComponent(window.location.hash.replace("#", ""));
+    const category = categories?.find((category) => category.name === fromHash);
+    setSelected(category);
+  }, [categories]);
+
+  useEffect(() => {
+    if (selected) {
+      window.history.replaceState(null, "", `#${selected.name}`);
+    } else if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+
     setCategory(selected);
   }, [selected]);
 
-  return (
-    <Stack
-      alignItems="center"
-      spacing={2}
-      sx={{
-        width: { xl: "20%", md: "30%", xs: "100%" },
-      }}
-    >
-      <Typography
-        color="primary"
-        sx={{
-          fontSize: 28,
-        }}
-      >
-        Categorias
-      </Typography>
-      <Divider
-        orientation="horizontal"
-        sx={{
-          border: "none",
-          width: "100%",
-          backgroundColor: "var(--mui-palette-primary-main)",
-          padding: 0,
-          height: 2,
-          margin: "0 !important",
-        }}
-      />
-      <List
-        sx={{
-          padding: 0,
-          margin: "0 !important",
-          width: "100%",
-        }}
-      >
-        <ListItem
-          onClick={() => setSelected(undefined)}
-          sx={{
-            cursor: "pointer",
-            transition: "background-color 0.3s",
-            backgroundColor: selected === undefined ? "#1b273d" : "transparent",
-            "&:hover": {
-              backgroundColor: "var(--background-secondary)",
-            },
-          }}
+  const item = (label: string, category: Category | undefined) => {
+    const active = selected?.id === category?.id;
+    return (
+      <li key={category?.id ?? "all"}>
+        <button
+          type="button"
+          className={`categories__item${active ? " categories__item--active" : ""}`}
+          aria-pressed={active}
+          onClick={() => setSelected(category)}
         >
-          <Typography
-            color={selected === undefined ? "primary" : "secondary"}
-            textAlign={"start"}
-            sx={{
-              fontSize: 20,
-              padding: 0,
-              margin: 0,
-            }}
-          >
-            Todos
-          </Typography>
-        </ListItem>
-        {categories?.map((category) => (
-          <ListItem
-            key={category.id}
-            onClick={() => setSelected(category)}
-            sx={{
-              cursor: "pointer",
-              transition: "background-color 0.3s",
-              backgroundColor:
-                selected?.id === category.id ? "#1b273d" : "transparent",
-              "&:hover": {
-                backgroundColor: "var(--background-secondary)",
-              },
-            }}
-          >
-            <Typography
-              key={category.id}
-              color={selected?.id === category.id ? "primary" : "secondary"}
-              textAlign={"start"}
-              sx={{
-                fontSize: 20,
-                padding: 0,
-                margin: 0,
-              }}
-            >
-              {category.name}
-            </Typography>
-          </ListItem>
-        ))}
-      </List>
-    </Stack>
+          {label}
+        </button>
+      </li>
+    );
+  };
+
+  return (
+    <aside className="frame categories">
+      <h2 className="title categories__title">Categorias</h2>
+      <ul className="categories__list">
+        {item("Todos", undefined)}
+        {categories?.map((category) => item(category.name, category))}
+      </ul>
+    </aside>
   );
 }

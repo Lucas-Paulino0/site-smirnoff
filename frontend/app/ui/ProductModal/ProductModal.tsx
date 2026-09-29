@@ -1,7 +1,8 @@
-import { Box, Button, List, ListItem, Modal, Typography } from "@mui/material";
+import { Modal } from "@mui/material";
 import type { Product } from "~/domain/Product";
+import { formatPrice } from "~/services/api";
 
-type ProductCardProps = {
+type ProductModalProps = {
   product: Product | undefined;
   open: boolean;
   action?: () => void;
@@ -13,116 +14,55 @@ export default function ProductModal({
   open,
   action,
   onClose,
-}: ProductCardProps) {
+}: ProductModalProps) {
+  const items = product?.items.split("|").filter((item) => item !== "") ?? [];
+
   return (
-    <Modal open={open} onClose={onClose}>
-      <Box
-        sx={{
-          borderRadius: 1,
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: { xs: "90%", sm: "80%", md: 600 },
-          height: "fit-content",
-          background: "var(--background-primary)",
-        }}
-      >
+    <Modal open={open} onClose={onClose} aria-labelledby="product-modal-title">
+      <div className="parchment product-modal">
         {product && (
           <>
-            <Box
-              sx={{
-                padding: 2,
-                borderBottom: "2px solid var(--background-secondary)",
-              }}
-            >
-              <Typography
-                color="primary"
-                variant="h3"
-                textAlign={"center"}
-                sx={{ fontSize: { xs: 32, md: 46 } }}
-              >
-                {product.name}
-              </Typography>
-            </Box>
-            <Box sx={{ padding: 2 }}>
-              <Typography color="primary">{product.description}</Typography>
-            </Box>
-            <Box
-              sx={{
-                maxHeight: 400,
-                overflowY: "auto",
-                paddingRight: 1,
-                "&::-webkit-scrollbar": {
-                  width: "8px",
-                },
-                "&::-webkit-scrollbar-thumb": {
-                  backgroundColor: "var(--scrollbar-thumb)",
-                  borderRadius: "4px",
-                },
-                "&::-webkit-scrollbar-track": {
-                  backgroundColor: "var(--scrollbar-track)",
-                },
-                scrollbarWidth: "thin", // For Firefox
-                scrollbarColor: "var(--scrollbar-thumb) var(--scrollbar-track)", // For Firefox
-              }}
-            >
-              <List>
-                {product.items.split("|").map(
-                  (item) =>
-                    item !== "" && (
-                      <ListItem key={item}>
-                        <Typography color="primary">- {item}</Typography>
-                      </ListItem>
-                    )
-                )}
-              </List>
-            </Box>
-            <Box sx={{ padding: 2, marginTop: 2 }}>
+            <h2 id="product-modal-title" className="title">
+              {product.name}
+            </h2>
+            <p className="product-modal__description">{product.description}</p>
+            {items.length > 0 && (
+              <>
+                <strong className="font-pixel">Você recebe:</strong>
+                <ul className="product-modal__items">
+                  {items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+            <div className="product-modal__actions">
               {action && (
-                <Button
-                  sx={{
-                    width: "100%",
-                    backgroundColor: "var(--button-background-primary)",
-                    marginBottom: 1,
-                    cursor: "pointer",
-                    transition: "transform 0.2s ease-in-out",
-                    "&:hover": {
-                      transform: "scale(1.01)",
-                    },
-                    "&:disabled": {
-                      backgroundColor: "var(--button-background-disabled)",
-                    },
-                  }}
+                <button
+                  type="button"
+                  className="btn btn--block"
                   disabled={!product.enabled}
-                  onClick={action}
+                  onClick={() => {
+                    action();
+                    onClose();
+                  }}
                 >
-                  <Typography color="secondary">
-                    {product.enabled ? "Comprar" : "Indisponível"}
-                  </Typography>
-                </Button>
+                  {product.enabled
+                    ? `Comprar por ${formatPrice(product.price)}`
+                    : "Indisponível"}
+                </button>
               )}
-              <Button
-                sx={{
-                  width: "100%",
-                  backgroundColor: "var(--button-background-secondary)",
-                  cursor: "pointer",
-                  transition: "transform 0.2s ease-in-out",
-                  "&:hover": {
-                    transform: "scale(1.01)",
-                  },
-                  "&:disabled": {
-                    backgroundColor: "var(--button-background-disabled)",
-                  },
-                }}
+              <button
+                type="button"
+                className="btn btn--wood btn--block"
                 onClick={onClose}
               >
-                <Typography color="primary">Fechar</Typography>
-              </Button>
-            </Box>
+                Fechar
+              </button>
+            </div>
           </>
         )}
-      </Box>
+      </div>
     </Modal>
   );
 }

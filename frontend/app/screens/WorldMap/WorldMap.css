@@ -1,0 +1,48 @@
+.world-map {
+  margin: 0 auto;
+  max-width: 960px;
+  padding: 10px;
+  background: var(--wood-800);
+  border: 4px solid var(--wood-950);
+  box-shadow:
+    inset 0 0 0 2px var(--gold-dim),
+    0 8px 0 rgba(0, 0, 0, 0.4);
+}
+
+.world-map img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 3px solid var(--wood-950);
+}
+
+.regions {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.region {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.region__swatch {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  border: 3px solid var(--wood-950);
+}
+
+.region .title {
+  font-size: 20px;
+}
+
+.region p {
+  margin: 6px 0 0;
+  line-height: 1.5;
+  font-size: 15px;
+}

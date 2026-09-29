@@ -1,46 +1,42 @@
-import { Box } from "@mui/material";
+import { Badge, Icon } from "@mui/material";
 import { useState } from "react";
-import type { Server } from "~/domain/Server";
+import { Link } from "react-router";
 import type { Category } from "~/domain/Category";
+import { useCart } from "~/context/CartContext/useCart";
+import SectionHeading from "~/ui/SectionHeading/SectionHeading";
 import ProductList from "./components/ProductList/ProductList";
 import CategorySelect from "./components/CategorySelect/CategorySelect";
-import CartButton from "./components/CartButton/CartButton";
-import PageContainer from "~/ui/PageContainer/PageContainer";
+import "./Store.css";
 
-type StoreProps = {
-  server: Server | undefined;
-};
-
-export default function Store({ server }: StoreProps) {
+export default function Store() {
   const [category, setCategory] = useState<Category | undefined>(undefined);
+  const { cart } = useCart();
 
   return (
-    <PageContainer
-      title={server?.name}
-      video={server?.video || "home_video.mp4"}
-      logoClickable
-    >
-      {server && (
-        <Box sx={{ display: "flex", justifyContent: "center", marginTop: 2 }}>
-          <CartButton server={server} />
-        </Box>
-      )}
-      <Box
-        sx={{
-          display: "flex",
-          gap: 5,
-          flexDirection: { xs: "column", md: "row" },
-          padding: {
-            xs: 2,
-            sm: "50px 15%",
-            md: 4,
-            lg: "50px 15%",
-          },
-        }}
-      >
+    <main className="page">
+      <SectionHeading
+        as="h1"
+        title="Loja"
+        subtitle="Apoie o servidor e receba seus itens direto no jogo. O pagamento é feito pelo Mercado Pago."
+      />
+
+      <div className="store__toolbar">
+        <Link to="/loja/carrinho" className="btn btn--wood">
+          <Badge
+            badgeContent={cart.length}
+            color="primary"
+            invisible={cart.length === 0}
+          >
+            <Icon>shopping_cart</Icon>
+          </Badge>
+          Ir para o carrinho
+        </Link>
+      </div>
+
+      <div className="store">
         <CategorySelect setCategory={setCategory} />
-        <ProductList server={server} category={category} />
-      </Box>
-    </PageContainer>
+        <ProductList category={category} />
+      </div>
+    </main>
   );
 }

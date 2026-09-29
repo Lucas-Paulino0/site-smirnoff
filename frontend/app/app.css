@@ -1,14 +1,72 @@
+/* Paleta tirada dos menus do jogo: madeira escura, pergaminho, dourado e carmesim */
+:root {
+  --bg: #150d07;
+  --wood-950: #1c110a;
+  --wood-900: #24160d;
+  --wood-800: #3a2416;
+  --wood-700: #57361f;
+  --wood-600: #71482a;
+  --gold: #e8b949;
+  --gold-light: #ffe084;
+  --gold-dim: #a8802f;
+  --parchment: #f1e3c4;
+  --parchment-dark: #d9c49a;
+  --ink: #3b2517;
+  --crimson: #8b1e1e;
+  --crimson-light: #b83232;
+  --text: #f1e3c4;
+  --text-muted: #c4ad86;
+  --online: #7bc96f;
+  --offline: #e0625c;
+
+  --font-pixel: "Pixelify Sans", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  --page-width: 1140px;
+  --gutter: 16px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html,
 body {
-  --background-primary: #0e1625;
-  --background-secondary: #0a101b;
-  --button-background-primary: #3772be;
-  --button-background-secondary: #4c347a;
-  --button-background-disabled: #4c4c4c;
-
   margin: 0;
-  height: 100%;
-  background-color: var(--background-primary);
+  min-height: 100%;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  /* A Pixelify Sans só é legível no peso 400 (no negrito o C vira O e o 3
+     vira 8). Só esse peso é carregado e o navegador não pode engrossá-la. */
+  font-synthesis: none;
+}
+
+body {
+  background-image:
+    radial-gradient(ellipse at top, rgba(232, 185, 73, 0.07), transparent 60%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.012) 0 2px,
+      transparent 2px 6px
+    );
+}
+
+a {
+  color: var(--gold);
+}
+
+img.pixelated,
+.pixelated img {
+  image-rendering: pixelated;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--ink);
 }
 
 ::-webkit-scrollbar {
@@ -16,20 +74,301 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background-secondary);
+  background: var(--wood-950);
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #555;
-  border-radius: 6px;
-  border: 3px solid var(--background-secondary);
+  background-color: var(--wood-600);
+  border: 3px solid var(--wood-950);
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #555 var(--background-secondary);
+  scrollbar-color: var(--wood-600) var(--wood-950);
 }
 
-*:focus {
-  outline: none;
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* ---------- layout ---------- */
+
+.page {
+  width: 100%;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 48px var(--gutter) 72px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.page-header p {
+  color: var(--text-muted);
+  max-width: 640px;
+  margin: 12px auto 0;
+  line-height: 1.6;
+}
+
+.font-pixel {
+  font-family: var(--font-pixel);
+}
+
+.title {
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  color: var(--gold);
+  text-shadow: 3px 3px 0 var(--wood-950);
+  letter-spacing: 1px;
+  margin: 0;
+  line-height: 1.1;
+}
+
+h1.title {
+  font-size: clamp(36px, 6vw, 56px);
+}
+
+h2.title {
+  font-size: clamp(28px, 4vw, 38px);
+}
+
+h3.title {
+  font-size: 22px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  margin: 14px auto 0;
+  max-width: 320px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-top: 2px dashed var(--gold-dim);
+}
+
+.divider span {
+  width: 10px;
+  height: 10px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  box-shadow: 0 0 0 2px var(--wood-950);
+}
+
+.section {
+  margin-top: 72px;
+}
+
+.section:first-child {
+  margin-top: 0;
+}
+
+.grid {
+  display: grid;
+  gap: 20px;
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.grid-4 {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+/* ---------- painéis ---------- */
+
+.frame {
+  position: relative;
+  background-color: var(--wood-800);
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.08) 0 3px,
+    transparent 3px 11px,
+    rgba(255, 255, 255, 0.03) 11px 13px,
+    transparent 13px 24px
+  );
+  border: 4px solid var(--wood-950);
+  box-shadow:
+    inset 0 0 0 2px var(--gold-dim),
+    inset 0 0 0 5px var(--wood-900),
+    0 6px 0 rgba(0, 0, 0, 0.35);
+  padding: 24px;
+}
+
+.frame::before,
+.frame::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  top: 8px;
+  box-shadow: 0 0 0 2px var(--wood-950);
+}
+
+.frame::before {
+  left: 8px;
+}
+
+.frame::after {
+  right: 8px;
+}
+
+.parchment {
+  background-color: var(--parchment);
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(160, 120, 60, 0.12), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(160, 120, 60, 0.1), transparent 45%);
+  color: var(--ink);
+  border: 4px solid var(--wood-900);
+  box-shadow:
+    inset 0 0 0 2px var(--parchment-dark),
+    0 6px 0 rgba(0, 0, 0, 0.35);
+  padding: 24px;
+}
+
+.parchment .title {
+  color: var(--ink);
+  text-shadow: none;
+}
+
+/* ---------- botões ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-pixel);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 12px 22px;
+  border: 3px solid var(--wood-950);
+  background: var(--gold);
+  color: var(--ink);
+  box-shadow:
+    inset -3px -4px 0 rgba(0, 0, 0, 0.25),
+    inset 3px 3px 0 rgba(255, 255, 255, 0.35),
+    0 4px 0 var(--wood-950);
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease,
+    filter 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  filter: brightness(1.08);
+}
+
+.btn:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset -3px -4px 0 rgba(0, 0, 0, 0.25),
+    inset 3px 3px 0 rgba(255, 255, 255, 0.35),
+    0 1px 0 var(--wood-950);
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.9) brightness(0.8);
+  transform: none;
+}
+
+.btn--wood {
+  background: var(--wood-600);
+  color: var(--parchment);
+}
+
+.btn--crimson {
+  background: var(--crimson-light);
+  color: var(--parchment);
+}
+
+.btn--small {
+  font-size: 15px;
+  padding: 8px 14px;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+/* ---------- selos e textos ---------- */
+
+.badge {
+  display: inline-block;
+  font-family: var(--font-pixel);
+  font-size: 13px;
+  padding: 2px 8px;
+  border: 2px solid var(--wood-950);
+  background: var(--wood-900);
+  color: var(--gold);
+  letter-spacing: 0.5px;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.status-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px var(--wood-950);
+}
+
+.status-dot--online {
+  background: var(--online);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.status-dot--offline {
+  background: var(--offline);
+}
+
+.status-dot--loading {
+  background: var(--text-muted);
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

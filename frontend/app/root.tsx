@@ -10,6 +10,14 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 
+import { createTheme, ThemeProvider } from "@mui/material";
+import { AlertProvider } from "./context/AlertContext/AlertProvider";
+import { AlertCard } from "./context/AlertContext/AlertCard";
+import { UserProvider } from "./context/UserContext/UserProvider";
+import { CartProvider } from "./context/CartContext/CartProvider";
+import SiteLayout from "./ui/SiteLayout/SiteLayout";
+import { SITE } from "./config/site";
+
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
@@ -19,7 +27,7 @@ export const links: Route.LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pixelify+Sans:wght@400&display=swap",
   },
   {
     rel: "stylesheet",
@@ -29,11 +37,6 @@ export const links: Route.LinksFunction = () => [
     rel: "icon",
     type: "image/png",
     href: "/favicon-96x96.png",
-  },
-  {
-    rel: "icon",
-    type: "image/svg+xml",
-    href: "/favicon.svg",
   },
   {
     rel: "shortcut icon",
@@ -50,28 +53,36 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
-
-import { createTheme, ThemeProvider } from "@mui/material";
-import { AlertProvider } from "./context/AlertContext/AlertProvider";
-import { AlertCard } from "./context/AlertContext/AlertCard";
-import { UserProvider } from "./context/UserContext/UserProvider";
-
 const theme = createTheme({
   palette: {
+    mode: "dark",
     primary: {
-      main: "#1976d2",
+      main: "#e8b949",
+      contrastText: "#3b2517",
     },
     secondary: {
-      main: "#ffb74d",
+      main: "#b83232",
+    },
+    background: {
+      default: "#150d07",
+      paper: "#24160d",
     },
     text: {
-      primary: "#fff",
-      secondary: "#1976d2",
+      primary: "#f1e3c4",
+      secondary: "#c4ad86",
     },
+    success: {
+      main: "#7bc96f",
+    },
+    error: {
+      main: "#e0625c",
+    },
+  },
+  shape: {
+    borderRadius: 0,
+  },
+  typography: {
+    fontFamily: '"Inter", system-ui, sans-serif',
   },
   cssVariables: true,
 });
@@ -82,18 +93,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#24160d" />
         <Meta />
         <Links />
       </head>
       <body>
         <ThemeProvider theme={theme}>
           <UserProvider>
-            <AlertProvider>
-              {children}
-              <ScrollRestoration />
-              <Scripts />
-              <AlertCard />
-            </AlertProvider>
+            <CartProvider>
+              <AlertProvider>
+                {children}
+                <ScrollRestoration />
+                <Scripts />
+                <AlertCard />
+              </AlertProvider>
+            </CartProvider>
           </UserProvider>
         </ThemeProvider>
       </body>
@@ -102,19 +116,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <SiteLayout>
+      <Outlet />
+    </SiteLayout>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = "Oops!";
-  let details = "An unexpected error occurred.";
+  let message = "Algo deu errado";
+  let details = "Um erro inesperado aconteceu. Tente novamente em instantes.";
   let stack: string | undefined;
 
   if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? "404" : "Error";
+    message = error.status === 404 ? "Página não encontrada" : "Erro";
     details =
       error.status === 404
-        ? "The requested page could not be found."
+        ? "Esse caminho não leva a lugar nenhum. Talvez seja parte da Área Inexplorada."
         : error.statusText || details;
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message;
@@ -122,14 +140,23 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
-          <code>{stack}</code>
-        </pre>
-      )}
-    </main>
+    <SiteLayout>
+      <main className="page" style={{ textAlign: "center" }}>
+        <h1 className="title">{message}</h1>
+        <p className="muted" style={{ marginTop: 16 }}>
+          {details}
+        </p>
+        <a className="btn" href="/" style={{ marginTop: 24 }}>
+          Voltar para {SITE.name}
+        </a>
+        {stack && (
+          <pre
+            style={{ textAlign: "left", overflowX: "auto", marginTop: 32 }}
+          >
+            <code>{stack}</code>
+          </pre>
+        )}
+      </main>
+    </SiteLayout>
   );
 }

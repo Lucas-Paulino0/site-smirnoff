@@ -1,44 +1,30 @@
-import { Box, Link, Typography } from "@mui/material";
+import { Link } from "react-router";
+import { SITE } from "~/config/site";
+import "./Footer.css";
 
 export default function Footer() {
   return (
-    <footer
-      style={{
-        display: "flex",
-        alignItems: "center",
-        bottom: 0,
-        backgroundColor: "var(--background-secondary)",
-        paddingBlock: 14,
-        width: "100%",
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          width: "100%",
-          paddingInline: "15%",
-          flexDirection: { xs: "column", md: "row" },
-        }}
-      >
-        <Typography color="secondary" textAlign="center" sx={{ flexGrow: 1 }}>
-          © {new Date().getFullYear()} - Smirnoff - Todos os direitos
-          reservados
-        </Typography>
-        <Link href={`/termos`} color="secondary" underline="none">
-          <Typography
-            color="secondary"
-            sx={{
-              transition: "color 0.2s",
-              "&:hover": {
-                color: "#1976d2",
-              },
-            }}
-          >
-            Termos de uso
-          </Typography>
-        </Link>
-      </Box>
+    <footer className="footer">
+      <div className="footer__inner">
+        <p>
+          © {new Date().getFullYear()} {SITE.name}. Todos os direitos
+          reservados.
+        </p>
+        <nav className="footer__links" aria-label="Rodapé">
+          <Link to="/classes">Classes</Link>
+          <Link to="/mapa">Mapa</Link>
+          <Link to="/loja">Loja</Link>
+          <Link to="/termos">Termos de uso</Link>
+          {SITE.discordUrl && (
+            <a href={SITE.discordUrl} target="_blank" rel="noreferrer">
+              Discord
+            </a>
+          )}
+        </nav>
+        <p className="footer__disclaimer">
+          Não somos afiliados à Mojang Studios nem à Microsoft.
+        </p>
+      </div>
     </footer>
   );
 }
