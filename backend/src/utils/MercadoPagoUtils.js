@@ -13,14 +13,12 @@ class MercadoPagoUtils {
 
     const orderId = crypto.randomUUID();
 
-    console.log(process.env.BASE_URL);
-
     const body = {
         items: products,
         back_urls: {
-            success: 'https://redecosmo.com.br/compra/sucesso',
-            failure: 'https://redecosmo.com.br/compra/erro',
-            pending: 'https://redecosmo.com.br/compra/pendente',
+            success: `${process.env.FRONTEND_URL}/compra/sucesso`,
+            failure: `${process.env.FRONTEND_URL}/compra/erro`,
+            pending: `${process.env.FRONTEND_URL}/compra/pendente`,
         },
         expires: false,
         auto_return: 'all',

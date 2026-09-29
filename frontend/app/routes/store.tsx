@@ -7,7 +7,7 @@ import { getServer } from "~/services/serverServices";
 import { useNavigate } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
-  return [{ title: "Rede Cosmo" }, { name: "description", content: "Loja" }];
+  return [{ title: "Smirnoff" }, { name: "description", content: "Loja" }];
 }
 
 export default function StoreRoute({ params }: Route.ComponentProps) {

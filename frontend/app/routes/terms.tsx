@@ -1,7 +1,7 @@
 import type { Route } from "./+types/store";
 
 export function meta({}: Route.MetaArgs) {
-  return [{ title: "Rede Cosmo" }, { name: "description", content: "Termos" }];
+  return [{ title: "Smirnoff" }, { name: "description", content: "Termos" }];
 }
 
 export default function Terms() {

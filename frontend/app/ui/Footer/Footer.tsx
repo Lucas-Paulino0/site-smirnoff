@@ -22,7 +22,7 @@ export default function Footer() {
         }}
       >
         <Typography color="secondary" textAlign="center" sx={{ flexGrow: 1 }}>
-          © {new Date().getFullYear()} - Rede Cosmo - Todos os direitos
+          © {new Date().getFullYear()} - Smirnoff - Todos os direitos
           reservados
         </Typography>
         <Link href={`/termos`} color="secondary" underline="none">
