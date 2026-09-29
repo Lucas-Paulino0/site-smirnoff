@@ -8,6 +8,10 @@ const purchaseService = new PurchaseService();
 
 const mercadoPagoUtils = new MercadoPagoUtils();
 
+// The username is later used by the in-game delivery (console commands), so
+// only accept valid Minecraft nicknames.
+const MINECRAFT_USERNAME = /^[A-Za-z0-9_]{3,16}$/;
+
 class PurchaseController {
   static async getPurchases(req, res) {
     const { authorization } = req.headers;
@@ -19,7 +23,9 @@ class PurchaseController {
     }
 
     try {
-      await purchaseService.setDelivered(delivered);
+      if (Array.isArray(delivered) && delivered.length > 0) {
+        await purchaseService.setDelivered(delivered);
+      }
       const purchases = await purchaseService.findAll();
       return res.status(200).json(purchases);
     } catch (error) {
@@ -35,7 +41,7 @@ class PurchaseController {
         throw new Error("Invalid productIds");
       }
 
-      if (!username || typeof username !== "string" || username.length === 0) {
+      if (typeof username !== "string" || !MINECRAFT_USERNAME.test(username)) {
         throw new Error("Invalid username");
       }
 

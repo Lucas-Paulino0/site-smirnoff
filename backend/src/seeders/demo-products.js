@@ -14,7 +14,6 @@ module.exports = {
           price: 10,
           enabled: true,
           category: 1,
-          server: 1,
         },
       ],
       {}

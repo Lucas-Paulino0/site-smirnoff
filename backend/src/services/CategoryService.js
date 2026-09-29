@@ -12,7 +12,7 @@ class CategoryService extends Service {
       });
 
       if (!result) {
-        throw new Error("Server not found");
+        throw new Error("Category not found");
       }
 
       return result;

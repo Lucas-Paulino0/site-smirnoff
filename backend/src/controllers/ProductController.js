@@ -2,22 +2,22 @@ const { ProductService } = require("../services");
 const productService = new ProductService();
 
 class ProductController {
-  static async getProductsByServer(req, res) {
+  static async getProducts(req, res) {
     try {
-      const products = await productService.findAllByServer(req.params.server);
+      const products = await productService.findAllForStore();
 
       return res.status(200).json(products);
     } catch (error) {
-      return res.status(401).json(error.message);
+      return res.status(400).json(error.message);
     }
   }
-  static async getProductsByServerCategory(req, res) {
+  static async getProductsByCategory(req, res) {
     try {
-      const products = await productService.findAllByServerCategory(req.params.server, req.params.category);
+      const products = await productService.findAllByCategory(req.params.category);
 
       return res.status(200).json(products);
     } catch (error) {
-      return res.status(401).json(error.message);
+      return res.status(400).json(error.message);
     }
   }
 }

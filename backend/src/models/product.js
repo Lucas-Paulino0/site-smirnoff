@@ -6,9 +6,6 @@ module.exports = (sequelize, DataTypes) => {
       Product.belongsTo(models.Category, {
         foreignKey: "category",
       });
-      Product.belongsTo(models.Server, {
-        foreignKey: "server",
-      });
       Product.hasMany(models.Purchase, {
         foreignKey: "productId",
       });
@@ -24,14 +21,13 @@ module.exports = (sequelize, DataTypes) => {
       price: DataTypes.FLOAT,
       enabled: DataTypes.BOOLEAN,
       category: DataTypes.INTEGER,
-      server: DataTypes.INTEGER,
     },
     {
       sequelize,
       timestamps: false,
       modelName: "Product",
       defaultScope: {
-        attributes: ["internalName", "server"],
+        attributes: ["internalName"],
       },
       scopes: {
         allAttributes: {},

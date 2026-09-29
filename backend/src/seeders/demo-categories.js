@@ -9,6 +9,10 @@ module.exports = {
           internalName: "vip",
           name: "Vips",
         },
+        {
+          internalName: "classes_divinas",
+          name: "Classes Divinas",
+        },
       ],
       {}
     );

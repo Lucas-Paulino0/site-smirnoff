@@ -14,18 +14,17 @@ class ProductService extends Service {
     return result;
   }
 
-  async findAllByServer(server) {
+  async findAllForStore() {
     const result = await database[this.modelName].scope("allAttributes").findAll({
-      where: { server: server },
       order: [["enabled", "DESC"], ["price", "ASC"]],
     });
 
     return result;
   }
 
-  async findAllByServerCategory(server, category) {
+  async findAllByCategory(category) {
     const result = await database[this.modelName].scope("allAttributes").findAll({
-      where: { server: server, category: category },
+      where: { category: category },
       order: [["enabled", "DESC"], ["price", "ASC"]],
     });
 

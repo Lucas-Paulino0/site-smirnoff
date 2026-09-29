@@ -46,14 +46,6 @@ module.exports = {
           key: "id",
         },
       },
-      server: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Servers",
-          key: "id",
-        },
-      },
     });
   },
   async down(queryInterface, Sequelize) {
