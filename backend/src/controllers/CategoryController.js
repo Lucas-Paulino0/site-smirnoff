@@ -8,7 +8,8 @@ class CategoryController {
 
       return res.status(200).json(categories);
     } catch (error) {
-      return res.status(401).json(error.message);
+      console.error("Erro ao listar as categorias:", error);
+      return res.status(500).json({ error: "Internal server error" });
     }
   }
 
@@ -18,7 +19,11 @@ class CategoryController {
 
       return res.status(200).json(category);
     } catch (error) {
-      return res.status(401).json(error.message);
+      if (error.message === "Category not found") {
+        return res.status(404).json({ error: error.message });
+      }
+      console.error("Erro ao buscar a categoria:", error);
+      return res.status(500).json({ error: "Internal server error" });
     }
   }
 }

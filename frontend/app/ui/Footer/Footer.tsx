@@ -16,6 +16,7 @@ export default function Footer() {
           <Link to="/wiki">Wiki</Link>
           <Link to="/loja">Loja</Link>
           <Link to="/termos">Termos de uso</Link>
+          <Link to="/privacidade">Privacidade</Link>
           {SITE.discordUrl && (
             <a href={SITE.discordUrl} target="_blank" rel="noreferrer">
               Discord

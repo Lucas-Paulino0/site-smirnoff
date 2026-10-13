@@ -14,6 +14,7 @@ export default [
     route(":slug", "routes/wiki_article.tsx"),
   ]),
   route("termos", "routes/terms.tsx"),
+  route("privacidade", "routes/privacy.tsx"),
   ...prefix("loja", [
     index("routes/store.tsx"),
     route("usuario", "routes/user.tsx"),

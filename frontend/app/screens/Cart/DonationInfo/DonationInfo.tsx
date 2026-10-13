@@ -59,7 +59,8 @@ export default function DonationInfo() {
           sx={{ color: "var(--ink)", "&.Mui-checked": { color: "var(--crimson)" } }}
         />
         <span>
-          Li e aceito os <Link to="/termos">termos de uso</Link>
+          Li e aceito os <Link to="/termos">termos de uso</Link> e a{" "}
+          <Link to="/privacidade">política de privacidade</Link>
         </span>
       </label>
 

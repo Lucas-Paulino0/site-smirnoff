@@ -16,7 +16,8 @@ Site do servidor de Minecraft RPG **Hail**: página inicial com IP e status ao v
 | `/wiki`, `/wiki/<artigo>` | Wiki: primeiros passos, regras, FAQ, níveis, atributos, classes, mundo, chefes, menus/HUD, comandos, economia, guildas/missões e loja |
 | `/loja`, `/loja/carrinho`, `/loja/usuario` | Loja, carrinho e nick de entrega |
 | `/compra/sucesso`, `/compra/erro`, `/compra/pendente` | Retorno do Mercado Pago |
-| `/termos` | Termos de uso da loja |
+| `/termos` | Termos das doações (a loja recebe doações; os itens são recompensas) |
+| `/privacidade` | Política de privacidade (LGPD): dados guardados, cookies, serviços terceiros e como pedir exclusão. Atualize se o site passar a guardar outros dados |
 
 ## Rodando localmente
 
@@ -44,6 +45,7 @@ Variáveis principais do `.env`:
 - `BASE_URL` e `WEBHOOK_ENDPOINT`: URL pública da API e caminho secreto do webhook do Mercado Pago
 - `SECRET_ACCESS_TOKEN`: token que o plugin de entrega usa em `POST /purchases/approved`. Sem ele a rota responde 503
 - `MP_ACCESS_TOKEN`: token de produção da conta do Mercado Pago (Suas integrações → Credenciais)
+- `TRUST_PROXY`: quantos proxies ficam na frente da API (padrão `1`, o proxy `/api` da hospedagem; `2` com Cloudflare na frente). Errar para mais deixa qualquer um falsificar o IP e escapar do limite de requisições
 
 ## Produtos da loja
 
@@ -84,6 +86,15 @@ O webhook (`POST /purchases/<WEBHOOK_ENDPOINT>`) aceita os formatos Webhooks e I
 - **Estornado, cancelado ou chargeback:** o que ainda não foi entregue sai da fila. O que já foi entregue fica com `refunded = true`, e aparece um aviso no log para a equipe remover os itens no jogo.
 
 O Mercado Pago precisa alcançar o backend pela internet com HTTPS, então os pagamentos só funcionam de verdade com o site publicado.
+
+## Segurança
+
+- **Backend** (`src/app.js`): cabeçalhos do Helmet, CORS liberado só para o `FRONTEND_URL`, corpo das requisições limitado a 10 KB e erros que nunca devolvem detalhes internos (eles vão só para o log).
+- **Limite de requisições por IP** (`src/middlewares/rateLimit.js`): 600 a cada 5 min no geral, 10 pedidos de compra a cada 15 min, 60 avisos do Mercado Pago por minuto e 10 tentativas com token errado no `/purchases/approved` a cada 15 min (o plugin com o token certo não é barrado).
+- **Compras**: ids validados (no máximo 20 itens), token do plugin comparado em tempo constante, e o webhook não sobe se o `WEBHOOK_ENDPOINT` estiver vazio ou com menos de 16 caracteres.
+- **Banco**: a migration `update-enable-rls.js` liga o RLS nas tabelas do PostgreSQL, o que fecha a API REST automática do Supabase. O backend não é afetado, porque conecta como dono das tabelas.
+- **Frontend** (`app/entry.server.tsx`): CSP com nonce (só rodam os scripts da própria página), HSTS, `X-Frame-Options`, `Referrer-Policy` e `Permissions-Policy`. Se o site passar a carregar algo de outro domínio (um widget do Discord, por exemplo), o domínio precisa entrar na CSP. O carrinho só redireciona para endereços do Mercado Pago.
+- **Docker**: os dois containers rodam com o usuário `node`, sem root.
 
 ## Publicando
 

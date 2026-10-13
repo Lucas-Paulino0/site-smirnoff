@@ -23,7 +23,12 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (!ready) return;
-    Cookies.set("username", username || "", { expires: 365, sameSite: "Lax" });
+    // Secure: no site publicado (https) o cookie nunca trafega sem criptografia
+    Cookies.set("username", username || "", {
+      expires: 365,
+      sameSite: "Lax",
+      secure: window.location.protocol === "https:",
+    });
   }, [username, ready]);
 
   const value = useMemo(

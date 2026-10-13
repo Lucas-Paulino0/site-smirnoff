@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const { MercadoPagoUtils } = require("../utils");
 
 const { ProductService } = require("../services");
@@ -11,6 +12,23 @@ const mercadoPagoUtils = new MercadoPagoUtils();
 // The username is later used by the in-game delivery (console commands), so
 // only accept valid Minecraft nicknames.
 const MINECRAFT_USERNAME = /^[A-Za-z0-9_]{3,16}$/;
+
+// Um carrinho de verdade nunca chega perto disso
+const MAX_ITEMS = 20;
+const MAX_DELIVERED = 500;
+
+const isId = (value) => Number.isInteger(value) && value > 0;
+
+// Erro de validação: a mensagem pode ir para o cliente
+class InvalidRequest extends Error {}
+
+// Compara em tempo constante, para o tempo de resposta não revelar quantos
+// caracteres do token estão certos
+const sameToken = (received, expected) => {
+  const a = crypto.createHash("sha256").update(String(received ?? "")).digest();
+  const b = crypto.createHash("sha256").update(expected).digest();
+  return crypto.timingSafeEqual(a, b);
+};
 
 // Status do Mercado Pago que desfazem uma compra
 const REVERSED_STATUSES = ["refunded", "charged_back", "cancelled"];
@@ -32,49 +50,62 @@ class PurchaseController {
   static async getPurchases(req, res) {
     const { authorization } = req.headers;
 
-    const { delivered } = req.body;
+    const { delivered } = req.body || {};
 
     // Sem token configurado, "Bearer " vazio passaria na comparação
     if (!process.env.SECRET_ACCESS_TOKEN) {
       return res.status(503).json({ error: "SECRET_ACCESS_TOKEN not configured" });
     }
 
-    if(authorization !== `Bearer ${process.env.SECRET_ACCESS_TOKEN}`) {
+    if (!sameToken(authorization, `Bearer ${process.env.SECRET_ACCESS_TOKEN}`)) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
+    if (
+      delivered !== undefined &&
+      (!Array.isArray(delivered) || delivered.length > MAX_DELIVERED || !delivered.every(isId))
+    ) {
+      return res.status(400).json({ error: "Invalid delivered" });
+    }
+
     try {
-      if (Array.isArray(delivered) && delivered.length > 0) {
+      if (delivered?.length > 0) {
         await purchaseService.setDelivered(delivered);
       }
       const purchases = await purchaseService.findAll();
       return res.status(200).json(purchases);
     } catch (error) {
-      return res.status(400).json({ error: error.message });
+      console.error("Erro ao montar a fila do plugin:", error);
+      return res.status(500).json({ error: "Internal server error" });
     }
   }
 
   static async createPurchase(req, res) {
     try {
-      const { username, productIds } = req.body;
+      const { username, productIds } = req.body || {};
 
-      if (!productIds || !Array.isArray(productIds) || productIds.length === 0) {
-        throw new Error("Invalid productIds");
+      if (
+        !Array.isArray(productIds) ||
+        productIds.length === 0 ||
+        productIds.length > MAX_ITEMS ||
+        !productIds.every(isId)
+      ) {
+        throw new InvalidRequest("Invalid productIds");
       }
 
       if (typeof username !== "string" || !MINECRAFT_USERNAME.test(username)) {
-        throw new Error("Invalid username");
+        throw new InvalidRequest("Invalid username");
       }
 
       const products = await Promise.all(productIds.map(async (productId) => {
         const product = await productService.findOne(productId);
         if (!product) {
-          throw new Error("Product not found");
+          throw new InvalidRequest("Product not found");
         }
 
         // Preço 0 é produto sem preço definido: o Mercado Pago recusaria
         if (!product.enabled || !(product.price > 0)) {
-          throw new Error("Product not enabled");
+          throw new InvalidRequest("Product not enabled");
         }
 
         return product;
@@ -103,7 +134,12 @@ class PurchaseController {
 
       return res.status(200).json({initPoint: preference.init_point});
     } catch (error) {
-      return res.status(400).json({ error: error.message });
+      if (error instanceof InvalidRequest) {
+        return res.status(400).json({ error: error.message });
+      }
+      // Falha do Mercado Pago ou do banco: os detalhes ficam só no log
+      console.error("Erro ao criar o pedido:", error);
+      return res.status(500).json({ error: "Internal server error" });
     }
   }
 

@@ -4,6 +4,8 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 COPY . .
 ENV NODE_ENV=production
+# Sem root: se alguém explorar uma falha no Node, não manda no container
+USER node
 EXPOSE 3000
 # As variáveis (.env) vêm do ambiente do container, com DATABASE_URL apontando
 # para o PostgreSQL. As migrations rodam a cada início; os seeders só na primeira vez,
