@@ -5,7 +5,9 @@
 import { SITE } from "~/config/site";
 import {
   CLASS_LINES,
+  CLASS_SKILLS,
   RARITIES,
+  type ClassSkills,
   classIcon,
   classesByRarity,
   getClass,
@@ -43,6 +45,56 @@ export type WikiCategory = {
 };
 
 const className = (id: string) => getClass(id)?.name ?? id;
+
+function ClassSkillsBody({ skills }: { skills: ClassSkills }) {
+  return (
+    <>
+      <p>
+        <strong>Básica (clique esquerdo):</strong> {skills.base.name}.{" "}
+        {skills.base.description}
+      </p>
+      {skills.corePassives.map((passive) => (
+        <p key={passive.name}>
+          <strong>Passiva da classe:</strong> {passive.name}.{" "}
+          {passive.description}
+        </p>
+      ))}
+      <Table
+        head={["Barra", "Habilidade", "Melhorias"]}
+        rows={skills.bar.map((skill, index) => [
+          index + 1,
+          <>
+            <strong>{skill.name}</strong>
+            <br />
+            {skill.description}
+          </>,
+          skill.upgrades.map((upgrade, u) => (
+            <div key={upgrade.name}>
+              {u === 0 ? "I" : "II"}. <strong>{upgrade.name}:</strong>{" "}
+              {upgrade.description}
+            </div>
+          )),
+        ])}
+      />
+      <h4 className="font-pixel">Passivas</h4>
+      <ul>
+        {skills.passives.map((passive) => (
+          <li key={passive.name}>
+            <strong>{passive.name}:</strong> {passive.description}
+          </li>
+        ))}
+      </ul>
+      <h4 className="font-pixel">Caminho final (escolha um)</h4>
+      <ul>
+        {skills.paths.map((path) => (
+          <li key={path.name}>
+            <strong>{path.name}:</strong> {path.description}
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
 
 const ARTICLE_LIST: WikiArticle[] = [
   {
@@ -477,14 +529,116 @@ const ARTICLE_LIST: WikiArticle[] = [
       },
       {
         id: "bonus",
-        title: "Bônus de classe",
+        title: "Habilidades de classe",
         body: (
-          <Callout title="Em balanceamento">
-            Cada classe vai dar bônus próprios de atributos e habilidades. Os
-            valores ainda estão sendo definidos. <Soon />
-          </Callout>
+          <>
+            <p>
+              {CLASS_SKILLS.map((skills) => className(skills.classId)).join(", ")}{" "}
+              já têm habilidades, passivas e árvore de talentos. As outras
+              classes recebem as delas aos poucos. <Soon />
+            </p>
+            <p>
+              Veja tudo em <WikiLink to="habilidades">Habilidades</WikiLink>.
+            </p>
+          </>
         ),
       },
+    ],
+  },
+  {
+    slug: "habilidades",
+    title: "Habilidades",
+    icon: classIcon("ninja"),
+    summary:
+      "Como usar as habilidades de classe, ganhar pontos e montar sua árvore de talentos.",
+    keywords:
+      "habilidade skill árvore talento pontos de classe barra passiva caminho arqueiro guerreiro ninja combo",
+    sections: [
+      {
+        id: "como-usar",
+        title: "Como usar",
+        body: (
+          <>
+            <ul>
+              <li>
+                <strong>Habilidade básica:</strong> sai a cada golpe com o
+                clique esquerdo, segurando uma arma da sua classe. É grátis e
+                já vem liberada.
+              </li>
+              <li>
+                <strong>Barra de habilidades:</strong> aperte <Cmd>F</Cmd>{" "}
+                para abrir, escolha a habilidade com as teclas numéricas e use
+                com o clique direito. Cada habilidade tem seu tempo de recarga.
+              </li>
+              <li>
+                <strong>Passivas:</strong> funcionam sozinhas depois de
+                liberadas.
+              </li>
+            </ul>
+            <p>
+              Já têm habilidades:{" "}
+              {CLASS_SKILLS.map((skills) => className(skills.classId)).join(", ")}
+              . As demais classes ainda não. <Soon />
+            </p>
+          </>
+        ),
+      },
+      {
+        id: "pontos",
+        title: "Pontos de classe e árvore",
+        body: (
+          <>
+            <p>
+              Você ganha <strong>1 ponto de classe a cada 5 níveis</strong>,
+              até 20 pontos no nível 100. Eles são diferentes dos pontos de{" "}
+              <WikiLink to="atributos">atributo</WikiLink>. Uma classe
+              liberada num nível mais alto já chega com os pontos daquele
+              nível (o Ninja, no nível 50, começa com 10).
+            </p>
+            <p>
+              Gaste os pontos na árvore de talentos: <Cmd>/menu</Cmd> → Info
+              do Jogador → <strong>Habilidades</strong>. Cada item só libera
+              depois do que vem antes dele na árvore.
+            </p>
+            <Table
+              head={["Item da árvore", "Custo"]}
+              rows={[
+                ["Habilidade da barra", "1 ponto"],
+                ["Melhoria I", "1 ponto"],
+                ["Melhoria II", "2 pontos (Guerreiro: 3)"],
+                ["Passiva", "2 pontos"],
+                ["Caminho final", "3 pontos, com 12 pontos já gastos"],
+              ]}
+            />
+            <Callout type="tip" title="Escolha com cuidado">
+              Cada árvore custa mais de 30 pontos e o máximo é 20, então
+              ninguém libera tudo. Os dois caminhos finais se excluem: você
+              escolhe um.
+            </Callout>
+          </>
+        ),
+      },
+      {
+        id: "barra",
+        title: "Montando a barra",
+        body: (
+          <ul>
+            <li>
+              Na árvore, clique numa habilidade liberada e depois num espaço
+              da barra. Se já houver outra ali, as duas trocam de lugar.
+            </li>
+            <li>Clique direito num espaço para esvaziá-lo.</li>
+            <li>
+              A tecla 1 usa o que está no espaço 1, e assim por diante.
+            </li>
+          </ul>
+        ),
+      },
+      ...CLASS_SKILLS.map((skills) => ({
+        id: skills.classId,
+        title: className(skills.classId),
+        body: <ClassSkillsBody skills={skills} />,
+      })),
     ],
   },
   {
@@ -599,7 +753,7 @@ const ARTICLE_LIST: WikiArticle[] = [
     title: "Menus e HUD",
     icon: rarityIcon("secretas"),
     summary: "O menu principal, as telas do personagem e a interface na tela.",
-    keywords: "menu interface hud barra vida mana tela perfil",
+    keywords: "menu interface hud barra vida mana tela perfil equipamentos acessório colar brinco anel",
     sections: [
       {
         id: "menu-principal",
@@ -611,8 +765,21 @@ const ARTICLE_LIST: WikiArticle[] = [
             </p>
             <ul>
               <li>
-                <strong>Info do Jogador:</strong> nível, pontos, atributos e
-                acesso às classes.
+                <strong>Info do Jogador:</strong> nível, pontos, atributos,
+                classe e habilidades.
+              </li>
+              <li>
+                <strong>Equipamentos:</strong> seus colares, brincos e anéis
+                (veja abaixo).
+              </li>
+              <li>
+                <strong>Estilização:</strong> visuais e cosméticos. <Soon />
+              </li>
+            </ul>
+            <p>Na parte de baixo:</p>
+            <ul>
+              <li>
+                <strong>Warps:</strong> teleportes para pontos do mapa. <Soon />
               </li>
               <li>
                 <strong>Missões:</strong> missão de troca de classe e missões
@@ -622,21 +789,10 @@ const ARTICLE_LIST: WikiArticle[] = [
                 <strong>Guilda:</strong> informações da sua guilda. <Soon />
               </li>
             </ul>
-            <p>Na parte de baixo, em Outros recursos:</p>
-            <ul>
-              <li>
-                <strong>Warps:</strong> teleportes para pontos do mapa. <Soon />
-              </li>
-              <li>
-                <strong>Leilão:</strong> compra e venda entre jogadores. <Soon />
-              </li>
-              <li>
-                <strong>Wiki:</strong> atalho para esta wiki.
-              </li>
-            </ul>
             <p>
-              A barra lateral mostra sua cabeça, seus Tostões e atalhos para
-              correio, casa e Discord.
+              A barra lateral, igual em todos os menus, mostra sua cabeça e
+              seus Tostões, e tem atalhos para o correio, o site do servidor
+              (manda o link no chat) e o Discord.
             </p>
           </>
         ),
@@ -652,10 +808,43 @@ const ARTICLE_LIST: WikiArticle[] = [
               (veja <WikiLink to="atributos">Atributos</WikiLink>)
             </li>
             <li>
-              Cartões <strong>Classe</strong>, <strong>Habilidades</strong> e{" "}
-              <strong>Pets</strong> (os dois últimos: <Soon />)
+              Cartão <strong>Classe</strong>: abre o menu de classes
+            </li>
+            <li>
+              Cartão <strong>Habilidades</strong>: abre a árvore de talentos
+              da sua classe (veja <WikiLink to="habilidades">Habilidades</WikiLink>)
+            </li>
+            <li>
+              Cartão <strong>Pets</strong> <Soon />
             </li>
           </ul>
+        ),
+      },
+      {
+        id: "equipamentos",
+        title: "Equipamentos",
+        body: (
+          <>
+            <p>
+              Onde você equipa seus <strong>acessórios</strong>: colares,
+              brincos e anéis. Abra pelo <Cmd>/menu</Cmd> ou pelo botão no
+              lugar da mesa de criação 2x2 do seu inventário (no modo
+              sobrevivência, essa mesa não existe). A armadura continua
+              sendo equipada do jeito normal.
+            </p>
+            <Table
+              head={["Espaços", "Jogador", "Herói", "Monarca", "Divindade"]}
+              rows={[
+                ["Colares", "1", "2", "3", "4"],
+                ["Brincos", "2", "3", "4", "5"],
+                ["Anéis", "4", "6", "8", "10"],
+              ]}
+            />
+            <Callout title="Em breve">
+              Os primeiros acessórios e os bônus que eles dão ainda estão
+              sendo criados. <Soon />
+            </Callout>
+          </>
         ),
       },
       {
@@ -847,7 +1036,7 @@ const ARTICLE_LIST: WikiArticle[] = [
     title: "Loja e VIP",
     icon: rarityIcon("divinas"),
     summary: "O que a loja oferece, benefícios de VIP e como funciona a entrega.",
-    keywords: "loja comprar vip heroi herói monarca divindade pagamento entrega reembolso divina",
+    keywords: "loja doação doar vip heroi herói monarca divindade pagamento entrega reembolso divina acessório",
     sections: [
       {
         id: "produtos",
@@ -889,6 +1078,9 @@ const ARTICLE_LIST: WikiArticle[] = [
                 [<Cmd>/anvil</Cmd>, "Não", "Sim", "Sim"],
                 [<Cmd>/back</Cmd>, "Não", "Sim", "Sim"],
                 [<Cmd>/repair</Cmd>, "Não", "Não", "Sim"],
+                ["Espaços de colar (jogador: 1)", "2", "3", "4"],
+                ["Espaços de brinco (jogador: 2)", "3", "4", "5"],
+                ["Espaços de anel (jogador: 4)", "6", "8", "10"],
                 ["Duração", "30 dias", "30 dias", "30 dias"],
               ]}
             />
@@ -1012,7 +1204,7 @@ export const WIKI_CATEGORIES: WikiCategory[] = [
   },
   {
     title: "Personagem",
-    articles: ["niveis-e-experiencia", "atributos", "classes"],
+    articles: ["niveis-e-experiencia", "atributos", "classes", "habilidades"],
   },
   {
     title: "Mundo",

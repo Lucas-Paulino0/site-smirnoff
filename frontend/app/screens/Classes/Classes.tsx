@@ -3,10 +3,12 @@ import { Link } from "react-router";
 import {
   CLASSES,
   CLASS_LINES,
+  CLASS_SKILLS,
   RARITIES,
   classIcon,
   classesByRarity,
   getClass,
+  getClassSkills,
   rarityIcon,
   type Rarity,
 } from "~/data/classes";
@@ -26,7 +28,17 @@ function ClassChip({ id }: { id: string }) {
         width={48}
         height={48}
       />
-      <span className="class-chip__name">{rpgClass.name}</span>
+      <div>
+        <span className="class-chip__name">{rpgClass.name}</span>
+        {getClassSkills(id) && (
+          <Link
+            to={`/wiki/habilidades#${id}`}
+            className="badge class-chip__skills"
+          >
+            Ver habilidades
+          </Link>
+        )}
+      </div>
     </div>
   );
 }
@@ -112,6 +124,13 @@ export default function Classes() {
           <strong className="font-pixel">Tickets de troca:</strong> depois da
           primeira classe da linha, cada evolução custa 1 ticket. A cada 50
           níveis você recebe uma missão que dá um ticket quando concluída.
+        </p>
+        <p className="parchment note">
+          <strong className="font-pixel">Habilidades:</strong>{" "}
+          {CLASS_SKILLS.map((skills) => getClass(skills.classId)?.name).join(", ")}{" "}
+          já têm habilidades e árvore de talentos no jogo. As outras classes
+          recebem as delas aos poucos.{" "}
+          <Link to="/wiki/habilidades">Ver na wiki</Link>
         </p>
       </section>
 

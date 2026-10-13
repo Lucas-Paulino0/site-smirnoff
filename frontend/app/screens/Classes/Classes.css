@@ -94,10 +94,20 @@
 }
 
 .class-chip__name {
+  display: block;
   font-family: var(--font-pixel);
   font-size: 18px;
   color: var(--parchment);
   line-height: 1.15;
+}
+
+.class-chip__skills {
+  margin-top: 4px;
+  text-decoration: none;
+}
+
+.class-chip__skills:hover {
+  color: var(--parchment);
 }
 
 .note {
