@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router";
 import { useAlert } from "~/context/AlertContext/useAlert";
 import { useCart } from "~/context/CartContext/useCart";
 import { useUser } from "~/context/UserContext/useUser";
+import { useSkinId } from "~/hooks/useSkinId";
 import { formatPrice } from "~/services/api";
 import { createPurchase } from "~/services/purchaseService";
 
@@ -12,6 +13,7 @@ export default function DonationInfo() {
   const [loading, setLoading] = useState(false);
   const { cart, clearCart } = useCart();
   const { username } = useUser();
+  const skinId = useSkinId(username);
   const { showError } = useAlert();
   const navigate = useNavigate();
 
@@ -91,11 +93,13 @@ export default function DonationInfo() {
               <Icon fontSize="small">edit</Icon>
             </Link>
           </span>
-          <img
-            src={`https://mc-heads.net/body/${encodeURIComponent(username)}/120`}
-            alt={`Skin de ${username}`}
-            height={180}
-          />
+          {skinId && (
+            <img
+              src={`https://mc-heads.net/body/${encodeURIComponent(skinId)}/120`}
+              alt={`Skin de ${username}`}
+              height={180}
+            />
+          )}
         </div>
       )}
     </aside>

@@ -115,8 +115,14 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
             <strong>Hospedagem do site:</strong> onde o site roda.
           </li>
           <li>
-            <strong>mc-heads.net:</strong> mostra a skin do nick no carrinho;
-            recebe o nick e o seu IP ao carregar a imagem.
+            <strong>Mojang:</strong> o nosso servidor consulta o nick na API
+            da Mojang para achar a conta e mostrar a skin certa; a Mojang
+            recebe só o nick, não o seu IP.
+          </li>
+          <li>
+            <strong>mc-heads.net:</strong> mostra a skin do nick na loja;
+            recebe o identificador da conta (ou o nick) e o seu IP ao
+            carregar a imagem.
           </li>
           <li>
             <strong>Google Fonts:</strong> fornece as fontes do site; recebe o

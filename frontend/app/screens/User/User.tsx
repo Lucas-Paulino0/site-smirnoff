@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { MINECRAFT_USERNAME } from "~/context/UserContext/UserProvider";
 import { useUser } from "~/context/UserContext/useUser";
+import { useSkinId } from "~/hooks/useSkinId";
 import SectionHeading from "~/ui/SectionHeading/SectionHeading";
 import "../Store/Store.css";
 
@@ -16,6 +17,7 @@ export default function User() {
   }, [ready]);
 
   const valid = MINECRAFT_USERNAME.test(nick);
+  const skinId = useSkinId(nick);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -35,7 +37,7 @@ export default function User() {
       />
       <form className="parchment user-form" onSubmit={handleSubmit}>
         <img
-          src={`https://mc-heads.net/avatar/${valid ? encodeURIComponent(nick) : "MHF_Steve"}/96`}
+          src={`https://mc-heads.net/avatar/${skinId ? encodeURIComponent(skinId) : "MHF_Steve"}/96`}
           alt=""
           width={96}
           height={96}
