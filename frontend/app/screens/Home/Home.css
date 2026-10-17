@@ -8,7 +8,7 @@
 .hero__bg {
   position: absolute;
   inset: -8px;
-  background: url("/mapa-do-mundo.png") center / cover no-repeat;
+  background: url("/mapa-do-mundo/mundo.webp") center / cover no-repeat;
   image-rendering: pixelated;
   filter: blur(2px) saturate(0.8);
   transform: scale(1.05);

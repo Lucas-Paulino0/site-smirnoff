@@ -15,13 +15,8 @@ import {
   getClass,
   rarityIcon,
 } from "~/data/classes";
-import {
-  BOSSES,
-  LEVEL_ZONES,
-  MOB_FAMILIES,
-  REGIONS,
-  TOWNS,
-} from "~/data/world";
+import { BOSSES, MOB_FAMILIES, TOWNS } from "~/data/world";
+import { levelColor, MAP_AREAS } from "~/data/worldMap";
 import {
   Callout,
   Cmd,
@@ -1004,15 +999,23 @@ const ARTICLE_LIST: WikiArticle[] = [
         title: "O mapa",
         body: (
           <>
-            <img
-              className="pixelated wiki-image"
-              src="/mapa-do-mundo.png"
-              alt="Mapa do mundo"
-              width={800}
-              height={600}
-            />
+            <a href="/mapa">
+              <img
+                className="pixelated wiki-image"
+                src="/mapa-do-mundo/mundo.webp"
+                alt="O mundo do servidor visto de cima, com as cidades e as áreas de nível"
+                width={864}
+                height={672}
+              />
+            </a>
             <p>
-              Versão ampliada na <WikiLink to="/mapa">página do mapa</WikiLink>.
+              Este é o mundo de verdade, renderizado bloco por bloco a partir
+              dos arquivos do servidor. Na{" "}
+              <WikiLink to="/mapa">página do mapa</WikiLink> dá para dar zoom
+              até ver cada bloco, ligar as zonas de nível e achar cidades,
+              chefes e locais com monstros com as coordenadas exatas.
+            </p>
+            <p>
               O mapa tem uma borda: perto da cordilheira que cerca o
               continente aparece o aviso de que você chegou ao limite.
             </p>
@@ -1021,23 +1024,7 @@ const ARTICLE_LIST: WikiArticle[] = [
       },
       {
         id: "regioes",
-        title: "Regiões",
-        body: (
-          <Table
-            head={["Região", "Descrição"]}
-            rows={REGIONS.map((region) => [
-              <span className="wiki-region">
-                <span style={{ background: region.color }} />
-                {region.name}
-              </span>,
-              region.description,
-            ])}
-          />
-        ),
-      },
-      {
-        id: "niveis",
-        title: "Níveis dos monstros",
+        title: "Regiões e níveis",
         body: (
           <>
             <p>
@@ -1045,8 +1032,15 @@ const ARTICLE_LIST: WikiArticle[] = [
               spawn. Cada região é dividida em faixas de uns 10 níveis.
             </p>
             <Table
-              head={["Região", "Níveis"]}
-              rows={LEVEL_ZONES.map((zone) => [zone.name, zone.levels])}
+              head={["Região", "Níveis", "Como é"]}
+              rows={MAP_AREAS.map((area) => [
+                <span className="wiki-region">
+                  <span style={{ background: levelColor(area.minLevel) }} />
+                  {area.name}
+                </span>,
+                `${area.minLevel} a ${area.maxLevel}`,
+                area.description,
+              ])}
             />
             <p>
               Entre as regiões há zonas de transição com monstros próprios, e

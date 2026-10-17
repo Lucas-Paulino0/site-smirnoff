@@ -1,47 +1,3 @@
-// Regiões do mapa do mundo (a pintura do spawn, em /public/mapa-do-mundo.png).
-export const REGIONS = [
-  {
-    name: "Cratera do Início",
-    color: "#9a9aa2",
-    description: "Onde toda jornada começa: o ponto de chegada de quem entra no servidor.",
-  },
-  {
-    name: "Cidadela de Hail",
-    color: "#c9b48f",
-    description: "A cidade murada no coração do mapa, cercada por um fosso.",
-  },
-  {
-    name: "Vale Florido",
-    color: "#f2a7c3",
-    description: "Cerejeiras em volta de um grande lago, com uma vila na ilha central.",
-  },
-  {
-    name: "Planícies Verdes",
-    color: "#7bc96f",
-    description: "Campos abertos e bosques densos a leste da cidadela.",
-  },
-  {
-    name: "Floresta Sombria",
-    color: "#3f7a3a",
-    description: "Uma mata fechada no centro do continente.",
-  },
-  {
-    name: "Picos Gélidos",
-    color: "#dfe8f0",
-    description: "Montanhas nevadas, pinheiros e um lago de águas geladas.",
-  },
-  {
-    name: "Terras Ardentes",
-    color: "#d6a15a",
-    description: "Deserto com ruínas antigas, um vulcão ativo e um rio de lava.",
-  },
-  {
-    name: "Área Inexplorada",
-    color: "#34435c",
-    description: "Terras ainda cobertas pela névoa. Novos biomas em breve.",
-  },
-];
-
 // Cidades com warp (/warp), na ordem do menu "Viagem rápida", que segue a
 // progressão de níveis. Cidades e estradas não têm monstros.
 export const TOWNS = [
@@ -53,18 +9,6 @@ export const TOWNS = [
   "Bosque do Crepúsculo",
   "Fronteira Nevada",
   "Inferno Escaldante",
-];
-
-// Faixas de nível dos monstros (regiões do WorldGuard no servidor). O nível
-// sobe conforme você se afasta da cratera do spawn.
-export const LEVEL_ZONES = [
-  { name: "Cratera (spawn)", levels: "1 a 25" },
-  { name: "Sul", levels: "26 a 60" },
-  { name: "Leste", levels: "61 a 80" },
-  { name: "Lago das Cerejeiras", levels: "81 a 110" },
-  { name: "Floresta Central", levels: "111 a 140" },
-  { name: "Neve", levels: "141 a 200" },
-  { name: "Vulcão", levels: "201 a 250" },
 ];
 
 export type Boss = {
