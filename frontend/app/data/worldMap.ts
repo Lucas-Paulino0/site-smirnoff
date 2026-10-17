@@ -115,8 +115,8 @@ export const MAP_AREAS: MapArea[] = [
     maxLevel: 25,
     description:
       "A cratera de pedra do spawn, com a vila no fundo. Em volta, golems, slimes, cavaleiros e o primeiro acampamento goblin.",
-    x: -2050,
-    z: 2200,
+    x: -2330,
+    z: 2420,
   },
   {
     name: "Terras do Sul",
@@ -172,3 +172,11 @@ export const MAP_AREAS: MapArea[] = [
     z: -1330,
   },
 ];
+
+// Aviso no canto sudoeste, onde o mundo ainda não tem terreno (a névoa do mapa)
+export const MAP_UNEXPLORED = {
+  title: "Área inexplorada",
+  text: "Novos biomas em breve",
+  x: -3440,
+  z: 1320,
+};

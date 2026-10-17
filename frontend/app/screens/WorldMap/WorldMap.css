@@ -91,6 +91,7 @@
   image-rendering: pixelated;
 }
 
+
 .world-map .leaflet-container {
   background: #201912;
 }
@@ -125,6 +126,37 @@
   border: 3px solid var(--parchment);
   box-shadow: 0 0 0 2px var(--wood-950);
   transform: rotate(45deg);
+}
+
+.map-unexplored {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-align: center;
+  pointer-events: none;
+  color: #e6ecf5;
+  text-shadow:
+    -2px 0 #141c2b,
+    2px 0 #141c2b,
+    0 -2px #141c2b,
+    0 2px #141c2b;
+}
+
+.map-unexplored span {
+  font-family: var(--font-pixel);
+  font-size: 22px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.map-unexplored small {
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  color: #b9c6d9;
+  white-space: nowrap;
 }
 
 .map-area-label {
@@ -305,7 +337,8 @@
     min-height: 340px;
   }
 
-  .map-area-label span {
+  .map-area-label span,
+  .map-unexplored span {
     font-size: 17px;
   }
 }

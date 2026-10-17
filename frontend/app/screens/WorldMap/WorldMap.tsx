@@ -10,6 +10,7 @@ import {
   MAP_PLACES,
   MAP_SIZE,
   MAP_TOWNS,
+  MAP_UNEXPLORED,
   type MapTown,
 } from "~/data/worldMap";
 import SectionHeading from "~/ui/SectionHeading/SectionHeading";
@@ -19,8 +20,7 @@ type Zone = {
   area: string;
   lo: number;
   hi: number;
-  between: boolean;
-  points: [number, number][];
+  rings: [number, number][][];
 };
 
 type LayerId = "zones" | "areas" | "towns" | "bosses" | "places";
@@ -84,7 +84,8 @@ export default function WorldMap() {
         crs,
         minZoom: 0,
         maxZoom: MAP_NATIVE_ZOOM + 2,
-        zoomSnap: 0.5,
+        // só zoom inteiro: no fracionado o navegador deixa frestas entre os tiles
+        zoomSnap: 1,
         maxBounds: bounds.pad(0.1),
         attributionControl: false,
       });
@@ -115,21 +116,13 @@ export default function WorldMap() {
           for (const zone of data.zones) {
             const color = levelColor(zone.lo);
             L.polygon(
-              zone.points.map(([x, z]) => [z, x] as [number, number]),
-              {
-                color,
-                weight: 1,
-                opacity: 0.5,
-                fillColor: color,
-                fillOpacity: zone.between ? 0.08 : 0.14,
-              }
+              zone.rings.map((ring) => [ring.map(([x, z]) => [z, x] as [number, number])]),
+              { stroke: false, fillColor: color, fillOpacity: 0.16 }
             )
-              .bindTooltip(
-                `${zone.area} · níveis ${zone.lo} a ${zone.hi}${
-                  zone.between ? " (transição)" : ""
-                }`,
-                { sticky: true, className: "map-tooltip" }
-              )
+              .bindTooltip(`${zone.area} · níveis ${zone.lo} a ${zone.hi}`, {
+                sticky: true,
+                className: "map-tooltip",
+              })
               .addTo(zones);
           }
           L.polygon(
@@ -151,6 +144,16 @@ export default function WorldMap() {
           }),
         }).addTo(areas);
       }
+
+      L.marker([MAP_UNEXPLORED.z, MAP_UNEXPLORED.x], {
+        interactive: false,
+        icon: L.divIcon({
+          className: "map-unexplored",
+          html: `<span>${MAP_UNEXPLORED.title}</span><small>${MAP_UNEXPLORED.text}</small>`,
+          iconSize: [220, 60],
+          iconAnchor: [110, 30],
+        }),
+      }).addTo(m);
 
       const towns = L.layerGroup();
       for (const t of MAP_TOWNS) {
@@ -210,7 +213,7 @@ export default function WorldMap() {
       // no lugar dos nomes das áreas
       const zoomClasses = () => {
         const z = m.getZoom();
-        container.current?.classList.toggle("world-map--far", z < 2.5);
+        container.current?.classList.toggle("world-map--far", z < 3);
         container.current?.classList.toggle("world-map--near", z >= 4);
       };
       m.on("zoomend", zoomClasses);
@@ -220,7 +223,7 @@ export default function WorldMap() {
       const x = Number(params.get("x"));
       const z = Number(params.get("z"));
       if (params.has("x") && params.has("z") && Number.isFinite(x) && Number.isFinite(z)) {
-        const zoom = Number(params.get("zoom"));
+        const zoom = Math.round(Number(params.get("zoom")));
         m.setView([z, x], Number.isFinite(zoom) && zoom > 0 ? zoom : MAP_NATIVE_ZOOM - 1);
         L.marker([z, x], { zIndexOffset: 1000 })
           .setIcon(
@@ -265,7 +268,7 @@ export default function WorldMap() {
   }, [visible]);
 
   function flyTo(town: MapTown) {
-    map.current?.flyTo([town.z, town.x], MAP_NATIVE_ZOOM - 0.5, { duration: 1.2 });
+    map.current?.flyTo([town.z, town.x], MAP_NATIVE_ZOOM - 1, { duration: 1.2 });
     container.current?.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 

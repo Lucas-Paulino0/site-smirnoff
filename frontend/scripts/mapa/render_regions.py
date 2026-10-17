@@ -84,10 +84,8 @@ def block_info(state):
     return p, skip, water
 
 def render_chunk(tag, rgb, hh, dep, ok, ox, oz):
-    hm = (tag.get("Heightmaps") or {}).get("WORLD_SURFACE")
     secs = tag.get("sections") or []
-    if hm is None or not secs: return
-    top = unpack(hm, HBITS, 256) + MINY - 1  # y do bloco do topo, [z*16+x]
+    if not secs: return
     ys = sorted(s["Y"] for s in secs if "block_states" in s)
     if not ys: return
     y0 = ys[0] * 16; ny = (ys[-1] - ys[0] + 1) * 16
@@ -113,11 +111,10 @@ def render_chunk(tag, rgb, hh, dep, ok, ox, oz):
             bi = np.zeros(64, np.int32) if len(bp) == 1 or b.get("data") is None else unpack(b["data"], max(1, (len(bp) - 1).bit_length()), 64)
             bio[(s["Y"] - ys[0]) * 4:(s["Y"] - ys[0]) * 4 + 4] = bc[bi].reshape(4, 16, 3, 3)
     cols = np.arange(256)
-    y = np.clip(top - y0, 0, ny - 1)
-    for _ in range(96):  # desce pelo ar, tochas, mato baixo
-        m = skip[y, cols] & (y > 0)
-        if not m.any(): break
-        y = np.where(m, y - 1, y)
+    # topo = bloco visível mais alto de cada coluna (o heightmap salvo pode
+    # estar velho onde houve colagens com FAWE)
+    solid = ~skip
+    y = np.where(solid.any(0), ny - 1 - np.argmax(solid[::-1], axis=0), 0)
     surf = y.copy(); d = np.zeros(256, np.int32)
     for _ in range(64):  # profundidade da água
         m = water[y, cols] & (y > 0)
@@ -137,7 +134,8 @@ def render_chunk(tag, rgb, hh, dep, ok, ox, oz):
         c[iw] = (wc * f + floor * (1 - f))[iw]
     sl = (slice(oz, oz + 16), slice(ox, ox + 16))
     rgb[sl] = np.clip(c, 0, 255).astype(np.uint8).reshape(16, 16, 3)
-    hh[sl] = (surf + y0).reshape(16, 16); dep[sl] = np.clip(d, 0, 255).reshape(16, 16); ok[sl] = True
+    hh[sl] = (surf + y0).reshape(16, 16); dep[sl] = np.clip(d, 0, 255).reshape(16, 16)
+    ok[sl] = solid.any(0).reshape(16, 16)  # coluna só de ar = inexplorada
 
 def do_region(fn):
     rx, rz = map(int, fn.split(".")[1:3])
