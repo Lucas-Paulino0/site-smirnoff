@@ -8,6 +8,7 @@ import {
   classIcon,
   rarityIcon,
 } from "~/data/classes";
+import { TOWNS } from "~/data/world";
 import SectionHeading from "~/ui/SectionHeading/SectionHeading";
 import ServerAddress from "~/ui/ServerAddress/ServerAddress";
 import Wordmark from "~/ui/Wordmark/Wordmark";
@@ -17,17 +18,19 @@ const FEATURES = [
   {
     icon: classIcon("archer"),
     title: `${CLASSES.length} classes`,
+    to: "/classes",
     text: `Comece como ${CLASS_LINES.map((l) => l.name).join(", ").replace(/, ([^,]*)$/, " ou $1")} e evolua sua classe nos níveis 50 e 100.`,
   },
   {
     icon: rarityIcon("lendarias"),
     title: "Progressão",
-    text: `Ganhe experiência, suba de nível e receba 3 pontos a cada nível para distribuir entre ${ATTRIBUTES.length} atributos.`,
+    text: `Ganhe experiência, suba de nível e distribua 3 pontos por nível entre ${ATTRIBUTES.length} atributos. Cada classe tem a sua árvore de habilidades.`,
   },
   {
     icon: classIcon("dragon_warrior"),
     title: "Chefes",
-    text: "Enfrente chefes com modelos e habilidades próprias. Alguns guardam classes Lendárias e Míticas.",
+    text: "Enfrente chefes como o Senhor da Guerra Kragan e o Capitão Barba-Morta, cada um com modelo e ataques próprios.",
+    to: "/wiki/chefes",
   },
   {
     icon: rarityIcon("secretas"),
@@ -37,7 +40,7 @@ const FEATURES = [
   {
     icon: classIcon("phoenix_hunter"),
     title: "Mundo feito à mão",
-    text: "Das Terras Ardentes aos Picos Gélidos, cada região foi construída pela equipe.",
+    text: `Da Cratera da Ruína ao Inferno Escaldante: ${TOWNS.length} cidades com viagem rápida, masmorras e regiões construídas pela equipe.`,
     to: "/mapa",
   },
   {

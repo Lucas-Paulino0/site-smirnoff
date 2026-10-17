@@ -1,0 +1,91 @@
+.class-detail__lead {
+  font-size: 17px;
+  margin: 18px 0 0;
+}
+
+.class-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px 24px;
+  margin: 20px 0 0;
+  padding: 14px 18px;
+  background: rgba(59, 37, 23, 0.07);
+  border-left: 4px solid var(--crimson);
+}
+
+.class-facts dt {
+  font-family: var(--font-pixel);
+  font-size: 15px;
+  color: var(--crimson);
+}
+
+.class-facts dd {
+  margin: 2px 0 0;
+}
+
+.skill-group {
+  font-family: var(--font-pixel);
+  font-size: 20px;
+  margin: 28px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 2px dashed var(--parchment-dark);
+}
+
+.skill {
+  margin: 12px 0;
+}
+
+.skill p {
+  margin: 4px 0;
+}
+
+.skill--bar {
+  padding: 12px 16px;
+  background: rgba(59, 37, 23, 0.05);
+  border: 2px solid var(--parchment-dark);
+}
+
+.wiki-article .skill__name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin: 0;
+  font-size: 17px;
+}
+
+.skill__label {
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  padding: 0 6px;
+  background: var(--wood-900);
+  color: var(--gold);
+}
+
+.skill__meta {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--wood-600);
+}
+
+.wiki-article .skill__details {
+  margin: 4px 0;
+  font-size: 14px;
+  color: var(--wood-700);
+}
+
+.skill__note {
+  font-size: 14px;
+  font-style: italic;
+}
+
+.skill__upgrades {
+  margin-top: 8px;
+  padding-left: 14px;
+  border-left: 3px solid var(--parchment-dark);
+}
+
+.skill__upgrades .skill {
+  margin: 8px 0;
+}

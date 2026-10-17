@@ -1,26 +1,27 @@
 import { Fragment } from "react";
 import { Link } from "react-router";
+import { CLASS_DETAILS } from "~/data/classDetails";
 import {
   CLASSES,
   CLASS_LINES,
-  CLASS_SKILLS,
   RARITIES,
   classIcon,
   classesByRarity,
   getClass,
-  getClassSkills,
   rarityIcon,
   type Rarity,
 } from "~/data/classes";
 import SectionHeading from "~/ui/SectionHeading/SectionHeading";
 import "./Classes.css";
 
+const withSkills = CLASSES.filter((c) => CLASS_DETAILS[c.id]?.skills);
+
 function ClassChip({ id }: { id: string }) {
   const rpgClass = getClass(id);
   if (!rpgClass) return null;
 
   return (
-    <div className="class-chip">
+    <Link to={`/classes/${id}`} className="class-chip">
       <img
         className="pixelated"
         src={classIcon(id)}
@@ -30,16 +31,11 @@ function ClassChip({ id }: { id: string }) {
       />
       <div>
         <span className="class-chip__name">{rpgClass.name}</span>
-        {getClassSkills(id) && (
-          <Link
-            to={`/wiki/habilidades#${id}`}
-            className="badge class-chip__skills"
-          >
-            Ver habilidades
-          </Link>
-        )}
+        <span className="badge class-chip__skills">
+          {CLASS_DETAILS[id]?.skills ? "Ver habilidades" : "Habilidades em breve"}
+        </span>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -74,7 +70,7 @@ export default function Classes() {
       <SectionHeading
         as="h1"
         title="Classes"
-        subtitle={`São ${CLASSES.length} classes divididas em ${RARITIES.length} raridades. Todo jogador começa em uma das 4 linhas Base e evolui a cada 50 níveis.`}
+        subtitle={`São ${CLASSES.length} classes divididas em ${RARITIES.length} raridades. Todo jogador começa em uma das ${CLASS_LINES.length} linhas Base e evolui a cada 50 níveis. Clique numa classe para ver arma, bônus e habilidades.`}
       />
 
       <nav className="rarity-nav" aria-label="Raridades">
@@ -127,10 +123,13 @@ export default function Classes() {
         </p>
         <p className="parchment note">
           <strong className="font-pixel">Habilidades:</strong>{" "}
-          {CLASS_SKILLS.map((skills) => getClass(skills.classId)?.name).join(", ")}{" "}
-          já têm habilidades e árvore de talentos no jogo. As outras classes
-          recebem as delas aos poucos.{" "}
-          <Link to="/wiki/habilidades">Ver na wiki</Link>
+          {withSkills.length} das {CLASSES.length} classes já têm habilidades
+          e árvore de talentos no jogo; faltam{" "}
+          {CLASSES.filter((c) => !CLASS_DETAILS[c.id]?.skills)
+            .map((c) => c.name)
+            .join(" e ")}
+          .{" "}
+          <Link to="/wiki/habilidades">Como funcionam</Link>
         </p>
       </section>
 
@@ -139,8 +138,9 @@ export default function Classes() {
           <RarityHeader rarity={rarity} />
           <div className="special-classes">
             {classesByRarity(rarity.id).map((rpgClass) => (
-              <div
+              <Link
                 key={rpgClass.id}
+                to={`/classes/${rpgClass.id}`}
                 className="special-class"
                 style={{ "--rarity": rarity.color } as React.CSSProperties}
               >
@@ -154,7 +154,10 @@ export default function Classes() {
                 <span className="special-class__name font-pixel">
                   {rpgClass.name}
                 </span>
-              </div>
+                {!CLASS_DETAILS[rpgClass.id]?.skills && (
+                  <span className="badge">Habilidades em breve</span>
+                )}
+              </Link>
             ))}
           </div>
           {rarity.id === "divinas" && (
