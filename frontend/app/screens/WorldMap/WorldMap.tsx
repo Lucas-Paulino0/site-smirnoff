@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import type { LayerGroup, Map as LeafletMap } from "leaflet";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { LayerGroup, LeafletMouseEvent, Map as LeafletMap, Marker } from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { BOSSES, bossAnchor } from "~/data/world";
 import {
   levelColor,
   MAP_AREAS,
@@ -40,6 +41,117 @@ const ICONS = {
   place: `<svg viewBox="0 0 16 16" shape-rendering="crispEdges"><path fill="#1c110a" d="M1 4h2V2h2v2h2V2h2v2h2V2h2v2h2v11H1z"/><path fill="#a8a29a" d="M2 5h12v9H2z"/><path fill="#6b665f" d="M2 5h12v1H2z"/><path fill="#1c110a" d="M6 9h4v5H6z"/></svg>`,
 };
 
+// Busca do mapa: cidades, chefes, locais e áreas, ou coordenadas "x z"
+type SearchItem = {
+  id: string;
+  label: string;
+  detail: string;
+  layer: LayerId | null;
+  x: number;
+  z: number;
+  zoom: number;
+  text: string;
+};
+
+const normalize = (s: string) =>
+  s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+const searchItem = (i: Omit<SearchItem, "text">, extra = ""): SearchItem => ({
+  ...i,
+  text: normalize(`${i.label} ${i.detail} ${extra}`),
+});
+
+const SEARCH_ITEMS: SearchItem[] = [
+  ...MAP_TOWNS.map((t) =>
+    searchItem(
+      {
+        id: `town:${t.warp}`,
+        label: t.name,
+        detail: `Cidade · /warp ${t.warp}`,
+        layer: "towns",
+        x: t.x,
+        z: t.z,
+        zoom: MAP_NATIVE_ZOOM - 1,
+      },
+      t.warp
+    )
+  ),
+  ...MAP_BOSSES.map((b, i) =>
+    searchItem({
+      id: `boss:${i}`,
+      label: b.name,
+      detail: `${b.role}, nível ${b.level}`,
+      layer: "bosses",
+      x: b.x,
+      z: b.z,
+      zoom: MAP_NATIVE_ZOOM,
+    })
+  ),
+  ...MAP_PLACES.map((p, i) =>
+    searchItem(
+      {
+        id: `place:${i}`,
+        label: p.name,
+        detail: `Local com monstros · níveis ${p.levels}`,
+        layer: "places",
+        x: p.x,
+        z: p.z,
+        zoom: MAP_NATIVE_ZOOM,
+      },
+      p.mobs
+    )
+  ),
+  ...MAP_AREAS.map((a) =>
+    searchItem({
+      id: `area:${a.name}`,
+      label: a.name,
+      detail: `Área · níveis ${a.minLevel} a ${a.maxLevel}`,
+      layer: "areas",
+      x: a.x,
+      z: a.z,
+      zoom: 2,
+    })
+  ),
+];
+
+function searchMap(query: string): SearchItem[] {
+  const coords = query.match(/^\s*x?\s*(-?\d+)\s*[,;]?\s*z?\s*(-?\d+)\s*$/i);
+  if (coords) {
+    const x = Number(coords[1]);
+    const z = Number(coords[2]);
+    return [
+      {
+        id: "coords",
+        label: `X ${x} · Z ${z}`,
+        detail: "Ir para estas coordenadas",
+        layer: null,
+        x,
+        z,
+        zoom: MAP_NATIVE_ZOOM,
+        text: "",
+      },
+    ];
+  }
+  const q = normalize(query).trim();
+  if (!q) return [];
+  const words = q.split(/\s+/);
+  // primeiro quem começa com o texto, depois quem tem no nome, depois no resto
+  return SEARCH_ITEMS.filter((i) => words.every((w) => i.text.includes(w)))
+    .map((i) => {
+      const name = normalize(i.label);
+      return { i, rank: name.startsWith(q) ? 0 : name.includes(q) ? 1 : 2 };
+    })
+    .sort((a, b) => a.rank - b.rank)
+    .slice(0, 8)
+    .map((r) => r.i);
+}
+
+// Seção do chefe na wiki (os Golems de Cristal dividem uma)
+function bossWikiLink(name: string) {
+  const boss = BOSSES.find((b) => (b.mapNames ?? [b.name]).includes(name));
+  return `/wiki/chefes${boss ? `#${bossAnchor(boss.name)}` : ""}`;
+}
+
 function popup(title: string, lines: string[]) {
   return `<strong class="map-popup__title">${title}</strong>${lines
     .map((l) => `<span class="map-popup__line">${l}</span>`)
@@ -50,6 +162,8 @@ export default function WorldMap() {
   const container = useRef<HTMLDivElement>(null);
   const map = useRef<LeafletMap | null>(null);
   const groups = useRef<Partial<Record<LayerId, LayerGroup>>>({});
+  const markers = useRef<Record<string, Marker>>({});
+  const showPin = useRef<(x: number, z: number) => void>(() => {});
   const [visible, setVisible] = useState<Record<LayerId, boolean>>({
     zones: true,
     areas: true,
@@ -157,7 +271,10 @@ export default function WorldMap() {
 
       const towns = L.layerGroup();
       for (const t of MAP_TOWNS) {
-        L.marker([t.z, t.x], { icon: icon("town", 26), riseOnHover: true })
+        markers.current[`town:${t.warp}`] = L.marker([t.z, t.x], {
+          icon: icon("town", 26),
+          riseOnHover: true,
+        })
           .bindPopup(
             popup(t.name, [
               `Cidade, sem monstros`,
@@ -175,8 +292,8 @@ export default function WorldMap() {
       }
 
       const bosses = L.layerGroup();
-      for (const b of MAP_BOSSES) {
-        L.marker([b.z, b.x], {
+      MAP_BOSSES.forEach((b, i) => {
+        markers.current[`boss:${i}`] = L.marker([b.z, b.x], {
           icon: icon(b.role === "Chefe" ? "boss" : "miniboss", b.role === "Chefe" ? 26 : 20),
           riseOnHover: true,
           zIndexOffset: 500,
@@ -185,29 +302,34 @@ export default function WorldMap() {
             popup(b.name, [
               `${b.role}, nível ${b.level}`,
               `X ${b.x} · Z ${b.z}`,
-              `<a href="/wiki/chefes">Ver na wiki</a>`,
+              `<a href="${bossWikiLink(b.name)}">Ver na wiki</a>`,
             ])
           )
           .addTo(bosses);
-      }
+      });
 
       const places = L.layerGroup();
-      for (const p of MAP_PLACES) {
-        L.marker([p.z, p.x], { icon: icon("place", 20), riseOnHover: true })
+      MAP_PLACES.forEach((p, i) => {
+        markers.current[`place:${i}`] = L.marker([p.z, p.x], {
+          icon: icon("place", 20),
+          riseOnHover: true,
+        })
           .bindPopup(
             popup(p.name, [`Níveis ${p.levels}`, p.mobs, `X ${p.x} · Z ${p.z}`])
           )
           .addTo(places);
-      }
+      });
 
       groups.current = { zones, areas, towns, bosses, places };
       for (const [id, g] of Object.entries(groups.current)) {
         if (visible[id as LayerId]) g.addTo(m);
       }
 
-      m.on("mousemove", (e) =>
-        setCursor({ x: Math.floor(e.latlng.lng), z: Math.floor(e.latlng.lat) })
-      );
+      // no celular não há mouse: o toque também mostra as coordenadas
+      const showCursor = (e: LeafletMouseEvent) =>
+        setCursor({ x: Math.floor(e.latlng.lng), z: Math.floor(e.latlng.lat) });
+      m.on("mousemove", showCursor);
+      m.on("click", showCursor);
       m.on("mouseout", () => setCursor(null));
       // Longe: só cidades, chefes e nomes das áreas; perto: nomes das cidades
       // no lugar dos nomes das áreas
@@ -218,14 +340,11 @@ export default function WorldMap() {
       };
       m.on("zoomend", zoomClasses);
 
-      // /mapa?x=-1917&z=1572&zoom=5 abre o mapa nesse ponto, com um marcador
-      const params = new URLSearchParams(window.location.search);
-      const x = Number(params.get("x"));
-      const z = Number(params.get("z"));
-      if (params.has("x") && params.has("z") && Number.isFinite(x) && Number.isFinite(z)) {
-        const zoom = Math.round(Number(params.get("zoom")));
-        m.setView([z, x], Number.isFinite(zoom) && zoom > 0 ? zoom : MAP_NATIVE_ZOOM - 1);
-        L.marker([z, x], { zIndexOffset: 1000 })
+      // Marcador de um ponto (link com coordenadas ou busca), um só por vez
+      let pin: Marker | null = null;
+      showPin.current = (x, z) => {
+        pin?.remove();
+        pin = L.marker([z, x], { zIndexOffset: 1000, interactive: false })
           .setIcon(
             L.divIcon({
               className: "map-pin",
@@ -241,8 +360,22 @@ export default function WorldMap() {
             className: "map-tooltip",
           })
           .addTo(m);
+      };
+
+      // /mapa?x=-1917&z=1572&zoom=5 abre o mapa nesse ponto, com um marcador
+      const params = new URLSearchParams(window.location.search);
+      const x = Number(params.get("x"));
+      const z = Number(params.get("z"));
+      if (params.has("x") && params.has("z") && Number.isFinite(x) && Number.isFinite(z)) {
+        const zoom = Math.round(Number(params.get("zoom")));
+        m.setView([z, x], Number.isFinite(zoom) && zoom > 0 ? zoom : MAP_NATIVE_ZOOM - 1);
+        showPin.current(x, z);
       } else {
-        m.fitBounds(L.latLngBounds([-2602, -4163], [2533, 2531]), {
+        // O mundo inteiro; no celular o zoom que cabe deixa o mapa minúsculo,
+        // então abre um nível mais perto (dá para arrastar para os lados)
+        const world = L.latLngBounds([-2602, -4163], [2533, 2531]);
+        const fit = m.getBoundsZoom(world);
+        m.setView(world.getCenter(), m.getSize().x < 600 ? fit + 1 : fit, {
           animate: false,
         });
       }
@@ -267,6 +400,42 @@ export default function WorldMap() {
     }
   }, [visible]);
 
+  const [query, setQuery] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [active, setActive] = useState(0);
+  const results = useMemo(() => searchMap(query), [query]);
+
+  function goTo(hit: SearchItem) {
+    const m = map.current;
+    if (!m) return;
+    setQuery(hit.id === "coords" ? `${hit.x} ${hit.z}` : hit.label);
+    setSearchOpen(false);
+    m.closePopup();
+    // liga a camada do resultado, se estiver desligada
+    if (hit.layer && !visible[hit.layer]) {
+      setVisible((v) => ({ ...v, [hit.layer as LayerId]: true }));
+      groups.current[hit.layer]?.addTo(m);
+    }
+    m.flyTo([hit.z, hit.x], hit.zoom, { duration: 1 });
+    const marker = markers.current[hit.id];
+    if (marker) m.once("moveend", () => marker.openPopup());
+    else if (hit.id === "coords") showPin.current(hit.x, hit.z);
+  }
+
+  function onSearchKey(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      setSearchOpen(true);
+      const step = e.key === "ArrowDown" ? 1 : -1;
+      setActive((a) => (a + step + results.length) % Math.max(results.length, 1));
+    } else if (e.key === "Enter" && results[active]) {
+      e.preventDefault();
+      goTo(results[active]);
+    } else if (e.key === "Escape") {
+      setSearchOpen(false);
+    }
+  }
+
   function flyTo(town: MapTown) {
     map.current?.flyTo([town.z, town.x], MAP_NATIVE_ZOOM - 1, { duration: 1.2 });
     container.current?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -282,6 +451,55 @@ export default function WorldMap() {
 
       <div className="world-map">
         <div className="world-map__toolbar">
+          <div className="map-search">
+            <input
+              type="search"
+              className="map-search__input"
+              placeholder="Buscar cidade, chefe, local ou coordenadas (X Z)"
+              aria-label="Buscar no mapa"
+              role="combobox"
+              aria-expanded={searchOpen && results.length > 0}
+              aria-controls="map-search-results"
+              aria-autocomplete="list"
+              aria-activedescendant={
+                searchOpen && results[active] ? `map-search-${active}` : undefined
+              }
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setActive(0);
+                setSearchOpen(true);
+              }}
+              onFocus={() => setSearchOpen(true)}
+              onBlur={() => setSearchOpen(false)}
+              onKeyDown={onSearchKey}
+            />
+            {searchOpen && query.trim() !== "" && (
+              <ul id="map-search-results" className="map-search__results" role="listbox">
+                {results.length === 0 && (
+                  <li className="map-search__empty">Nada encontrado</li>
+                )}
+                {results.map((hit, i) => (
+                  <li
+                    key={hit.id}
+                    id={`map-search-${i}`}
+                    role="option"
+                    aria-selected={i === active}
+                    className="map-search__option"
+                    // no mousedown, antes do blur do campo fechar a lista
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      goTo(hit);
+                    }}
+                    onMouseEnter={() => setActive(i)}
+                  >
+                    <strong>{hit.label}</strong>
+                    <small>{hit.detail}</small>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           {LAYERS.map((layer) => (
             <label key={layer.id} className="world-map__toggle">
               <input
@@ -298,7 +516,7 @@ export default function WorldMap() {
         <div className="world-map__frame">
           <div ref={container} className="world-map__canvas" />
           <div className="world-map__coords" aria-live="off">
-            {cursor ? `X ${cursor.x} · Z ${cursor.z}` : "Passe o mouse no mapa"}
+            {cursor ? `X ${cursor.x} · Z ${cursor.z}` : "Passe o mouse ou toque no mapa"}
           </div>
         </div>
         <ul className="world-map__legend">

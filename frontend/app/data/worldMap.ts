@@ -11,6 +11,11 @@ export const MAP_SIZE = { width: 6912, height: 5376 };
 export const MAP_NATIVE_ZOOM = 5;
 export const SPAWN = { x: -1917, z: 1572 };
 
+// Link que abre o mapa num ponto, com um marcador (zoom 5 = 1 pixel por bloco)
+export function mapLink(x: number, z: number, zoom = MAP_NATIVE_ZOOM) {
+  return `/mapa?x=${x}&z=${z}&zoom=${zoom}`;
+}
+
 export type MapTown = { name: string; warp: string; x: number; z: number };
 
 // Na ordem do menu "Viagem rápida" (/warp); x e z = centro da cidade

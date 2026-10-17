@@ -15,8 +15,15 @@ import {
   getClass,
   rarityIcon,
 } from "~/data/classes";
-import { BOSSES, MOB_FAMILIES, TOWNS } from "~/data/world";
-import { levelColor, MAP_AREAS } from "~/data/worldMap";
+import { BOSSES, bossAnchor, MOB_FAMILIES, TOWNS, type Boss } from "~/data/world";
+import {
+  levelColor,
+  MAP_AREAS,
+  MAP_BOSSES,
+  MAP_TOWNS,
+  mapLink,
+  SPAWN,
+} from "~/data/worldMap";
 import {
   Callout,
   Cmd,
@@ -79,6 +86,32 @@ const WEAPONS = Object.values(
     return acc;
   }, {})
 );
+
+// Links "ver no mapa" de um chefe: um por spawner (o Rei Goblin tem cinco)
+function BossMapLinks({ boss }: { boss: Boss }) {
+  const names = boss.mapNames ?? [boss.name];
+  const spots = MAP_BOSSES.filter((b) => names.includes(b.name));
+  if (!spots.length) return null;
+  if (spots.length === 1) {
+    return (
+      <p>
+        <WikiLink to={mapLink(spots[0].x, spots[0].z)}>Ver no mapa</WikiLink>
+      </p>
+    );
+  }
+  return (
+    <p>
+      Ver no mapa:{" "}
+      {joinNodes(
+        spots.map((b) => (
+          <WikiLink key={`${b.x},${b.z}`} to={mapLink(b.x, b.z)}>
+            {b.name === boss.name ? `nível ${b.level}` : `${b.name} (${b.level})`}
+          </WikiLink>
+        ))
+      )}
+    </p>
+  );
+}
 
 const ARTICLE_LIST: WikiArticle[] = [
   {
@@ -1067,8 +1100,11 @@ const ARTICLE_LIST: WikiArticle[] = [
               com as cidades na ordem da progressão:
             </p>
             <ol>
-              {TOWNS.map((town) => (
-                <li key={town}>{town}</li>
+              {MAP_TOWNS.map((town, i) => (
+                <li key={town.warp}>
+                  <WikiLink to={mapLink(town.x, town.z, 4)}>{town.name}</WikiLink>
+                  {i === 0 && " (spawn)"}
+                </li>
               ))}
             </ol>
           </>
@@ -1080,8 +1116,8 @@ const ARTICLE_LIST: WikiArticle[] = [
         body: (
           <p>
             O ponto de chegada fica na Cratera da Ruína, a vila no fundo da
-            cratera. Use <Cmd>/spawn</Cmd> para voltar para lá a qualquer
-            momento.
+            cratera (<WikiLink to={mapLink(SPAWN.x, SPAWN.z)}>ver no mapa</WikiLink>).
+            Use <Cmd>/spawn</Cmd> para voltar para lá a qualquer momento.
           </p>
         ),
       },
@@ -1201,11 +1237,7 @@ const ARTICLE_LIST: WikiArticle[] = [
         ),
       },
       ...BOSSES.map((boss) => ({
-        id: boss.name
-          .normalize("NFD")
-          .replace(/[̀-ͯ]/g, "")
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-"),
+        id: bossAnchor(boss.name),
         title: boss.name,
         body: (
           <>
@@ -1214,6 +1246,7 @@ const ARTICLE_LIST: WikiArticle[] = [
             </p>
             <p>{boss.description}</p>
             <p>Volta {boss.respawn} minutos depois de derrotado.</p>
+            <BossMapLinks boss={boss} />
           </>
         ),
       })),

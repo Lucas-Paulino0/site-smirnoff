@@ -19,7 +19,18 @@ export type Boss = {
   description: string;
   // minutos para voltar depois de morto
   respawn: number;
+  // nomes em MAP_BOSSES (data/worldMap.ts), quando não é o próprio nome
+  mapNames?: string[];
 };
+
+// Âncora da seção do chefe em /wiki/chefes
+export function bossAnchor(name: string) {
+  return name
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-");
+}
 
 // Chefes e mini-chefes posicionados no mapa (context/mobs.md no servidor)
 export const BOSSES: Boss[] = [
@@ -108,6 +119,7 @@ export const BOSSES: Boss[] = [
     role: "Mini-chefe",
     levels: "Quartzo 25, Diamante 200, Redstone 230",
     where: "Pontos de missão espalhados pelo mapa",
+    mapNames: ["Golem de Quartzo", "Golem de Diamante", "Golem de Redstone"],
     description:
       "Golems de cristal maiores que o normal. Pisoteiam, socam o chão, fazem brotar espinhos de cristal nos lugares marcados e arremessam cristais que viram fragmentos.",
     respawn: 10,

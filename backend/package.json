@@ -7,7 +7,9 @@
     "dev": "nodemon --watch src --ignore src/dev.sqlite src/server.js",
     "db:migrate": "sequelize-cli db:migrate",
     "db:seed": "sequelize-cli db:seed:all",
-    "db:reset": "sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all"
+    "db:reset": "sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all",
+    "db:backup": "node src/scripts/backup.js",
+    "db:restore": "node src/scripts/restore.js"
   },
   "license": "ISC",
   "dependencies": {

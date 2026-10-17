@@ -39,6 +39,24 @@ O banco é escolhido pelo `.env` (`src/config/config.js`):
 - `DB_HOST` preenchido: MySQL (`DB_PORT`, `DB_USERNAME`, `DB_PASSWORD`, `DB_NAME`).
 - Nenhum dos dois: SQLite local em `src/dev.sqlite`, sem instalar nada.
 
+### Backup do banco
+
+O plano grátis do Supabase não deixa baixar backups, então faça os seus de vez em quando (depois de cada leva de doações, por exemplo):
+
+```bash
+cd backend
+npm run db:backup   # salva backups/backup-<data>.json
+```
+
+O script lê o banco do `src/.env` e não precisa do `pg_dump`. A pasta `backups/` fica fora do git porque tem os nicks e os pagamentos; guarde uma cópia fora do computador também.
+
+Para voltar uma cópia, num banco **novo e vazio**:
+
+```bash
+npm run db:migrate                                   # cria as tabelas (sem db:seed)
+npm run db:restore -- backups/backup-<data>.json     # recusa se as tabelas já tiverem dados
+```
+
 Variáveis principais do `.env`:
 - `MC_SERVER_IP`: endereço do servidor para o status (`server1.halahost.net`)
 - `FRONTEND_URL`: URL pública do site (usada nos retornos do Mercado Pago)
