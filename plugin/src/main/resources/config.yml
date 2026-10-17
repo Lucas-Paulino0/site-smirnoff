@@ -36,38 +36,43 @@ delivered-message: "&6[Loja] &eSua compra &f{product} &efoi entregue. Obrigado p
 products:
   # PROVISÓRIO: "rpg class set" troca a classe atual do jogador; o RPGCore
   # ainda não tem "desbloquear para sempre", que é o que a loja promete.
-  # Sem a opção de forçar, o comando respeita o nível mínimo (o Necromancer
+  # Sem a opção de forçar, o comando respeita o nível mínimo (o Necromante
   # pede nível 100). Troque pelo comando de desbloqueio quando ele existir.
   classe_martial_artist:
-    name: "Classe Martial Artist"
+    name: "Classe Artista Marcial"
     require-online: true
     commands:
       - "rpg class set {player} martial_artist"
   classe_thunder_ronin:
-    name: "Classe Thunder Ronin"
+    name: "Classe Ronin do Trovão"
     require-online: true
     commands:
       - "rpg class set {player} thunder_ronin"
   classe_water_samurai:
-    name: "Classe Water Samurai"
+    name: "Classe Samurai da Água"
     require-online: true
     commands:
       - "rpg class set {player} water_samurai"
   classe_bloodmoon_vampire:
-    name: "Classe Bloodmoon Vampire"
+    name: "Classe Vampiro da Lua de Sangue"
     require-online: true
     commands:
       - "rpg class set {player} bloodmoon_vampire"
   classe_dragon_warrior:
-    name: "Classe Dragon Warrior"
+    name: "Classe Dragão"
     require-online: true
     commands:
       - "rpg class set {player} dragon_warrior"
   classe_necromancer:
-    name: "Classe Necromancer"
+    name: "Classe Necromante"
     require-online: true
     commands:
       - "rpg class set {player} necromancer"
+  classe_death_knight:
+    name: "Classe Cavaleiro da Morte"
+    require-online: true
+    commands:
+      - "rpg class set {player} death_knight"
 
   # VIPs: grupos do LuckPerms (heroi < monarca < divindade, trilha "vip").
   # "accumulate" soma os 30 dias a um VIP igual que ainda não venceu; sem ele o
@@ -102,22 +107,23 @@ products:
   #   commands:
   #     - "<comando de dar ticket> {player} 3"
 
-  # Tostões: dinheiro do RPGCore (%rpg_money%), "rpg money <jogador> add <valor>".
+  # Moedas (antes Tostões; os internalName continuam tostoes_*): dinheiro do
+  # RPGCore (%rpg_money%), "rpg money <jogador> add <valor>".
   # require-online: true é obrigatório: o comando não funciona com o jogador
   # offline (testado em 2026-09-29), e o plugin não tem como saber se o comando
   # deu certo. Só troque para false se o RPGCore passar a aceitar offline.
   tostoes_1000:
-    name: "1.000 Tostões"
+    name: "1.000 Moedas"
     require-online: true
     commands:
       - "rpg money {player} add 1000"
   tostoes_5000:
-    name: "5.000 Tostões"
+    name: "5.000 Moedas"
     require-online: true
     commands:
       - "rpg money {player} add 5000"
   tostoes_20000:
-    name: "20.000 Tostões"
+    name: "20.000 Moedas"
     require-online: true
     commands:
       - "rpg money {player} add 20000"

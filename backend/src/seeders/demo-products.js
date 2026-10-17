@@ -1,21 +1,23 @@
 "use strict";
 
-// Catálogo inicial da loja, com os preços de 2026-09-29. Só os VIPs entram
-// ativos: Classes, Tickets e Tostões dependem do RPGCore, que ainda não está no
-// servidor principal (enabled false aparece no site como "Em breve").
+// Catálogo da loja, com os preços de 2026-09-29 e os nomes de 2026-10-17
+// (migration update-products-moedas-death-knight). Só os VIPs entram ativos:
+// Classes, Tickets e Moedas dependem do RPGCore (enabled false aparece no site
+// como "Em breve").
 // Para lançar um produto, mude enabled para true.
 //
 // internalName é o que o plugin de entrega recebe em POST /purchases/approved
 // para saber o que entregar. items usa "|" para separar as linhas da lista.
 
 const DIVINE_CLASSES = [
-  { id: "martial_artist", name: "Martial Artist" },
-  { id: "thunder_ronin", name: "Thunder Ronin" },
-  { id: "water_samurai", name: "Water Samurai" },
-  { id: "bloodmoon_vampire", name: "Bloodmoon Vampire" },
-  { id: "dragon_warrior", name: "Dragon Warrior" },
-  // Na config do RPGCore o Necromancer exige nível 100 (as outras, nível 1)
-  { id: "necromancer", name: "Necromancer", level: 100, price: 29.9 },
+  { id: "martial_artist", name: "Artista Marcial" },
+  { id: "thunder_ronin", name: "Ronin do Trovão" },
+  { id: "water_samurai", name: "Samurai da Água" },
+  { id: "bloodmoon_vampire", name: "Vampiro da Lua de Sangue" },
+  { id: "dragon_warrior", name: "Dragão" },
+  // Na config do RPGCore o Necromante exige nível 100 (as outras, nível 1)
+  { id: "necromancer", name: "Necromante", level: 100, price: 29.9 },
+  { id: "death_knight", name: "Cavaleiro da Morte" },
 ];
 
 // Ativo = o plugin de entrega já sabe entregar no servidor principal
@@ -86,28 +88,28 @@ const products = [
   },
   {
     internalName: "tostoes_1000",
-    name: "1.000 Tostões",
-    description: "Uma bolsa de Tostões, a moeda do servidor.",
+    name: "1.000 Moedas",
+    description: "Uma bolsa de Moedas, a moeda do servidor.",
     image: "produtos/tostoes_1.png",
-    items: "1.000 Tostões",
+    items: "1.000 Moedas",
     category: 4,
     ...soon(4.9),
   },
   {
     internalName: "tostoes_5000",
-    name: "5.000 Tostões",
-    description: "Uma pilha de Tostões, a moeda do servidor.",
+    name: "5.000 Moedas",
+    description: "Uma pilha de Moedas, a moeda do servidor.",
     image: "produtos/tostoes_2.png",
-    items: "5.000 Tostões",
+    items: "5.000 Moedas",
     category: 4,
     ...soon(19.9),
   },
   {
     internalName: "tostoes_20000",
-    name: "20.000 Tostões",
-    description: "Um baú cheio de Tostões, a moeda do servidor.",
+    name: "20.000 Moedas",
+    description: "Um baú cheio de Moedas, a moeda do servidor.",
     image: "produtos/tostoes_3.png",
-    items: "20.000 Tostões",
+    items: "20.000 Moedas",
     category: 4,
     ...soon(69.9),
   },

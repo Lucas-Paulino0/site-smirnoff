@@ -49,7 +49,7 @@ Variáveis principais do `.env`:
 
 ## Produtos da loja
 
-O catálogo fica em `backend/src/seeders/demo-products.js`: 6 Classes Divinas, os VIPs Herói, Monarca e Divindade (30 dias), tickets de troca e pacotes de Tostões. Preços (2026-09-29): VIPs R$ 9,90 / 19,90 / 34,90; Classes Divinas R$ 24,90 (Necromancer R$ 29,90); tickets R$ 4,90 e 12,90; Tostões R$ 4,90, 19,90 e 69,90. **Só os VIPs estão ativos**: o resto depende do RPGCore, que ainda não está no servidor principal, e aparece no site como "Em breve". Para lançar um produto, mude `enabled` para `true` no banco (e no seeder, para instalações novas).
+O catálogo fica em `backend/src/seeders/demo-products.js`: 7 Classes Divinas, os VIPs Herói, Monarca e Divindade (30 dias), tickets de troca e pacotes de Moedas. Preços (2026-09-29): VIPs R$ 9,90 / 19,90 / 34,90; Classes Divinas R$ 24,90 (Necromante R$ 29,90); tickets R$ 4,90 e 12,90; Moedas R$ 4,90, 19,90 e 69,90. **Só os VIPs estão ativos**: o resto depende do RPGCore, que ainda não está no servidor principal, e aparece no site como "Em breve". Para lançar um produto, mude `enabled` para `true` no banco (e no seeder, para instalações novas).
 
 O `internalName` de cada produto (ex.: `classe_necromancer`, `heroi_30d`, `tostoes_1000`) é o que o plugin de entrega recebe para saber o que dar ao jogador. As imagens ficam em `backend/src/files/produtos/`.
 
@@ -75,7 +75,7 @@ Plugin HailLoja, feito para **Folia** (o Hail) e que também roda no Paper (o Te
 **Comandos disponíveis hoje** (em 2026-09-29):
 - **Classes Divinas:** `rpg class set <jogador> <classe>` do RPGCore, provisório. Ele troca a classe atual em vez de desbloquear para sempre, que é o que a loja promete.
 - **VIPs (Herói, Monarca, Divindade):** `lp user <jogador> parent addtemp <grupo> 30d accumulate` do LuckPerms. O `accumulate` soma os dias a um VIP igual que ainda não venceu. A entrega espera o jogador entrar, porque o LuckPerms só acha pelo nick quem já jogou.
-- **Tostões:** `rpg money <jogador> add <valor>` do RPGCore. O comando não funciona com o jogador offline, então a entrega espera ele entrar no servidor.
+- **Moedas** (internalName `tostoes_*`, nome antigo da moeda): `rpg money <jogador> add <valor>` do RPGCore. O comando não funciona com o jogador offline, então a entrega espera ele entrar no servidor.
 - **Tickets de troca:** ainda sem comando conhecido no RPGCore.
 - O RPGCore está instalado só no Teste por enquanto.
 
