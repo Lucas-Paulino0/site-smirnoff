@@ -203,13 +203,23 @@ public final class HailLoja extends JavaPlugin implements Listener {
                 continue;
             }
 
+            // Plugin do comando ausente (ex.: RPGCore fora do servidor): a compra
+            // seria marcada como entregue sem o jogador receber nada
+            String missing = missingCommand(commands);
+            if (missing != null) {
+                warnOnce(purchase, "o comando '" + missing + "' não existe neste servidor");
+                continue;
+            }
+
             Player player = Bukkit.getPlayerExact(purchase.username());
             if (product.getBoolean("require-online", true) && player == null) {
                 continue;
             }
 
+            // O nick digitado no site pode vir com maiúsculas diferentes
+            String username = player != null ? player.getName() : purchase.username();
             for (String command : commands) {
-                String line = command.replace("{player}", purchase.username());
+                String line = command.replace("{player}", username);
                 boolean ok = Bukkit.dispatchCommand(Bukkit.getConsoleSender(), line);
                 if (!ok) {
                     getLogger().warning("Compra #" + purchase.id() + ": comando não reconhecido: " + line);
@@ -219,7 +229,7 @@ public final class HailLoja extends JavaPlugin implements Listener {
             toConfirm.add(purchase.id());
             savePending();
             deliveredAny = true;
-            getLogger().info("Compra #" + purchase.id() + " entregue: " + purchase.internalName() + " para " + purchase.username());
+            getLogger().info("Compra #" + purchase.id() + " entregue: " + purchase.internalName() + " para " + username);
 
             if (player != null) {
                 String name = product.getString("name", purchase.internalName());
@@ -234,6 +244,16 @@ public final class HailLoja extends JavaPlugin implements Listener {
         if (deliveredAny) {
             pollSoon(1);
         }
+    }
+
+    private static String missingCommand(List<String> commands) {
+        for (String command : commands) {
+            String label = command.trim().split("\\s+", 2)[0];
+            if (Bukkit.getCommandMap().getCommand(label) == null) {
+                return label;
+            }
+        }
+        return null;
     }
 
     private void warnOnce(PendingPurchase purchase, String reason) {

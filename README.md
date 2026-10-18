@@ -84,8 +84,8 @@ npm run dev   # http://localhost:5173
 Plugin HailLoja, feito para **Folia** (o Hail) e que também roda no Paper (o Teste). A cada 30 segundos ele pergunta ao backend quais compras foram pagas, roda pelo console os comandos de cada produto e avisa o backend do que foi entregue. Quem entra no servidor recebe na hora o que estava esperando.
 
 1. Compile com `mvn package` (gera `target/HailLoja.jar`) ou com `LIBS=<pasta com os jars da API> ./build.sh` (gera `build/HailLoja.jar`), dentro de `plugin/`. Coloque o jar em `plugins/` do servidor.
-2. No primeiro início ele cria `plugins/HailLoja/config.yml`. Preencha `api-url` (URL pública do backend) e `token` (o `SECRET_ACCESS_TOKEN`).
-3. Confira os comandos de cada produto. A chave é o `internalName`, e `require-online: true` espera o jogador entrar para entregar. Produto sem comandos não é entregue: fica na fila com um aviso no console.
+2. No primeiro início ele cria `plugins/HailLoja/config.yml`. O `api-url` já vem como `https://hail.halahost.net/api`; preencha o `token` (o `SECRET_ACCESS_TOKEN`). Se o arquivo já existir de uma versão anterior, ele não é substituído: confira os blocos à mão.
+3. Confira os comandos de cada produto. A chave é o `internalName`, e `require-online: true` espera o jogador entrar para entregar. Produto sem comandos, ou com um comando cujo plugin não está no servidor, não é entregue: fica na fila com um aviso no console.
 4. Mude `enabled` para `true` e rode `/loja-entregas reload`.
 
 `/loja-entregas status` mostra a última consulta, a fila e o último erro; `/loja-entregas verificar` consulta na hora. Os ids entregues e ainda não confirmados ficam em `pendentes.yml`, para que uma queda do servidor não cause entrega em dobro.

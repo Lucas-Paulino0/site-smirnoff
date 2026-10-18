@@ -9,7 +9,7 @@
 enabled: false
 
 # Endereço público do backend (o mesmo PUBLIC_API_URL do site), sem barra no final
-api-url: "http://localhost:3000"
+api-url: "https://hail.halahost.net/api"
 
 # O mesmo SECRET_ACCESS_TOKEN do backend/src/.env
 token: ""
@@ -28,11 +28,14 @@ delivered-message: "&6[Loja] &eSua compra &f{product} &efoi entregue. Obrigado p
 #   Use true quando os comandos só funcionam com o jogador online.
 # name: nome mostrado na mensagem de entrega.
 #
-# Produto que não estiver aqui, ou sem comandos, NÃO é entregue: fica na fila
-# do site e aparece um aviso no console, até ser configurado.
+# Produto que não estiver aqui, sem comandos, ou com um comando que não existe
+# no servidor (plugin ausente), NÃO é entregue: fica na fila do site e aparece
+# um aviso no console, até ser resolvido.
 #
 # Comandos do RPGCore conhecidos em 2026-09-29: rpg class set e rpg money.
-# O RPGCore ainda está só no Teste. O resto está comentado com o que falta.
+# Em 2026-10-18 só os VIPs estão ativos no site; Classes, Tickets e Moedas
+# aparecem como "Em breve" e não podem ser comprados. O resto está comentado com
+# o que falta.
 products:
   # PROVISÓRIO: "rpg class set" troca a classe atual do jogador; o RPGCore
   # ainda não tem "desbloquear para sempre", que é o que a loja promete.
