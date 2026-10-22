@@ -1,7 +1,8 @@
 // Conteúdo da wiki. As informações vêm das configurações do servidor
-// (RPGCore, RPGClasses, RPGItems, EternalCore, MythicMobs, menus e HUD no
-// hail-admin-kit, conferidas em 2026-10-17). Quando algo mudar no jogo,
-// atualize o artigo correspondente aqui.
+// (RPGCore, RPGClasses, RPGItems, RPGJobs, EternalCore, MythicMobs, menus e
+// HUD no hail-admin-kit, conferidas em 2026-10-22). Quando algo mudar no
+// jogo, atualize o artigo correspondente aqui. As profissões ficam em
+// data/wikiJobs.tsx.
 
 import { SITE } from "~/config/site";
 import { CLASS_DETAILS } from "~/data/classDetails";
@@ -15,6 +16,7 @@ import {
   getClass,
   rarityIcon,
 } from "~/data/classes";
+import { JOB_ARTICLES } from "~/data/wikiJobs";
 import { BOSSES, bossAnchor, MOB_FAMILIES, TOWNS, type Boss } from "~/data/world";
 import {
   levelColor,
@@ -191,6 +193,11 @@ const ARTICLE_LIST: WikiArticle[] = [
                 níveis, um ponto para a árvore de{" "}
                 <WikiLink to="habilidades">habilidades</WikiLink>.
               </li>
+              <li>
+                Armas, armaduras, joias, poções e comida são feitas pelos
+                jogadores: colete materiais e fabrique nas{" "}
+                <WikiLink to="profissoes">profissões</WikiLink>.
+              </li>
             </ol>
             <Callout type="tip" title="A vida não volta sozinha">
               Depois de uma luta, use <Cmd>/descansar</Cmd> para recuperar a
@@ -216,9 +223,10 @@ const ARTICLE_LIST: WikiArticle[] = [
         title: "Se você morrer",
         body: (
           <p>
-            Você renasce na sua cama ou âncora de renascimento, se tiver uma.
-            Caso contrário, volta para o spawn. Ao renascer, a vida, a
-            estamina e a mana voltam cheias.
+            Você perde 10% do XP do nível atual (30% se quem te derrotou foi
+            outro jogador), mas nunca perde um nível. Renasce na sua cama ou
+            âncora de renascimento, se tiver uma; caso contrário, volta para o
+            spawn. Ao renascer, a vida, a estamina e a mana voltam cheias.
           </p>
         ),
       },
@@ -881,6 +889,10 @@ const ARTICLE_LIST: WikiArticle[] = [
               máximo.
             </li>
             <li>
+              Morrer custa 10% do XP do nível atual, ou 30% se quem te derrotou
+              foi outro jogador. Você nunca perde um nível.
+            </li>
+            <li>
               Ao morrer e renascer, vida, estamina e mana voltam cheias. Ao
               sair e entrar de novo, a vida continua a mesma.
             </li>
@@ -918,9 +930,133 @@ const ARTICLE_LIST: WikiArticle[] = [
         title: "PvP",
         body: (
           <p>
-            Entre jogadores, o dano é bem reduzido: dois jogadores do mesmo
-            nível precisam de cerca de 25 golpes para se derrotar.
+            O PvP é opcional: cada jogador liga ou desliga o seu no menu
+            Social. Entre jogadores o dano é bem reduzido: dois do mesmo nível
+            precisam de cerca de 25 golpes para se derrotar. As regras estão em{" "}
+            <WikiLink to="party-e-pvp">Party e PvP</WikiLink>.
           </p>
+        ),
+      },
+    ],
+  },
+  {
+    slug: "party-e-pvp",
+    title: "Party e PvP",
+    icon: classIcon("assassin"),
+    summary: "Jogue em grupo de até 4 e ligue o PvP para ganhar mais XP.",
+    keywords:
+      "party grupo time equipe convite convidar expulsar pvp jogador contra jogador duelo matar social xp bônus",
+    sections: [
+      {
+        id: "menu-social",
+        title: "Menu Social",
+        body: (
+          <p>
+            Abra o <Cmd>/menu</Cmd> e clique em <strong>Social</strong>. Lá
+            ficam a <strong>Party</strong>, a <strong>Guilda</strong>{" "}
+            <Soon /> e, embaixo, os cartões <strong>PVP</strong>,{" "}
+            <strong>Ranking</strong> <Soon /> e <strong>Amigos</strong>{" "}
+            <Soon />.
+          </p>
+        ),
+      },
+      {
+        id: "party",
+        title: "Party",
+        body: (
+          <>
+            <p>
+              Uma party junta até <strong>4 jogadores</strong>, contando o
+              líder. Para montar a sua:
+            </p>
+            <ol>
+              <li>
+                No menu Social, clique em <strong>Party</strong> e depois em{" "}
+                <strong>Convidar</strong>. A lista mostra as cabeças dos
+                jogadores online que estão sem party; use{" "}
+                <strong>Pesquisar</strong> para achar alguém pelo nome.
+              </li>
+              <li>
+                Clique na cabeça para mandar o convite. Convidar a primeira
+                pessoa cria a party, com você de líder.
+              </li>
+              <li>
+                Quem é convidado recebe uma mensagem no chat: clicar nela (ou
+                usar <Cmd>/party</Cmd>) abre o menu com os convites pendentes,
+                e um clique aceita.
+              </li>
+            </ol>
+            <p>
+              No menu da party aparecem o líder e os membros com o nível de
+              cada um. Os botões <strong>Expulsar</strong> e{" "}
+              <strong>Sair</strong> ficam embaixo.
+            </p>
+          </>
+        ),
+      },
+      {
+        id: "em-grupo",
+        title: "Jogando em grupo",
+        body: (
+          <ul>
+            <li>
+              Membros da mesma party não se machucam: nada de dano, efeitos
+              negativos, empurrões ou atordoamentos entre vocês, mesmo com o
+              PvP ligado.
+            </li>
+            <li>
+              Curas e bônus das habilidades só alcançam quem é da sua party.
+            </li>
+            <li>
+              O XP e as Moedas de um monstro são divididos entre os membros que
+              estão a até 48 blocos dele.
+            </li>
+            <li>
+              Num chefe, a recompensa é dividida pelo dano causado, e a party
+              conta como a soma do dano dos membros.
+            </li>
+            <li>
+              Na HUD, no meio do lado esquerdo, um painel mostra os outros
+              membros: cabeça, nome, nível e vida.
+            </li>
+          </ul>
+        ),
+      },
+      {
+        id: "pvp",
+        title: "PvP",
+        body: (
+          <>
+            <p>
+              O PvP começa desligado. O cartão <strong>PVP</strong> do menu
+              Social mostra se o seu está ligado e troca com um clique, mas
+              só dentro de uma área segura: a vila do spawn e as{" "}
+              {TOWNS.length - 1} outras cidades.
+            </p>
+            <ul>
+              <li>
+                Com o PvP ligado você ganha <strong>+20% de XP</strong>.
+              </li>
+              <li>
+                Fora das áreas seguras, dois jogadores com o PvP ligado podem
+                se atacar. Quem está com ele desligado não ataca nem é atacado
+                por outros jogadores.
+              </li>
+              <li>
+                Fora das áreas seguras, quem está com o PvP ligado mostra em
+                cima da cabeça uma placa com espadas cruzadas, o nível e a
+                barra de vida.
+              </li>
+              <li>
+                Ser derrotado por outro jogador custa 30% do XP do nível, em
+                vez dos 10% de uma morte normal.
+              </li>
+            </ul>
+            <Callout type="warning" title="Pense antes de sair da cidade">
+              Como o PvP só troca dentro das áreas seguras, quem sai com ele
+              ligado fica com ele ligado até voltar a uma cidade.
+            </Callout>
+          </>
         ),
       },
     ],
@@ -929,8 +1065,8 @@ const ARTICLE_LIST: WikiArticle[] = [
     slug: "itens-e-equipamentos",
     title: "Itens e equipamentos",
     icon: classIcon("gunslinger"),
-    summary: "Armas, escudos, acessórios, raridade dos itens e o que a dica de cada item mostra.",
-    keywords: "item arma escudo acessório colar brinco anel raridade comum raro épico lendário mítico durabilidade reparo",
+    summary: "Armas, escudos, acessórios, raridade dos itens e de onde eles vêm.",
+    keywords: "item arma escudo acessório colar brinco anel raridade comum raro épico lendário mítico durabilidade reparo fabricar",
     sections: [
       {
         id: "itens-rpg",
@@ -959,13 +1095,29 @@ const ARTICLE_LIST: WikiArticle[] = [
               </li>
               <li>
                 <strong>Durabilidade:</strong> os itens se desgastam com o uso
-                e podem ser reparados.
+                e são reparados no Ferreiro e no Armadureiro.
               </li>
             </ul>
-            <Callout title="Em breve">
-              Os primeiros itens RPG ainda estão sendo criados e balanceados.{" "}
-              <Soon />
-            </Callout>
+          </>
+        ),
+      },
+      {
+        id: "de-onde-vem",
+        title: "De onde vêm os itens",
+        body: (
+          <>
+            <p>
+              Os itens RPG são fabricados pelos jogadores nas{" "}
+              <WikiLink to="profissoes">profissões</WikiLink>: armas no
+              Ferreiro, armaduras no Armadureiro, colares, brincos e anéis no
+              Joalheiro, poções no Alquimista e pratos no Cozinheiro. A
+              raridade é sorteada na hora de fabricar. A lista completa está em{" "}
+              <WikiLink to="receitas">Receitas</WikiLink>.
+            </p>
+            <p>
+              Itens especiais que caem de chefes e que vêm de missões estão a
+              caminho. <Soon />
+            </p>
           </>
         ),
       },
@@ -1128,7 +1280,7 @@ const ARTICLE_LIST: WikiArticle[] = [
     title: "Monstros",
     icon: rarityIcon("miticas"),
     summary: "Os tipos de monstro, a cor do nível sobre a cabeça e onde cada família aparece.",
-    keywords: "mob monstro elite golem goblin cavaleiro bandido pirata aranha ent slime javali nível barra de vida",
+    keywords: "mob monstro elite golem goblin cavaleiro bandido pirata aranha ent slime javali urso toom mosquito murloc planta bokoblin yokai oni lagarto nível barra de vida",
     sections: [
       {
         id: "tipos",
@@ -1197,7 +1349,7 @@ const ARTICLE_LIST: WikiArticle[] = [
             <li>Monstros nascem em volta dos jogadores, no chão firme.</li>
             <li>
               Não nascem em cidades, estradas, pontos de missão nem a menos de
-              30 blocos de uma masmorra (as masmorras têm os seus).
+              50 blocos de uma masmorra (as masmorras têm os seus).
             </li>
             <li>Os monstros vanilla hostis estão desligados.</li>
           </ul>
@@ -1211,7 +1363,7 @@ const ARTICLE_LIST: WikiArticle[] = [
     icon: classIcon("dragon_warrior"),
     summary: "Os chefes e mini-chefes do servidor, seus ataques e recompensas.",
     keywords:
-      "boss chefe mini-chefe kragan arquivista capitão barba-morta rainha bandida titã cuboss slime rei goblin golem drop",
+      "boss chefe mini-chefe kragan arquivista capitão barba-morta rainha bandida titã cuboss slime rei goblin golem minotauro kazk kriger amantes falso deus lanterna bodhisattva guanyin flor mutante tezcacoatl oni samurai drop",
     sections: [
       {
         id: "como-funcionam",
@@ -1294,15 +1446,16 @@ const ARTICLE_LIST: WikiArticle[] = [
             <p>Na parte de baixo:</p>
             <ul>
               <li>
-                <strong>Warps:</strong> por enquanto, use <Cmd>/warp</Cmd>.{" "}
-                <Soon />
+                <strong>Warps:</strong> a viagem rápida para as cidades, igual
+                ao <Cmd>/warp</Cmd>.
               </li>
               <li>
                 <strong>Missões:</strong> a missão de troca de classe e até 4
                 missões ativas.
               </li>
               <li>
-                <strong>Guilda:</strong> informações da sua guilda. <Soon />
+                <strong>Social:</strong> party, PvP e guilda (veja{" "}
+                <WikiLink to="party-e-pvp">Party e PvP</WikiLink>).
               </li>
             </ul>
             <p>
@@ -1365,6 +1518,10 @@ const ARTICLE_LIST: WikiArticle[] = [
               abaixo, a barra do chefe ou mini-chefe que você está enfrentando.
             </li>
             <li>
+              <strong>Meio do lado esquerdo:</strong> os membros da sua party,
+              com cabeça, nome, nível e vida.
+            </li>
+            <li>
               <strong>Lado direito:</strong> até 4 painéis com as suas missões
               ativas.
             </li>
@@ -1406,6 +1563,13 @@ const ARTICLE_LIST: WikiArticle[] = [
                 </>,
               ],
               [<Cmd>/missoes</Cmd>, "Abre as missões (também /quests)"],
+              [
+                <Cmd>/party</Cmd>,
+                <>
+                  Abre o menu da party, com os convites pendentes (veja{" "}
+                  <WikiLink to="party-e-pvp">Party e PvP</WikiLink>)
+                </>,
+              ],
               [<Cmd>/msg &lt;jogador&gt; &lt;mensagem&gt;</Cmd>, "Mensagem privada"],
               [<Cmd>/reply &lt;mensagem&gt;</Cmd>, "Responde a última mensagem privada"],
               [<Cmd>/ignore &lt;jogador&gt;</Cmd>, "Para de receber mensagens de alguém"],
@@ -1487,6 +1651,14 @@ const ARTICLE_LIST: WikiArticle[] = [
         body: (
           <ul>
             <li>
+              <strong>Ferramentas de coleta</strong>, na loja de ferramentas
+              (veja <WikiLink to="profissoes#ferramentas">Profissões</WikiLink>)
+            </li>
+            <li>
+              <strong>Reparo</strong> de armas e armaduras no Ferreiro e no
+              Armadureiro
+            </li>
+            <li>
               <strong>Leilão</strong> entre jogadores <Soon />
             </li>
             <li>
@@ -1561,7 +1733,7 @@ const ARTICLE_LIST: WikiArticle[] = [
             <Callout title="Em desenvolvimento">
               O sistema de guildas está sendo construído. <Soon />
             </Callout>
-            <p>O menu de guilda já está desenhado e vai mostrar:</p>
+            <p>O menu de guilda, no menu Social, já está desenhado e vai mostrar:</p>
             <ul>
               <li>Nome da guilda e o seu cargo nela</li>
               <li>Membros, nível, patrimônio e pontos</li>
@@ -1799,14 +1971,20 @@ export const WIKI_CATEGORIES: WikiCategory[] = [
     articles: ["mundo-e-regioes", "monstros", "chefes"],
   },
   {
+    title: "Profissões",
+    articles: ["profissoes", "receitas", "onde-coletar"],
+  },
+  {
     title: "Sistemas",
-    articles: ["menus-e-hud", "comandos", "economia", "guildas-e-missoes"],
+    articles: ["party-e-pvp", "menus-e-hud", "comandos", "economia", "guildas-e-missoes"],
   },
   {
     title: "Loja",
     articles: ["loja-e-vip"],
   },
 ];
+
+ARTICLE_LIST.push(...JOB_ARTICLES);
 
 export const WIKI_ARTICLES: Record<string, WikiArticle> = Object.fromEntries(
   ARTICLE_LIST.map((article) => [article.slug, article])

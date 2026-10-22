@@ -5,6 +5,7 @@ export const TOWNS = [
   "Cidade dos Cubos",
   "Cidadela de Hail",
   "Prado Verdejante",
+  "Selva de Jade",
   "Refúgio das Pétalas",
   "Bosque do Crepúsculo",
   "Fronteira Nevada",
@@ -89,6 +90,69 @@ export const BOSSES: Boss[] = [
     respawn: 30,
   },
   {
+    name: "Rei Golem Corrompido",
+    role: "Chefe",
+    levels: "70",
+    where: "Ilha dos Murlocs, na Selva de Jade",
+    description:
+      "Dorme no convés da ilha até alguém chegar a 24 blocos. Cubos corrompidos curam o rei e soltam construtos que atacam os jogadores. O fogo não o machuca.",
+    respawn: 30,
+  },
+  {
+    name: "Minotauro",
+    role: "Chefe",
+    levels: "70",
+    where: "Arena do Minotauro, na Selva de Jade",
+    description:
+      "Espera escondido no céu, bem acima da arena, e despenca quando alguém entra nela. Soca, chuta, investe, agarra quem chega perto e arremessa pedras nos lugares marcados. Com o machado na mão, chama raios e termina arremessando a arma. Fica atordoado com 75%, 50% e 25% da vida. Se ficar sozinho, volta para o céu com a vida cheia.",
+    respawn: 30,
+  },
+  {
+    name: "Kazk, a Rainha",
+    role: "Chefe",
+    levels: "80",
+    where: "Muralha das Plantas, na Selva de Jade",
+    description:
+      "Uma rainha-verme gigante que fica escondida debaixo da terra e sai quando alguém chega a 16 blocos. Morde, corta, investe e ruge, deixando lento quem está por perto. Abaixo da metade da vida se enterra e volta à superfície para atacar. Se ninguém luta com ela, volta para o buraco com a vida cheia.",
+    respawn: 30,
+  },
+  {
+    name: "Os Amantes",
+    role: "Chefe",
+    levels: "110",
+    where: "Salão do Castelo dos Yokais, no Refúgio das Pétalas",
+    description:
+      "Uma luta de samurai em três fases: abaixo de 70% e de 40% da vida, muda de forma. Usa shurikens, flechas que caem do céu e a corrente com foice, e na última fase perde a armadura e chama um fantasma para ajudar.",
+    respawn: 30,
+  },
+  {
+    name: "Falso Deus: Lanterna Penitente",
+    role: "Chefe",
+    levels: "110",
+    where: "Templo dos Onis, no Refúgio das Pétalas",
+    description:
+      "Começa como uma estátua e acorda quando alguém chega a 8 blocos, bate ou clica nela. Luta como penitente e, abaixo da metade da vida, desaba e se levanta como o falso deus. Invoca lanternas que atiram e o curam num ritual; lanternas quebradas soltam centopeias.",
+    respawn: 30,
+  },
+  {
+    name: "Bodhisattva Guanyin",
+    role: "Chefe",
+    levels: "110",
+    where: "Templo de Guanyin, no Refúgio das Pétalas",
+    description:
+      "Outra estátua que acorda ao som de um sino quando alguém chega a 8 blocos, bate ou clica nela. Ataca com pilares de luz e mãos gigantes. Volta a ser estátua 5 segundos depois que todos vão embora.",
+    respawn: 30,
+  },
+  {
+    name: "Kriger",
+    role: "Chefe",
+    levels: "180",
+    where: "Caverna dos Lagartos",
+    description:
+      "Dorme acorrentado e invulnerável até alguém chegar a 20 blocos. Ataca a cada 2 segundos com cortes de espada e cortes fantasmas, e de tempos em tempos solta o sopro da morte nos lugares marcados.",
+    respawn: 30,
+  },
+  {
     name: "Rei Goblin",
     role: "Mini-chefe",
     levels: "16, 25, 33, 42 e 70",
@@ -122,6 +186,33 @@ export const BOSSES: Boss[] = [
     mapNames: ["Golem de Quartzo", "Golem de Diamante", "Golem de Redstone"],
     description:
       "Golems de cristal maiores que o normal. Pisoteiam, socam o chão, fazem brotar espinhos de cristal nos lugares marcados e arremessam cristais que viram fragmentos.",
+    respawn: 10,
+  },
+  {
+    name: "Mestre Oni Samurai",
+    role: "Mini-chefe",
+    levels: "100",
+    where: "Torre da Fortaleza Oni, no Refúgio das Pétalas",
+    description:
+      "Um samurai oni preto e dourado, cercado de pétalas de cerejeira. Corta todos à sua volta e, de tempos em tempos, desfere um iaijutsu nos lugares marcados.",
+    respawn: 10,
+  },
+  {
+    name: "Flor Mutante",
+    role: "Mini-chefe",
+    levels: "150",
+    where: "Entrada da Caverna dos Lagartos",
+    description:
+      "Guarda a única entrada da caverna: enquanto ela estiver viva, o portão fica fechado. Chama vinhas mutantes e ferrões para lutar ao lado dela.",
+    respawn: 10,
+  },
+  {
+    name: "Tezcacoatl, o Ancestral",
+    role: "Mini-chefe",
+    levels: "180",
+    where: "Caverna dos Lagartos",
+    description:
+      "Um lagarto gigante carmesim e dourado, com uma aura de brasas. Golpeia a área toda, acerta os lugares marcados com o golpe carregado e salta sobre os jogadores.",
     respawn: 10,
   },
 ];
@@ -159,9 +250,19 @@ export const MOB_FAMILIES = [
     where: "Fortaleza dos Bandidos, níveis 17 a 25",
   },
   {
-    name: "Ents de Carvalho",
+    name: "Ents",
     mobs: "Ent, Entezinho, Fera de Casca, Devastador e Arremessador; elites: Ent Colosso e Ent Ancião (disfarçado de árvore, agarra quem passa perto)",
-    where: "Florestas do Sul, níveis 26 a 60",
+    where: "Ents de carvalho nas florestas do Prado Verdejante (26 a 60) e ents de cerejeira no Refúgio das Pétalas (81 a 110)",
+  },
+  {
+    name: "Tooms",
+    mobs: "Toom Menino, Menina, Avô, Avó, Professor, Mestre e Bebê, que fogem (a não ser que você segure uma flor-tocha), e o Guerreiro Toom, montado no Besouro-Rinoceronte",
+    where: "Bandos raros nas florestas do Prado Verdejante, níveis 26 a 60",
+  },
+  {
+    name: "Ursos e bichos do campo",
+    mobs: "Elites: Urso Pardo e Urso Panda. Esquilo, Gambá (solta veneno), Alce, Guaxinim e Sapo, de nível baixo",
+    where: "Florestas do Prado Verdejante (26 a 60); os pandas no Refúgio das Pétalas (81 a 110)",
   },
   {
     name: "Velas",
@@ -182,5 +283,50 @@ export const MOB_FAMILIES = [
     name: "Sentinela Dourado",
     mobs: "Elite: estátua que acorda quando alguém chega a 8 blocos",
     where: "Pátios da fortaleza de Kragan, níveis 52 a 60",
+  },
+  {
+    name: "Criaturas da selva",
+    mobs: "Cromotério (espreita e agarra pelo pescoço), Ceramtotecídeo, Estrutexímio e sapos que envenenam quem chega perto",
+    where: "Selva de Jade, níveis 61 a 80",
+  },
+  {
+    name: "Mosquitos",
+    mobs: "Gruda em você e morde a cada 1,5 segundo, tirando 20% da vida máxima, até um dos dois morrer. Um mosquito caçador vai atrás de quem entra na selva",
+    where: "Selva de Jade, níveis 61 a 80",
+  },
+  {
+    name: "Murlocs",
+    mobs: "Com adaga, lança ou cajado; todo golpe envenena",
+    where: "Ilha dos Murlocs, níveis 61 a 70",
+  },
+  {
+    name: "Plantas despertas",
+    mobs: "Arbusto Desperto, Cuspidor de Espinhos e Guardião das Vinhas",
+    where: "Muralha das Plantas, níveis 71 a 80",
+  },
+  {
+    name: "Bokoblins",
+    mobs: "Bokoblin Guerreiro, Bokoblin Espadachim e Bokoblin Xamã (cura os aliados); elite: Moblin Bruto",
+    where: "Acampamento Bokoblin, níveis 71 a 80",
+  },
+  {
+    name: "Pássaros berserker",
+    mobs: "Pardal Berserker e Melro Berserker, armados de espada",
+    where: "Ninho dos Pássaros, níveis 81 a 90",
+  },
+  {
+    name: "Yokais",
+    mobs: "Chochinobake, Bakezori, Umibozu e Kamaitachi; elites: Kappa, Tengu, Yurei e Oni",
+    where: "Castelo dos Yokais (90 a 110); as elites na Vila dos Yokais (91 a 110)",
+  },
+  {
+    name: "Onis",
+    mobs: "Oni Arqueiro, Oni Ninja, Oni Samurai e Oni Miko; elite: Oni Bruto",
+    where: "Fortaleza Oni (91 a 100) e Templo dos Onis (101 a 110)",
+  },
+  {
+    name: "Lagartos",
+    mobs: "Lagarto Lanceiro, Lagarto Marreteiro, Lagarto Espadachim e Guarda Lagarto de Elite; elite: Lagarto Implacável",
+    where: "Caverna dos Lagartos, níveis 165 a 180",
   },
 ];

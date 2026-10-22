@@ -1,5 +1,5 @@
 // Pontos do mapa interativo (/mapa), em coordenadas do mundo (x, z).
-// Fontes no servidor (2026-10-17): warps do EternalCore, spawners do MythicMobs e
+// Fontes no servidor (2026-10-17; chefes e masmorras novos em 2026-10-22): warps do EternalCore, spawners do MythicMobs e
 // regiões do WorldGuard (context/regions.md e context/mobs.md). As zonas de
 // nível (public/mapa-do-mundo/zonas.json) e o terreno (public/mapa-do-mundo/tiles)
 // são gerados dos arquivos do mundo por frontend/scripts/mapa/.
@@ -24,6 +24,7 @@ export const MAP_TOWNS: MapTown[] = [
   { name: "Cidade dos Cubos", warp: "cidade_dos_cubo", x: -708, z: 2316 },
   { name: "Cidadela de Hail", warp: "cidadela_de_hail", x: -116, z: 1485 },
   { name: "Prado Verdejante", warp: "prado_verdejante", x: 1619, z: 2334 },
+  { name: "Selva de Jade", warp: "selva_de_jade", x: 1212, z: 808 },
   { name: "Refúgio das Pétalas", warp: "refugio_das_petalas", x: -1328, z: 865 },
   { name: "Bosque do Crepúsculo", warp: "bosque_do_crepusculo", x: -407, z: -307 },
   { name: "Fronteira Nevada", warp: "fronteira_nevada", x: 1072, z: -1053 },
@@ -46,6 +47,13 @@ export const MAP_BOSSES: MapBoss[] = [
   { name: "Capitão Barba-Morta", role: "Chefe", level: 60, x: 598, z: 2119 },
   { name: "O Arquivista", role: "Chefe", level: 60, x: 55, z: 2451 },
   { name: "Senhor da Guerra Kragan", role: "Chefe", level: 70, x: 2309, z: 1923 },
+  { name: "Rei Golem Corrompido", role: "Chefe", level: 70, x: 1178, z: 1259 },
+  { name: "Minotauro", role: "Chefe", level: 70, x: 770, z: 313 },
+  { name: "Kazk, a Rainha", role: "Chefe", level: 80, x: 1874, z: 600 },
+  { name: "Os Amantes", role: "Chefe", level: 110, x: -1312, z: 328 },
+  { name: "Falso Deus: Lanterna Penitente", role: "Chefe", level: 110, x: -763, z: 582 },
+  { name: "Bodhisattva Guanyin", role: "Chefe", level: 110, x: -1841, z: 210 },
+  { name: "Kriger", role: "Chefe", level: 180, x: 831, z: -89 },
   { name: "Campeão Bandido", role: "Mini-chefe", level: 25, x: -1506, z: 2018 },
   { name: "Comandante do Martelo", role: "Mini-chefe", level: 16, x: -2304, z: 1063 },
   { name: "Rei Goblin", role: "Mini-chefe", level: 16, x: -1835, z: 884 },
@@ -54,6 +62,9 @@ export const MAP_BOSSES: MapBoss[] = [
   { name: "Rei Goblin", role: "Mini-chefe", level: 42, x: 753, z: 1520 },
   { name: "Rei Goblin", role: "Mini-chefe", level: 70, x: 617, z: 28 },
   { name: "Golem de Quartzo", role: "Mini-chefe", level: 25, x: -2034, z: 2255 },
+  { name: "Mestre Oni Samurai", role: "Mini-chefe", level: 100, x: -1486, z: 375 },
+  { name: "Flor Mutante", role: "Mini-chefe", level: 150, x: 772, z: 178 },
+  { name: "Tezcacoatl, o Ancestral", role: "Mini-chefe", level: 180, x: 873, z: 64 },
   { name: "Golem de Diamante", role: "Mini-chefe", level: 200, x: 2414, z: -1149 },
   { name: "Golem de Redstone", role: "Mini-chefe", level: 230, x: -3901, z: -1098 },
 ];
@@ -82,6 +93,17 @@ export const MAP_PLACES: MapPlace[] = [
   { name: "Fortaleza de Kragan", levels: "52 a 60", mobs: "Sentinelas Dourados e o Senhor da Guerra Kragan", x: 2286, z: 1924 },
   { name: "Castelo dos Cavaleiros Listrados", levels: "60 a 71", mobs: "Cavaleiros listrados dentro da muralha", x: 555, z: -176 },
   { name: "Acampamento Goblin", levels: "61 a 70", mobs: "Goblins e o Rei Goblin", x: 622, z: 36 },
+  { name: "Arena do Minotauro", levels: "70", mobs: "Minotauro", x: 789, z: 312 },
+  { name: "Ilha dos Murlocs", levels: "61 a 70", mobs: "Murlocs e o Rei Golem Corrompido", x: 1155, z: 1283 },
+  { name: "Muralha das Plantas", levels: "71 a 80", mobs: "Plantas despertas e Kazk, a Rainha", x: 1875, z: 613 },
+  { name: "Acampamento Bokoblin", levels: "71 a 80", mobs: "Bokoblins e Moblins", x: 1956, z: 1001 },
+  { name: "Ninho dos Pássaros", levels: "81 a 90", mobs: "Pardais e melros berserker", x: -769, z: 1046 },
+  { name: "Castelo dos Yokais", levels: "90 a 110", mobs: "Yokais e Os Amantes", x: -1407, z: 140 },
+  { name: "Vila dos Yokais", levels: "91 a 110", mobs: "Kappa, Tengu, Yurei e Oni", x: -1964, z: 472 },
+  { name: "Fortaleza Oni", levels: "91 a 100", mobs: "Onis e o Mestre Oni Samurai", x: -1490, z: 379 },
+  { name: "Templo dos Onis", levels: "101 a 110", mobs: "Onis e o Falso Deus", x: -786, z: 599 },
+  { name: "Templo de Guanyin", levels: "110", mobs: "Bodhisattva Guanyin", x: -1841, z: 210 },
+  { name: "Caverna dos Lagartos", levels: "165 a 180", mobs: "Lagartos, Tezcacoatl e Kriger; a Flor Mutante guarda a entrada", x: 737, z: 34 },
 ];
 
 // Cor das zonas pelo nível: verde no começo, roxo no fim
@@ -137,8 +159,8 @@ export const MAP_AREAS: MapArea[] = [
     minLevel: 61,
     maxLevel: 80,
     description: "A selva densa a leste, entre a Cidadela e as montanhas nevadas.",
-    x: 1124,
-    z: 842,
+    x: 1550,
+    z: 1000,
   },
   {
     name: "Refúgio das Pétalas",
@@ -146,8 +168,8 @@ export const MAP_AREAS: MapArea[] = [
     maxLevel: 110,
     description:
       "Cerejeiras em volta do grande lago, com a cidade na ilha.",
-    x: -1400,
-    z: 330,
+    x: -1365,
+    z: -60,
   },
   {
     name: "Bosque do Crepúsculo",
