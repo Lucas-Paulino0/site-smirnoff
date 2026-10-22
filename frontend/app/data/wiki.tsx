@@ -5,6 +5,7 @@
 // data/wikiJobs.tsx.
 
 import { SITE } from "~/config/site";
+import { matchesTerms, searchTerms } from "~/data/search";
 import { CLASS_DETAILS } from "~/data/classDetails";
 import {
   CLASSES,
@@ -1988,25 +1989,27 @@ export const WIKI_ARTICLES: Record<string, WikiArticle> = Object.fromEntries(
   ARTICLE_LIST.map((article) => [article.slug, article])
 );
 
-const normalize = (text: string) =>
-  text
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase();
-
 export function searchWiki(query: string): WikiArticle[] {
-  const terms = normalize(query).split(/\s+/).filter(Boolean);
-  if (terms.length === 0) return [];
-
-  return ARTICLE_LIST.filter((article) => {
-    const haystack = normalize(
+  const terms = searchTerms(query);
+  return ARTICLE_LIST.filter((article) =>
+    matchesTerms(
+      terms,
       [
         article.title,
         article.summary,
         article.keywords ?? "",
         ...article.sections.map((section) => section.title),
       ].join(" ")
-    );
-    return terms.every((term) => haystack.includes(term));
-  });
+    )
+  );
+}
+
+// Seções cujo título tem todos os termos, para levar direto ao trecho
+export function searchSections(query: string): { article: WikiArticle; section: WikiSection }[] {
+  const terms = searchTerms(query);
+  return ARTICLE_LIST.flatMap((article) =>
+    article.sections
+      .filter((section) => matchesTerms(terms, section.title))
+      .map((section) => ({ article, section }))
+  );
 }

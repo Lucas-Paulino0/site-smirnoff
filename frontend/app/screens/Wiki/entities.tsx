@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router";
 import { CLASS_DETAILS } from "~/data/classDetails";
-import { classIcon, getClass, getRarity } from "~/data/classes";
+import { CLASSES, classIcon, getClass, getRarity } from "~/data/classes";
 import {
   JOB_ITEMS,
   JOB_MATERIALS,
@@ -11,6 +11,7 @@ import {
   type JobItem,
   type JobMaterial,
 } from "~/data/jobs";
+import { matchesTerms, searchTerms } from "~/data/search";
 import { BOSSES, bossAnchor, type Boss } from "~/data/world";
 
 // Coisas do jogo citadas na wiki: cada uma vira um link com um cartão de
@@ -34,19 +35,15 @@ export function materialSource(material: JobMaterial) {
   return `${material.special ? "Achado raro" : "Coleta"} de ${material.spot} (${jobName(material.job!)}), nível ${material.level}`;
 }
 
-const normalize = (text: string) =>
-  text
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase();
-
-// Busca da wiki: itens e materiais cujo nome tem todos os termos
+// Busca da wiki: itens, materiais, classes e chefes cujo nome tem todos os termos
 export function searchEntities(query: string) {
-  const terms = normalize(query).split(/\s+/).filter(Boolean);
-  const matches = (name: string) => terms.length > 0 && terms.every((t) => normalize(name).includes(t));
+  const terms = searchTerms(query);
+  const matches = (name: string) => matchesTerms(terms, name);
   return {
     items: JOB_ITEMS.filter((item) => matches(item.name)).map((item) => item.slug),
     materials: JOB_MATERIALS.filter((m) => matches(m.name)).map((m) => m.slug),
+    classes: CLASSES.filter((c) => matches(c.name)).map((c) => c.id),
+    bosses: BOSSES.filter((b) => matches(b.name)).map((b) => b.name),
   };
 }
 

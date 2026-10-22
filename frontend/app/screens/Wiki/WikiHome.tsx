@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { SITE } from "~/config/site";
 import {
   WIKI_ARTICLES,
   WIKI_CATEGORIES,
+  searchSections,
   searchWiki,
   type WikiArticle,
 } from "~/data/wiki";
-import { ItemLink, MaterialLink, searchEntities } from "./entities";
+import { bossAnchor } from "~/data/world";
+import { BossLink, ClassLink, ItemLink, MaterialLink, searchEntities } from "./entities";
 import WikiLayout from "./WikiLayout";
 
 function ArticleCard({ article }: { article: WikiArticle }) {
@@ -29,14 +31,31 @@ function ArticleCard({ article }: { article: WikiArticle }) {
 }
 
 export default function WikiHome() {
-  const [query, setQuery] = useState("");
+  const [params, setParams] = useSearchParams();
+  const [query, setQueryState] = useState(params.get("q") ?? "");
+  // o texto fica no endereço para o "Ver todos os resultados" da busca rápida
+  const setQuery = (value: string) => {
+    setQueryState(value);
+    setParams(value ? { q: value } : {}, { replace: true, preventScrollReset: true });
+  };
   const results = searchWiki(query);
   const entities = searchEntities(query);
+  // os chefes já aparecem no grupo deles
+  const bossSections = new Set(entities.bosses.map((name) => `chefes#${bossAnchor(name)}`));
+  const sections = searchSections(query).filter(
+    ({ article, section }) => !bossSections.has(`${article.slug}#${section.id}`)
+  );
   const searching = query.trim().length > 0;
-  const found = results.length + entities.items.length + entities.materials.length;
+  const found =
+    results.length +
+    sections.length +
+    entities.classes.length +
+    entities.bosses.length +
+    entities.items.length +
+    entities.materials.length;
 
   return (
-    <WikiLayout>
+    <WikiLayout search={false}>
       <header className="wiki-home__header">
         <h1 className="title">Wiki do {SITE.name}</h1>
         <p className="muted">
@@ -63,6 +82,45 @@ export default function WikiHome() {
               <ArticleCard key={article.slug} article={article} />
             ))}
           </div>
+          {sections.length > 0 && (
+            <>
+              <h3 className="title wiki-home__subgroup">Seções</h3>
+              <ul className="wiki-columns">
+                {sections.map(({ article, section }) => (
+                  <li key={`${article.slug}#${section.id}`}>
+                    <Link to={`/wiki/${article.slug}#${section.id}`} className="wiki-link">
+                      {section.title}
+                    </Link>{" "}
+                    <span className="muted">em {article.title}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {entities.classes.length > 0 && (
+            <>
+              <h3 className="title wiki-home__subgroup">Classes</h3>
+              <ul className="wiki-columns">
+                {entities.classes.map((id) => (
+                  <li key={id}>
+                    <ClassLink id={id} />
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {entities.bosses.length > 0 && (
+            <>
+              <h3 className="title wiki-home__subgroup">Chefes</h3>
+              <ul className="wiki-columns">
+                {entities.bosses.map((name) => (
+                  <li key={bossAnchor(name)}>
+                    <BossLink name={name} />
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
           {entities.items.length > 0 && (
             <>
               <h3 className="title wiki-home__subgroup">Itens</h3>

@@ -1,11 +1,15 @@
 import { NavLink } from "react-router";
 import { WIKI_ARTICLES, WIKI_CATEGORIES } from "~/data/wiki";
+import WikiSearch from "./WikiSearch";
 import "./Wiki.css";
 
 export default function WikiLayout({
   children,
+  search = true,
 }: {
   children: React.ReactNode;
+  // a página inicial tem a própria busca, maior
+  search?: boolean;
 }) {
   return (
     <div className="page wiki">
@@ -35,7 +39,10 @@ export default function WikiLayout({
           </div>
         ))}
       </aside>
-      <div className="wiki__content">{children}</div>
+      <div className="wiki__content">
+        {search && <WikiSearch />}
+        {children}
+      </div>
     </div>
   );
 }
