@@ -19,6 +19,7 @@ import type { WikiArticle } from "~/data/wiki";
 import { levelColor, MAP_AREAS, mapLink } from "~/data/worldMap";
 import { Callout, Soon, Table, WikiLink } from "~/screens/Wiki/components";
 import {
+  DropFamilyLink,
   ITEM_BY_SLUG,
   ItemLink,
   jobName,
@@ -300,7 +301,7 @@ export const JOB_ARTICLES: WikiArticle[] = [
               head={["Material", "Quem derruba", "Níveis"]}
               rows={MOB_MATERIALS.filter((m) => m.usedBy.length > 0).map((m) => [
                 <MaterialLink slug={m.slug} />,
-                m.family,
+                <DropFamilyLink drop={m.family!} />,
                 m.levels,
               ])}
             />
@@ -407,7 +408,7 @@ export const JOB_ARTICLES: WikiArticle[] = [
             head={["Material", "Quem derruba", "Níveis", "Receitas"]}
             rows={MOB_MATERIALS.map((m) => [
               <MaterialLink slug={m.slug} />,
-              m.family,
+              <DropFamilyLink drop={m.family!} />,
               m.levels,
               usesCount(m.slug) || "Nenhuma ainda",
             ])}

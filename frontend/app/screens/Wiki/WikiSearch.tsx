@@ -2,7 +2,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { classIcon, getClass } from "~/data/classes";
 import { searchSections, searchWiki } from "~/data/wiki";
-import { BOSSES, bossAnchor } from "~/data/world";
+import { BOSSES, bossPath, familyPath, MOB_FAMILIES } from "~/data/world";
 import {
   ITEM_BY_SLUG,
   MATERIAL_BY_SLUG,
@@ -47,9 +47,17 @@ function suggest(query: string): { suggestions: Suggestion[]; total: number } {
     ...entities.bosses.map((name) => {
       const boss = BOSSES.find((b) => b.name === name)!;
       return {
-        to: `/wiki/chefes#${bossAnchor(name)}`,
+        to: bossPath(name),
         label: name,
         detail: `${boss.role} · nível ${boss.levels}`,
+      };
+    }),
+    ...entities.families.map((name) => {
+      const family = MOB_FAMILIES.find((f) => f.name === name)!;
+      return {
+        to: familyPath(name),
+        label: name,
+        detail: `Monstros · níveis ${family.levels[0]} a ${family.levels[1]}`,
       };
     }),
     ...entities.items.map((slug) => {
@@ -74,8 +82,11 @@ function suggest(query: string): { suggestions: Suggestion[]; total: number } {
       };
     }),
   ];
-  // um chefe também é seção do artigo Chefes: fica só uma vez
-  const unique = all.filter((s, i) => all.findIndex((o) => o.to === s.to) === i);
+  // um chefe também é seção do artigo Chefes: fica só a página dele
+  const bossSections = new Set(entities.bosses.map((name) => bossPath(name).replace("/chefes/", "/chefes#")));
+  const unique = all.filter(
+    (s, i) => !bossSections.has(s.to) && all.findIndex((o) => o.to === s.to) === i
+  );
   return { suggestions: unique.slice(0, MAX_SUGGESTIONS), total: unique.length };
 }
 

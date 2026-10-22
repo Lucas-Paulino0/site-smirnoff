@@ -9,7 +9,7 @@ import {
   type WikiArticle,
 } from "~/data/wiki";
 import { bossAnchor } from "~/data/world";
-import { BossLink, ClassLink, ItemLink, MaterialLink, searchEntities } from "./entities";
+import { BossLink, ClassLink, FamilyLink, ItemLink, MaterialLink, searchEntities } from "./entities";
 import WikiLayout from "./WikiLayout";
 
 function ArticleCard({ article }: { article: WikiArticle }) {
@@ -51,6 +51,7 @@ export default function WikiHome() {
     sections.length +
     entities.classes.length +
     entities.bosses.length +
+    entities.families.length +
     entities.items.length +
     entities.materials.length;
 
@@ -116,6 +117,18 @@ export default function WikiHome() {
                 {entities.bosses.map((name) => (
                   <li key={bossAnchor(name)}>
                     <BossLink name={name} />
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {entities.families.length > 0 && (
+            <>
+              <h3 className="title wiki-home__subgroup">Monstros</h3>
+              <ul className="wiki-columns">
+                {entities.families.map((name) => (
+                  <li key={name}>
+                    <FamilyLink name={name} />
                   </li>
                 ))}
               </ul>

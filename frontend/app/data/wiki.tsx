@@ -17,7 +17,7 @@ import {
   rarityIcon,
 } from "~/data/classes";
 import { JOB_ARTICLES } from "~/data/wikiJobs";
-import { BOSSES, bossAnchor, MOB_FAMILIES, TOWNS, type Boss } from "~/data/world";
+import { BOSSES, bossAnchor, bossPath, MOB_FAMILIES, TOWNS, type Boss } from "~/data/world";
 import {
   levelColor,
   MAP_AREAS,
@@ -34,7 +34,7 @@ import {
   Table,
   WikiLink,
 } from "~/screens/Wiki/components";
-import { ClassLink } from "~/screens/Wiki/entities";
+import { BossLink, ClassLink, FamilyLink } from "~/screens/Wiki/entities";
 
 export type WikiSection = {
   id: string;
@@ -1279,7 +1279,7 @@ const ARTICLE_LIST: WikiArticle[] = [
     title: "Monstros",
     icon: rarityIcon("miticas"),
     summary: "Os tipos de monstro, a cor do nível sobre a cabeça e onde cada família aparece.",
-    keywords: "mob monstro elite golem goblin cavaleiro bandido pirata aranha ent slime javali urso toom mosquito murloc planta bokoblin yokai oni lagarto nível barra de vida",
+    keywords: "mob monstro elite golem goblin cavaleiro bandido pirata aranha ent slime javali urso toom mosquito murloc planta bokoblin yokai oni lagarto cogumelo nível barra de vida",
     sections: [
       {
         id: "tipos",
@@ -1333,7 +1333,7 @@ const ARTICLE_LIST: WikiArticle[] = [
           <Table
             head={["Família", "Monstros", "Onde"]}
             rows={MOB_FAMILIES.map((family) => [
-              <strong>{family.name}</strong>,
+              <FamilyLink name={family.name} />,
               family.mobs,
               family.where,
             ])}
@@ -1362,7 +1362,7 @@ const ARTICLE_LIST: WikiArticle[] = [
     icon: classIcon("dragon_warrior"),
     summary: "Os chefes e mini-chefes do servidor, seus ataques e recompensas.",
     keywords:
-      "boss chefe mini-chefe kragan arquivista capitão barba-morta rainha bandida titã cuboss slime rei goblin golem minotauro kazk kriger amantes falso deus lanterna bodhisattva guanyin flor mutante tezcacoatl oni samurai drop",
+      "boss chefe mini-chefe kragan arquivista capitão barba-morta rainha bandida titã cuboss slime rei goblin golem minotauro kazk kriger amantes falso deus lanterna bodhisattva guanyin flor mutante tezcacoatl oni samurai cavaleiro demoníaco drop",
     sections: [
       {
         id: "como-funcionam",
@@ -1387,6 +1387,27 @@ const ARTICLE_LIST: WikiArticle[] = [
           </ul>
         ),
       },
+      {
+        id: "lista",
+        title: "Todos os chefes",
+        body: (
+          <>
+            <p>
+              Cada chefe tem uma página com os ataques, as fases, a vida e a
+              recompensa. Passe o mouse no nome para um resumo.
+            </p>
+            <Table
+              head={["Chefe", "Tipo", "Nível", "Onde"]}
+              rows={BOSSES.map((boss) => [
+                <BossLink name={boss.name} />,
+                boss.role,
+                boss.levels,
+                boss.where,
+              ])}
+            />
+          </>
+        ),
+      },
       ...BOSSES.map((boss) => ({
         id: bossAnchor(boss.name),
         title: boss.name,
@@ -1398,6 +1419,9 @@ const ARTICLE_LIST: WikiArticle[] = [
             <p>{boss.description}</p>
             <p>Volta {boss.respawn} minutos depois de derrotado.</p>
             <BossMapLinks boss={boss} />
+            <p>
+              <WikiLink to={bossPath(boss.name)}>Ataques, vida e recompensa</WikiLink>
+            </p>
           </>
         ),
       })),

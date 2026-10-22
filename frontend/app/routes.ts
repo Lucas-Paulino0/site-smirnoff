@@ -14,6 +14,8 @@ export default [
     index("routes/wiki.tsx"),
     route("itens/:slug", "routes/wiki_item.tsx"),
     route("materiais/:slug", "routes/wiki_material.tsx"),
+    route("chefes/:slug", "routes/wiki_boss.tsx"),
+    route("monstros/:slug", "routes/wiki_family.tsx"),
     route(":slug", "routes/wiki_article.tsx"),
   ]),
   route("termos", "routes/terms.tsx"),

@@ -78,6 +78,7 @@ FAMILIES = {
     "bird_berserker": "Pássaros berserker",
     "oni": "Onis",
     "lizard": "Lagartos",
+    "mush": "Cogumelos",
 }
 
 KINDS = {

@@ -53,6 +53,7 @@ export const MAP_BOSSES: MapBoss[] = [
   { name: "Os Amantes", role: "Chefe", level: 110, x: -1312, z: 328 },
   { name: "Falso Deus: Lanterna Penitente", role: "Chefe", level: 110, x: -763, z: 582 },
   { name: "Bodhisattva Guanyin", role: "Chefe", level: 110, x: -1841, z: 210 },
+  { name: "Cavaleiro Demoníaco", role: "Chefe", level: 140, x: -200, z: -925 },
   { name: "Kriger", role: "Chefe", level: 180, x: 831, z: -89 },
   { name: "Campeão Bandido", role: "Mini-chefe", level: 25, x: -1506, z: 2018 },
   { name: "Comandante do Martelo", role: "Mini-chefe", level: 16, x: -2304, z: 1063 },
@@ -103,6 +104,7 @@ export const MAP_PLACES: MapPlace[] = [
   { name: "Fortaleza Oni", levels: "91 a 100", mobs: "Onis e o Mestre Oni Samurai", x: -1490, z: 379 },
   { name: "Templo dos Onis", levels: "101 a 110", mobs: "Onis e o Falso Deus", x: -786, z: 599 },
   { name: "Templo de Guanyin", levels: "110", mobs: "Bodhisattva Guanyin", x: -1841, z: 210 },
+  { name: "Masmorra do Cavaleiro Demoníaco", levels: "140", mobs: "Cavaleiro Demoníaco e os Olhos Demoníacos", x: -200, z: -925 },
   { name: "Caverna dos Lagartos", levels: "165 a 180", mobs: "Lagartos, Tezcacoatl e Kriger; a Flor Mutante guarda a entrada", x: 737, z: 34 },
 ];
 

@@ -12,7 +12,15 @@ import {
   type JobMaterial,
 } from "~/data/jobs";
 import { matchesTerms, searchTerms } from "~/data/search";
-import { BOSSES, bossAnchor, type Boss } from "~/data/world";
+import {
+  BOSSES,
+  bossPath,
+  familyOfDrop,
+  familyPath,
+  MOB_FAMILIES,
+  type Boss,
+  type MobFamily,
+} from "~/data/world";
 
 // Coisas do jogo citadas na wiki: cada uma vira um link com um cartão de
 // resumo ao passar o mouse.
@@ -44,6 +52,7 @@ export function searchEntities(query: string) {
     materials: JOB_MATERIALS.filter((m) => matches(m.name)).map((m) => m.slug),
     classes: CLASSES.filter((c) => matches(c.name)).map((c) => c.id),
     bosses: BOSSES.filter((b) => matches(b.name)).map((b) => b.name),
+    families: MOB_FAMILIES.filter((f) => matches(`${f.name} ${f.mobs}`)).map((f) => f.name),
   };
 }
 
@@ -161,6 +170,24 @@ export function BossCard({ boss }: { boss: Boss }) {
   );
 }
 
+export function FamilyCard({ family }: { family: MobFamily }) {
+  const materials = JOB_MATERIALS.filter((m) => m.family && family.drops.includes(m.family));
+  return (
+    <>
+      <CardHead
+        title={family.name}
+        subtitle={`Família de monstros · níveis ${family.levels[0]} a ${family.levels[1]}`}
+      />
+      <p>{family.where}.</p>
+      <p className="hover-card__muted">
+        {materials.length === 0
+          ? "Não derruba materiais."
+          : `Derruba ${materials.length} ${materials.length === 1 ? "material" : "materiais"}.`}
+      </p>
+    </>
+  );
+}
+
 function ClassCard({ id }: { id: string }) {
   const rpgClass = getClass(id)!;
   const weapon = CLASS_DETAILS[id]?.weapon;
@@ -218,8 +245,20 @@ export function BossLink({ name }: { name: string }) {
   if (!boss) return <>{name}</>;
   return (
     <Hover card={<BossCard boss={boss} />}>
-      <Link to={`/wiki/chefes#${bossAnchor(boss.name)}`} className="wiki-link entity">
+      <Link to={bossPath(boss.name)} className="wiki-link entity">
         {boss.name}
+      </Link>
+    </Hover>
+  );
+}
+
+export function FamilyLink({ name, label }: { name: string; label?: string }) {
+  const family = MOB_FAMILIES.find((f) => f.name === name);
+  if (!family) return <>{label ?? name}</>;
+  return (
+    <Hover card={<FamilyCard family={family} />}>
+      <Link to={familyPath(family.name)} className="wiki-link entity">
+        {label ?? family.name}
       </Link>
     </Hover>
   );
@@ -235,6 +274,12 @@ export function ClassLink({ id }: { id: string }) {
       </Link>
     </Hover>
   );
+}
+
+// Nome de uma família de drop ("Cavaleiros azuis") com o link da família do site
+export function DropFamilyLink({ drop }: { drop: string }) {
+  const family = familyOfDrop(drop);
+  return family ? <FamilyLink name={family.name} label={drop} /> : <>{drop}</>;
 }
 
 // Lista de materiais com quantidade: "10 Minério de Cobre, 2 Quartzo"

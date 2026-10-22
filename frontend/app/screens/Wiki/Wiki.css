@@ -659,3 +659,8 @@
   font-size: 14px;
   border-top: 1px solid var(--line);
 }
+
+.wiki-entity__lead {
+  margin-top: 24px;
+  font-size: 18px;
+}

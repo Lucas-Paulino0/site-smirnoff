@@ -2,7 +2,7 @@ import { TOOLS, type JobMaterial } from "~/data/jobs";
 import { Region } from "~/data/wikiJobs";
 import { Table, WikiLink } from "./components";
 import EntityPage, { EntitySection, type InfoRow } from "./EntityPage";
-import { ITEM_BY_SLUG, ItemLink, jobName, materialSource } from "./entities";
+import { DropFamilyLink, ITEM_BY_SLUG, ItemLink, jobName, materialSource } from "./entities";
 
 export default function MaterialPage({ material }: { material: JobMaterial }) {
   const gathered = material.source === "coleta";
@@ -21,7 +21,7 @@ export default function MaterialPage({ material }: { material: JobMaterial }) {
       ]
     : [
         ["Tipo", "Material de monstro"],
-        ["Quem derruba", <WikiLink to="monstros#familias">{material.family}</WikiLink>],
+        ["Quem derruba", <DropFamilyLink drop={material.family!} />],
         ["Níveis", material.levels],
       ];
   info.push(["Usado em", items.length + tools.length ? `${items.length + tools.length}` : "Nada ainda"]);
@@ -56,8 +56,8 @@ export default function MaterialPage({ material }: { material: JobMaterial }) {
         ) : (
           <p>
             {materialSource(material)}. Só os monstros comuns e de elite
-            derrubam: mini-chefes e chefes não. Veja onde a família vive em{" "}
-            <WikiLink to="monstros#familias">Monstros</WikiLink>.
+            derrubam: mini-chefes e chefes não. Veja onde a família vive na
+            página dela: <DropFamilyLink drop={material.family!} />.
           </p>
         )}
       </EntitySection>

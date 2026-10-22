@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { LayerGroup, LeafletMouseEvent, Map as LeafletMap, Marker } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { BOSSES, bossAnchor } from "~/data/world";
+import { BOSSES, bossPath } from "~/data/world";
 import {
   levelColor,
   MAP_AREAS,
@@ -146,10 +146,10 @@ function searchMap(query: string): SearchItem[] {
     .map((r) => r.i);
 }
 
-// Seção do chefe na wiki (os Golems de Cristal dividem uma)
+// Página do chefe na wiki (os Golems de Cristal dividem uma)
 function bossWikiLink(name: string) {
   const boss = BOSSES.find((b) => (b.mapNames ?? [b.name]).includes(name));
-  return `/wiki/chefes${boss ? `#${bossAnchor(boss.name)}` : ""}`;
+  return boss ? bossPath(boss.name) : "/wiki/chefes";
 }
 
 function popup(title: string, lines: string[]) {
