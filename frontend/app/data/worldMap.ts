@@ -124,7 +124,7 @@ export const MAP_AREAS: MapArea[] = [
     z: 2420,
   },
   {
-    name: "Terras do Sul",
+    name: "Prado Verdejante",
     minLevel: 26,
     maxLevel: 60,
     description:
@@ -133,46 +133,46 @@ export const MAP_AREAS: MapArea[] = [
     z: 1650,
   },
   {
-    name: "Planícies Verdes",
+    name: "Selva de Jade",
     minLevel: 61,
     maxLevel: 80,
-    description: "Campos e bosques a leste, entre a Cidadela e as montanhas nevadas.",
+    description: "A selva densa a leste, entre a Cidadela e as montanhas nevadas.",
     x: 1124,
     z: 842,
   },
   {
-    name: "Vale Florido",
+    name: "Refúgio das Pétalas",
     minLevel: 81,
     maxLevel: 110,
     description:
-      "Cerejeiras em volta do grande lago, com o Refúgio das Pétalas na ilha.",
+      "Cerejeiras em volta do grande lago, com a cidade na ilha.",
     x: -1400,
     z: 330,
   },
   {
-    name: "Floresta Sombria",
+    name: "Bosque do Crepúsculo",
     minLevel: 111,
     maxLevel: 140,
     description:
-      "A mata fechada no centro do continente, em volta do Bosque do Crepúsculo.",
+      "A mata fechada no centro do continente.",
     x: -390,
     z: -720,
   },
   {
-    name: "Picos Gélidos",
+    name: "Fronteira Nevada",
     minLevel: 141,
     maxLevel: 200,
     description:
-      "Montanhas nevadas, pinheiros e um lago gelado no nordeste, com a Fronteira Nevada.",
+      "Montanhas nevadas, pinheiros e um lago gelado no nordeste.",
     x: 1300,
     z: -1550,
   },
   {
-    name: "Terras Ardentes",
+    name: "Inferno Escaldante",
     minLevel: 201,
     maxLevel: 250,
     description:
-      "O deserto vulcânico do noroeste, com rios de lava, ruínas e o Inferno Escaldante.",
+      "O deserto vulcânico do noroeste, com rios de lava e ruínas.",
     x: -2453,
     z: -1330,
   },

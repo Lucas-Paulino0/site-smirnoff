@@ -17,9 +17,9 @@ for name, body in zip(blocks[1::2], blocks[2::2]):
         regions[name] = [(int(a), int(b)) for a, b in re.findall(r"\{x: (-?\d+), z: (-?\d+)\}", body)]
 
 AREAS = {
-    "spawn": "Cratera da Ruína", "sul": "Terras do Sul", "leste": "Planícies Verdes",
-    "lago_cerejeiras": "Vale Florido", "floresta_central": "Floresta Sombria",
-    "neve": "Picos Gélidos", "vulcao": "Terras Ardentes",
+    "spawn": "Cratera da Ruína", "sul": "Prado Verdejante", "leste": "Selva de Jade",
+    "lago_cerejeiras": "Refúgio das Pétalas", "floresta_central": "Bosque do Crepúsculo",
+    "neve": "Fronteira Nevada", "vulcao": "Inferno Escaldante",
 }
 X0, Z0, W, H, S = -4224, -2624, 6912, 5376, 4  # S blocos por pixel da máscara
 
