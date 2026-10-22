@@ -14,8 +14,8 @@ export const AlertCard = () => {
       <Alert
         onClose={closeAlert}
         severity={alert?.type}
-        variant="filled"
-        sx={{ width: "100%" }}
+        variant="outlined"
+        sx={{ width: "100%", background: "var(--surface)" }}
       >
         {alert?.message}
       </Alert>

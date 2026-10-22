@@ -100,7 +100,7 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
     title: "6. Com quem compartilhamos",
     body: (
       <>
-        <p style={{ margin: "6px 0" }}>
+        <p>
           Só com os serviços necessários para o site funcionar:
         </p>
         <ul>
@@ -176,18 +176,18 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
 
 export default function Privacy() {
   return (
-    <main className="page" style={{ maxWidth: 820 }}>
+    <main className="page">
       <SectionHeading as="h1" title="Política de privacidade" />
-      <article className="parchment" style={{ lineHeight: 1.7 }}>
+      <article className="legal">
         {SECTIONS.map((section) => (
-          <section key={section.title} style={{ marginBottom: 20 }}>
-            <h2 className="title" style={{ fontSize: 22 }}>
+          <section key={section.title}>
+            <h2 className="title">
               {section.title}
             </h2>
-            <div style={{ margin: "6px 0 0" }}>{section.body}</div>
+            <div>{section.body}</div>
           </section>
         ))}
-        <p style={{ margin: 0, fontSize: 14 }}>
+        <p className="legal__footnote">
           Última atualização: {UPDATED_AT}.
         </p>
       </article>

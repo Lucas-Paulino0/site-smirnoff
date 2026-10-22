@@ -46,7 +46,7 @@ export default function DonationInfo() {
   };
 
   return (
-    <aside className="parchment summary">
+    <aside className="panel summary">
       <h2 className="title">Resumo</h2>
 
       <div className="summary__total">
@@ -58,7 +58,7 @@ export default function DonationInfo() {
         <Checkbox
           checked={termsAccepted}
           onChange={(e) => setTermsAccepted(e.target.checked)}
-          sx={{ color: "var(--ink)", "&.Mui-checked": { color: "var(--crimson)" } }}
+          sx={{ color: "var(--text-muted)", "&.Mui-checked": { color: "var(--accent)" } }}
         />
         <span>
           Li e aceito os <Link to="/termos">termos de uso</Link> e a{" "}
@@ -67,7 +67,7 @@ export default function DonationInfo() {
       </label>
 
       {loading ? (
-        <CircularProgress size={32} sx={{ alignSelf: "center", color: "var(--ink)" }} />
+        <CircularProgress size={32} sx={{ alignSelf: "center", color: "var(--accent)" }} />
       ) : (
         <button
           type="button"

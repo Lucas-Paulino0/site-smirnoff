@@ -11,11 +11,11 @@ export default function WikiLayout({
     <div className="page wiki">
       <aside className="wiki__sidebar" aria-label="Artigos da wiki">
         <NavLink to="/wiki" end className="wiki__home-link">
-          Wiki {"·"} Início
+          Início da wiki
         </NavLink>
         {WIKI_CATEGORIES.map((category) => (
           <div key={category.title} className="wiki__group">
-            <span className="wiki__group-title font-pixel">
+            <span className="wiki__group-title font-head">
               {category.title}
             </span>
             <ul>

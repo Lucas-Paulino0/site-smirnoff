@@ -5,209 +5,188 @@ import {
   CLASSES,
   CLASS_LINES,
   RARITIES,
-  classIcon,
+  classesByRarity,
   rarityIcon,
 } from "~/data/classes";
 import { TOWNS } from "~/data/world";
-import SectionHeading from "~/ui/SectionHeading/SectionHeading";
+import ClassLines from "~/ui/ClassLines/ClassLines";
 import ServerAddress from "~/ui/ServerAddress/ServerAddress";
-import Wordmark from "~/ui/Wordmark/Wordmark";
 import "./Home.css";
 
 const FEATURES = [
   {
-    icon: classIcon("archer"),
-    title: `${CLASSES.length} classes`,
-    to: "/classes",
-    text: `Comece como ${CLASS_LINES.map((l) => l.name).join(", ").replace(/, ([^,]*)$/, " ou $1")} e evolua sua classe nos níveis 50 e 100.`,
-  },
-  {
-    icon: rarityIcon("lendarias"),
     title: "Progressão",
-    text: `Ganhe experiência, suba de nível e distribua 3 pontos por nível entre ${ATTRIBUTES.length} atributos. Cada classe tem a sua árvore de habilidades.`,
+    text: `Cada nível dá 3 pontos para distribuir entre ${ATTRIBUTES.length} atributos, e cada classe tem a sua árvore de habilidades.`,
+    to: "/wiki/habilidades",
   },
   {
-    icon: classIcon("dragon_warrior"),
     title: "Chefes",
-    text: "Enfrente chefes como o Senhor da Guerra Kragan e o Capitão Barba-Morta, cada um com modelo e ataques próprios.",
+    text: "O Senhor da Guerra Kragan, o Capitão Barba-Morta e outros, cada um com modelo e ataques próprios.",
     to: "/wiki/chefes",
   },
   {
-    icon: rarityIcon("secretas"),
-    title: "Segredos",
-    text: "Classes Secretas não aparecem em lugar nenhum: são conquistadas completando missões.",
+    title: "Classes Secretas",
+    text: "Não aparecem em menu nenhum. Só são liberadas completando missões.",
   },
   {
-    icon: classIcon("phoenix_hunter"),
-    title: "Mundo feito à mão",
-    text: `Da Cratera da Ruína ao Inferno Escaldante: ${TOWNS.length} cidades com viagem rápida, masmorras e regiões construídas pela equipe.`,
+    title: "Mundo",
+    text: `Da Cratera da Ruína ao Inferno Escaldante, com ${TOWNS.length} cidades ligadas por viagem rápida e masmorras construídas pela equipe.`,
     to: "/mapa",
   },
   {
-    icon: classIcon("paladin"),
     title: "Guildas e missões",
-    text: "Monte sua guilda e siga missões de história e diárias.",
+    text: "Guildas, missões de história e missões diárias.",
     soon: true,
   },
 ];
 
 export default function Home() {
-  const joinSteps = [
-    {
-      title: "Abra o Minecraft",
-      text: `O servidor roda no Minecraft ${SITE.minecraftVersion}.`,
-    },
-    {
-      title: "Adicione o servidor",
-      text: `Em Multijogador, adicione um servidor com o IP ${SITE.serverIp}.`,
-    },
-    {
-      title: "Aceite o pacote de recursos",
-      text: "Ele é obrigatório: traz os menus, a HUD, os itens e os modelos do servidor.",
-    },
-  ];
-
   return (
-    <main>
+    <main className="page home">
       <section className="hero">
-        <div className="hero__bg" aria-hidden="true" />
-        <div className="hero__content">
-          <Wordmark size="large" />
-          <p className="hero__tagline font-pixel">{SITE.tagline}</p>
+        <div className="hero__text">
+          <h1 className="title">Um servidor de RPG para Minecraft Java</h1>
           <p className="hero__lead">
-            Escolha sua classe, suba de nível e explore um mundo medieval
-            cheio de chefes, segredos e regiões para descobrir.
+            Você começa numa das {CLASS_LINES.length} classes Base, evolui nos
+            níveis 50 e 100 e monta o personagem distribuindo pontos entre{" "}
+            {ATTRIBUTES.length} atributos. Ao todo são {CLASSES.length} classes,
+            cada uma com arma e habilidades próprias.
           </p>
           <ServerAddress />
-          <div className="hero__actions">
-            <Link className="btn" to="/classes">
-              Conheça as classes
-            </Link>
-            <Link className="btn btn--wood" to="/loja">
-              Visitar a loja
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <div className="page">
-        <section className="section">
-          <SectionHeading
-            title="O que te espera"
-            subtitle="Um RPG completo dentro do Minecraft, com sistemas feitos sob medida para o servidor."
-          />
-          <div className="grid grid-3">
-            {FEATURES.map((feature) => {
-              const content = (
-                <>
-                  <img
-                    className="pixelated feature__icon"
-                    src={feature.icon}
-                    alt=""
-                    width={64}
-                    height={64}
-                  />
-                  <div>
-                    <h3 className="title feature__title">
-                      {feature.title}
-                      {feature.soon && <span className="badge">Em breve</span>}
-                    </h3>
-                    <p className="feature__text">{feature.text}</p>
-                  </div>
-                </>
-              );
-              return feature.to ? (
-                <Link
-                  key={feature.title}
-                  to={feature.to}
-                  className="frame feature feature--link"
-                >
-                  {content}
-                </Link>
-              ) : (
-                <div key={feature.title} className="frame feature">
-                  {content}
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        <section className="section">
-          <SectionHeading
-            title="Raridades de classe"
-            subtitle="Todo mundo começa numa classe Base. As outras você conquista (ou encontra na loja)."
-          />
-          <div className="rarities">
-            {RARITIES.map((rarity) => (
-              <Link
-                key={rarity.id}
-                to={`/classes#${rarity.id}`}
-                className="rarity"
-              >
-                <img
-                  className="pixelated"
-                  src={rarityIcon(rarity.id)}
-                  alt=""
-                  width={72}
-                  height={72}
-                />
-                <span className="rarity__name" style={{ color: rarity.color }}>
-                  {rarity.label}
-                </span>
-                <span className="rarity__how">{rarity.how}</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        <section className="section">
-          <SectionHeading
-            title="Atributos"
-            subtitle="A cada nível você ganha pontos para distribuir como quiser."
-          />
-          <div className="parchment attributes">
-            {ATTRIBUTES.map((attribute) => (
-              <div key={attribute.id} className="attribute">
-                <span className="attribute__name font-pixel">
-                  {attribute.name}
-                </span>
-                <span className="attribute__text">{attribute.description}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="section">
-          <SectionHeading title="Como entrar" />
-          <ol className="steps">
-            {joinSteps.map((step, index) => (
-              <li key={step.title} className="frame step">
-                <span className="step__number font-pixel">{index + 1}</span>
-                <h3 className="title">{step.title}</h3>
-                <p className="muted">{step.text}</p>
-              </li>
-            ))}
-          </ol>
           {SITE.whitelist && (
-            <div className="parchment whitelist">
-              <strong className="font-pixel">Fase fechada:</strong> por
-              enquanto só entra quem está na whitelist.{" "}
+            <p className="hero__note">
+              O servidor está em fase fechada: só entra quem está na
+              whitelist.{" "}
               {SITE.discordUrl ? (
                 <>
                   Peça sua vaga no{" "}
                   <a href={SITE.discordUrl} target="_blank" rel="noreferrer">
-                    nosso Discord
+                    Discord
                   </a>
                   .
                 </>
               ) : (
                 "Fale com a equipe para pedir sua vaga."
               )}
-            </div>
+            </p>
           )}
-        </section>
-      </div>
+        </div>
+
+        <figure className="hero__map">
+          <Link to="/mapa">
+            <img
+              src="/mapa-do-mundo/mundo.webp"
+              alt="Mapa do mundo do servidor visto de cima"
+              width={864}
+              height={672}
+            />
+          </Link>
+          <figcaption>
+            O mundo do servidor visto de cima, renderizado bloco por bloco.{" "}
+            <Link to="/mapa">Abrir o mapa interativo</Link>
+          </figcaption>
+        </figure>
+      </section>
+
+      <section className="section split">
+        <div className="split__head">
+          <h2 className="title">Como entrar</h2>
+        </div>
+        <ol className="steps">
+          <li>
+            <strong>Abra o Minecraft {SITE.minecraftVersion}.</strong>
+          </li>
+          <li>
+            <strong>Adicione o servidor.</strong> Em Multijogador, clique em
+            Adicionar servidor e use o endereço <code>{SITE.serverIp}</code>.
+          </li>
+          <li>
+            <strong>Aceite o pacote de recursos.</strong> Ele é obrigatório:
+            traz os menus, a HUD, os itens e os modelos do servidor.
+          </li>
+        </ol>
+      </section>
+
+      <section className="section split">
+        <div className="split__head">
+          <h2 className="title">Classes</h2>
+          <p>
+            Todo jogador começa numa das linhas Base. Cada evolução custa um
+            ticket de troca, ganho numa missão a cada 50 níveis.
+          </p>
+          <p>
+            <Link to="/classes">Ver todas as classes</Link>
+          </p>
+        </div>
+        <div>
+          <ClassLines />
+
+          <ul className="rarity-list">
+            {RARITIES.slice(1).map((rarity) => {
+              const count = classesByRarity(rarity.id).length;
+              return (
+                <li key={rarity.id}>
+                  <img
+                    className="pixelated"
+                    src={rarityIcon(rarity.id)}
+                    alt=""
+                    width={32}
+                    height={32}
+                  />
+                  <div>
+                    <Link
+                      to={`/classes#${rarity.id}`}
+                      style={{ color: rarity.color }}
+                    >
+                      {rarity.label}
+                    </Link>
+                    <span>
+                      {count} {count === 1 ? "classe" : "classes"}.{" "}
+                      {rarity.how}.
+                    </span>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+
+      <section className="section split">
+        <div className="split__head">
+          <h2 className="title">Atributos</h2>
+          <p>Os pontos de cada nível vão onde você quiser.</p>
+        </div>
+        <dl className="attributes">
+          {ATTRIBUTES.map((attribute) => (
+            <div key={attribute.id}>
+              <dt>{attribute.name}</dt>
+              <dd>{attribute.description}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <section className="section split">
+        <div className="split__head">
+          <h2 className="title">No servidor</h2>
+        </div>
+        <dl className="features">
+          {FEATURES.map((feature) => (
+            <div key={feature.title}>
+              <dt>
+                {feature.to ? (
+                  <Link to={feature.to}>{feature.title}</Link>
+                ) : (
+                  feature.title
+                )}
+                {feature.soon && <span className="badge">Em breve</span>}
+              </dt>
+              <dd>{feature.text}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
     </main>
   );
 }

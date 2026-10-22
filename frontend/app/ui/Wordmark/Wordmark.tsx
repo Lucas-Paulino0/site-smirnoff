@@ -2,26 +2,7 @@ import { Link } from "react-router";
 import { SITE } from "~/config/site";
 import "./Wordmark.css";
 
-export default function Wordmark({
-  size = "small",
-}: {
-  size?: "small" | "large";
-}) {
-  if (size === "large") {
-    return (
-      <div className="wordmark wordmark--large">
-        <img
-          className="pixelated wordmark__icon"
-          src="/classes/warrior.png"
-          alt=""
-          width={72}
-          height={72}
-        />
-        <span className="wordmark__text">{SITE.name.toUpperCase()}</span>
-      </div>
-    );
-  }
-
+export default function Wordmark() {
   return (
     <Link
       to="/"
@@ -29,13 +10,13 @@ export default function Wordmark({
       aria-label={`${SITE.name}, página inicial`}
     >
       <img
-        className="pixelated wordmark__icon"
-        src="/classes/warrior.png"
+        className="pixelated"
+        src="/favicon-96x96.png"
         alt=""
-        width={32}
-        height={32}
+        width={26}
+        height={26}
       />
-      <span className="wordmark__text">{SITE.name.toUpperCase()}</span>
+      {SITE.name}
     </Link>
   );
 }

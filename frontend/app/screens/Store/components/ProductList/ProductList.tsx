@@ -48,12 +48,9 @@ export default function ProductList({ category }: ProductListProps) {
           <ProductCard key={product.id} product={product} />
         ))
       ) : (
-        <div className="frame products__empty">
-          <h2 className="title">Nenhum produto por aqui</h2>
-          <p className="muted">
-            Os itens da loja ainda estão sendo preparados. Volte em breve!
-          </p>
-        </div>
+        <p className="muted products__empty">
+          Nenhum produto nesta categoria ainda.
+        </p>
       )}
     </div>
   );

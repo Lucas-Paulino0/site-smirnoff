@@ -17,7 +17,7 @@ export default function WikiArticle({ article }: { article: Article }) {
         {article.title}
       </nav>
 
-      <article className="parchment wiki-article">
+      <article className="wiki-article">
         <header className="wiki-article__header">
           <img
             className="pixelated"
@@ -34,7 +34,7 @@ export default function WikiArticle({ article }: { article: Article }) {
 
         {article.sections.length > 2 && (
           <nav className="wiki-toc" aria-label="Nesta página">
-            <strong className="font-pixel">Nesta página</strong>
+            <strong className="font-head">Nesta página</strong>
             <ol>
               {article.sections.map((section) => (
                 <li key={section.id}>
@@ -63,14 +63,14 @@ export default function WikiArticle({ article }: { article: Article }) {
 
       <nav className="wiki-pager" aria-label="Outros artigos">
         {previous ? (
-          <Link to={`/wiki/${previous.slug}`} className="btn btn--wood btn--small">
+          <Link to={`/wiki/${previous.slug}`} className="btn btn--ghost btn--small">
             ‹ {previous.title}
           </Link>
         ) : (
           <span />
         )}
         {next && (
-          <Link to={`/wiki/${next.slug}`} className="btn btn--small">
+          <Link to={`/wiki/${next.slug}`} className="btn btn--ghost btn--small">
             {next.title} ›
           </Link>
         )}

@@ -13,7 +13,7 @@ export function Callout({
 }) {
   return (
     <aside className={`callout callout--${type}`}>
-      {title && <strong className="callout__title font-pixel">{title}</strong>}
+      {title && <strong className="callout__title font-head">{title}</strong>}
       <div>{children}</div>
     </aside>
   );
@@ -83,7 +83,7 @@ export function IconList({
         <li key={i}>
           <img className="pixelated" src={item.icon} alt="" width={40} height={40} />
           <div>
-            <strong className="font-pixel">{item.title}</strong>
+            <strong className="font-head">{item.title}</strong>
             <p>{item.text}</p>
           </div>
         </li>

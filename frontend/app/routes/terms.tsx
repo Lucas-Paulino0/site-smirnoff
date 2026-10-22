@@ -53,18 +53,18 @@ const SECTIONS = [
 
 export default function Terms() {
   return (
-    <main className="page" style={{ maxWidth: 820 }}>
+    <main className="page">
       <SectionHeading as="h1" title="Termos de uso" />
-      <article className="parchment" style={{ lineHeight: 1.7 }}>
+      <article className="legal">
         {SECTIONS.map((section) => (
-          <section key={section.title} style={{ marginBottom: 20 }}>
-            <h2 className="title" style={{ fontSize: 22 }}>
+          <section key={section.title}>
+            <h2 className="title">
               {section.title}
             </h2>
-            <p style={{ margin: "6px 0 0" }}>{section.text}</p>
+            <p>{section.text}</p>
           </section>
         ))}
-        <p style={{ margin: 0, fontSize: 14 }}>
+        <p className="legal__footnote">
           Não somos afiliados à Mojang Studios nem à Microsoft.
         </p>
       </article>

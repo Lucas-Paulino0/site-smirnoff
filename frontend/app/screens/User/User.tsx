@@ -35,7 +35,7 @@ export default function User() {
         title="Seu nick"
         subtitle="Os produtos são entregues na conta com esse nome. Confira com atenção."
       />
-      <form className="parchment user-form" onSubmit={handleSubmit}>
+      <form className="user-form" onSubmit={handleSubmit}>
         <img
           src={`https://mc-heads.net/avatar/${skinId ? encodeURIComponent(skinId) : "MHF_Steve"}/96`}
           alt=""

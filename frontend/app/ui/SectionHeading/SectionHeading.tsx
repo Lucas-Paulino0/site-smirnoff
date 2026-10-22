@@ -12,9 +12,6 @@ export default function SectionHeading({
   return (
     <div className="page-header">
       <Tag className="title">{title}</Tag>
-      <div className="divider">
-        <span />
-      </div>
       {subtitle && <p>{subtitle}</p>}
     </div>
   );

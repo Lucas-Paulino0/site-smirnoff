@@ -27,7 +27,7 @@ export const links: Route.LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pixelify+Sans:wght@400&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Alegreya:wght@500;700&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap",
   },
   {
     rel: "stylesheet",
@@ -57,32 +57,32 @@ const theme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#e8b949",
-      contrastText: "#3b2517",
+      main: "#d9a54a",
+      contrastText: "#1c1406",
     },
     secondary: {
-      main: "#b83232",
+      main: "#d4664f",
     },
     background: {
-      default: "#150d07",
-      paper: "#24160d",
+      default: "#131210",
+      paper: "#1b1916",
     },
     text: {
-      primary: "#f1e3c4",
-      secondary: "#c4ad86",
+      primary: "#ece6da",
+      secondary: "#a89f90",
     },
     success: {
-      main: "#7bc96f",
+      main: "#82c06c",
     },
     error: {
-      main: "#e0625c",
+      main: "#d4664f",
     },
   },
   shape: {
-    borderRadius: 0,
+    borderRadius: 3,
   },
   typography: {
-    fontFamily: '"Inter", system-ui, sans-serif',
+    fontFamily: '"Alegreya Sans", system-ui, sans-serif',
   },
   cssVariables: true,
 });
@@ -93,7 +93,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#24160d" />
+        <meta name="theme-color" content="#131210" />
         <Meta />
         <Links />
       </head>
@@ -141,12 +141,12 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
   return (
     <SiteLayout>
-      <main className="page" style={{ textAlign: "center" }}>
+      <main className="page">
         <h1 className="title">{message}</h1>
-        <p className="muted" style={{ marginTop: 16 }}>
+        <p className="muted" style={{ margin: "12px 0 24px" }}>
           {details}
         </p>
-        <a className="btn" href="/" style={{ marginTop: 24 }}>
+        <a className="btn" href="/">
           Voltar para {SITE.name}
         </a>
         {stack && (

@@ -551,7 +551,7 @@ export default function WorldMap() {
         />
         <div className="regions">
           {MAP_AREAS.map((area) => (
-            <article key={area.name} className="frame region">
+            <article key={area.name} className="panel region">
               <span
                 className="region__swatch"
                 style={{ background: levelColor(area.minLevel) }}
@@ -579,7 +579,7 @@ export default function WorldMap() {
             <button
               key={town.warp}
               type="button"
-              className="frame town"
+              className="panel town"
               onClick={() => flyTo(town)}
             >
               <span className="title">{town.name}</span>

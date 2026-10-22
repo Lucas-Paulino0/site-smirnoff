@@ -1,4 +1,4 @@
-import { Badge, Drawer, Icon, IconButton } from "@mui/material";
+import { Drawer, Icon, IconButton } from "@mui/material";
 import { useState } from "react";
 import { NavLink } from "react-router";
 import { SITE } from "~/config/site";
@@ -45,7 +45,7 @@ export default function Header() {
         <div className="header__actions">
           {SITE.discordUrl && (
             <a
-              className="btn btn--small btn--wood header__discord"
+              className="header__link header__discord"
               href={SITE.discordUrl}
               target="_blank"
               rel="noreferrer"
@@ -55,22 +55,21 @@ export default function Header() {
           )}
           <NavLink
             to="/loja/carrinho"
-            className="header__cart"
+            className={({ isActive }) =>
+              `header__link header__cart${isActive ? " header__link--active" : ""}`
+            }
             aria-label={`Carrinho, ${cart.length} ${cart.length === 1 ? "item" : "itens"}`}
           >
-            <Badge
-              badgeContent={cart.length}
-              color="primary"
-              invisible={cart.length === 0}
-            >
-              <Icon>shopping_cart</Icon>
-            </Badge>
+            Carrinho
+            {cart.length > 0 && (
+              <span className="header__count">{cart.length}</span>
+            )}
           </NavLink>
           <IconButton
             className="header__menu-button"
             aria-label="Abrir menu"
             onClick={() => setOpen(true)}
-            sx={{ color: "var(--gold)" }}
+            sx={{ color: "var(--text)", borderRadius: "var(--radius)" }}
           >
             <Icon>menu</Icon>
           </IconButton>
@@ -83,8 +82,9 @@ export default function Header() {
         onClose={() => setOpen(false)}
         PaperProps={{
           sx: {
-            background: "var(--wood-900)",
-            borderLeft: "4px solid var(--wood-950)",
+            background: "var(--surface)",
+            backgroundImage: "none",
+            borderLeft: "1px solid var(--line)",
             width: 260,
           },
         }}

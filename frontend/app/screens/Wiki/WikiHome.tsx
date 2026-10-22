@@ -20,7 +20,7 @@ function ArticleCard({ article }: { article: WikiArticle }) {
         height={40}
       />
       <div>
-        <strong className="font-pixel">{article.title}</strong>
+        <strong className="font-head">{article.title}</strong>
         <p>{article.summary}</p>
       </div>
     </Link>

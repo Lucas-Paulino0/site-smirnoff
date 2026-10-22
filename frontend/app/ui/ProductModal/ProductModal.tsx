@@ -19,7 +19,7 @@ export default function ProductModal({
 
   return (
     <Modal open={open} onClose={onClose} aria-labelledby="product-modal-title">
-      <div className="parchment product-modal">
+      <div className="panel product-modal">
         {product && (
           <>
             <h2 id="product-modal-title" className="title">
@@ -28,7 +28,7 @@ export default function ProductModal({
             <p className="product-modal__description">{product.description}</p>
             {items.length > 0 && (
               <>
-                <strong className="font-pixel">Você recebe:</strong>
+                <strong>Você recebe</strong>
                 <ul className="product-modal__items">
                   {items.map((item) => (
                     <li key={item}>{item}</li>
@@ -37,24 +37,21 @@ export default function ProductModal({
               </>
             )}
             <div className="product-modal__actions">
-              {action && (
+              {action && product.enabled && (
                 <button
                   type="button"
-                  className="btn btn--block"
-                  disabled={!product.enabled}
+                  className="btn"
                   onClick={() => {
                     action();
                     onClose();
                   }}
                 >
-                  {product.enabled
-                    ? `Comprar por ${formatPrice(product.price)}`
-                    : "Em breve"}
+                  Adicionar ao carrinho ({formatPrice(product.price)})
                 </button>
               )}
               <button
                 type="button"
-                className="btn btn--wood btn--block"
+                className="btn btn--ghost"
                 onClick={onClose}
               >
                 Fechar

@@ -19,7 +19,7 @@ export default function ProductList({ products }: ProductListProps) {
   );
 
   return (
-    <section className="frame">
+    <section>
       <p className="cart__notice">
         Os produtos são ativados em até 1 hora depois da confirmação do
         pagamento, na conta do nick informado.

@@ -1,4 +1,3 @@
-import { Badge, Icon } from "@mui/material";
 import { useState } from "react";
 import { Link } from "react-router";
 import type { Category } from "~/domain/Category";
@@ -14,29 +13,19 @@ export default function Store() {
 
   return (
     <main className="page">
-      <SectionHeading
-        as="h1"
-        title="Loja"
-        subtitle="Apoie o servidor e receba seus itens direto no jogo. O pagamento é feito pelo Mercado Pago."
-      />
-
-      <div className="store__toolbar">
-        <Link to="/loja/carrinho" className="btn btn--wood">
-          <Badge
-            badgeContent={cart.length}
-            color="primary"
-            invisible={cart.length === 0}
-          >
-            <Icon>shopping_cart</Icon>
-          </Badge>
-          Ir para o carrinho
+      <div className="store__top">
+        <SectionHeading
+          as="h1"
+          title="Loja"
+          subtitle="Os itens são entregues direto no jogo, na conta do nick que você informar. O pagamento é feito pelo Mercado Pago."
+        />
+        <Link to="/loja/carrinho" className="btn btn--ghost">
+          Carrinho{cart.length > 0 && ` (${cart.length})`}
         </Link>
       </div>
 
-      <div className="store">
-        <CategorySelect setCategory={setCategory} />
-        <ProductList category={category} />
-      </div>
+      <CategorySelect setCategory={setCategory} />
+      <ProductList category={category} />
     </main>
   );
 }

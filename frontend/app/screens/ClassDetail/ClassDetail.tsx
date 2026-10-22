@@ -83,7 +83,7 @@ export default function ClassDetail({ rpgClass }: { rpgClass: RpgClass }) {
         {rpgClass.name}
       </nav>
 
-      <article className="parchment wiki-article">
+      <article className="wiki-article">
         <header className="wiki-article__header">
           <img
             className="pixelated"
@@ -240,7 +240,7 @@ export default function ClassDetail({ rpgClass }: { rpgClass: RpgClass }) {
         {previous ? (
           <Link
             to={`/classes/${previous.id}`}
-            className="btn btn--wood btn--small"
+            className="btn btn--ghost btn--small"
           >
             ‹ {previous.name}
           </Link>
@@ -248,7 +248,7 @@ export default function ClassDetail({ rpgClass }: { rpgClass: RpgClass }) {
           <span />
         )}
         {next && (
-          <Link to={`/classes/${next.id}`} className="btn btn--small">
+          <Link to={`/classes/${next.id}`} className="btn btn--ghost btn--small">
             {next.name} ›
           </Link>
         )}

@@ -39,26 +39,22 @@ export default function CategorySelect({ setCategory }: CategorySelectProps) {
   const item = (label: string, category: Category | undefined) => {
     const active = selected?.id === category?.id;
     return (
-      <li key={category?.id ?? "all"}>
-        <button
-          type="button"
-          className={`categories__item${active ? " categories__item--active" : ""}`}
-          aria-pressed={active}
-          onClick={() => setSelected(category)}
-        >
-          {label}
-        </button>
-      </li>
+      <button
+        key={category?.id ?? "all"}
+        type="button"
+        className={`categories__item${active ? " categories__item--active" : ""}`}
+        aria-pressed={active}
+        onClick={() => setSelected(category)}
+      >
+        {label}
+      </button>
     );
   };
 
   return (
-    <aside className="frame categories">
-      <h2 className="title categories__title">Categorias</h2>
-      <ul className="categories__list">
-        {item("Todos", undefined)}
-        {categories?.map((category) => item(category.name, category))}
-      </ul>
-    </aside>
+    <nav className="categories" aria-label="Categorias">
+      {item("Todos", undefined)}
+      {categories?.map((category) => item(category.name, category))}
+    </nav>
   );
 }

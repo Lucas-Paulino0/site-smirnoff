@@ -16,7 +16,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   const handleAdd = () => {
     if (cart.find((item) => item.id === product.id)) {
-      showError("Esse produto já está no carrinho!");
+      showError("Esse produto já está no carrinho.");
       return;
     }
     if (!product.enabled) {
@@ -24,35 +24,41 @@ export default function ProductCard({ product }: ProductCardProps) {
       return;
     }
     addToCart(product);
-    showSuccess("Produto adicionado ao carrinho!");
+    showSuccess(`${product.name} foi para o carrinho.`);
   };
 
   return (
     <>
-      <article className="frame product">
-        <div className="product__image">
+      <article className="product">
+        <button
+          type="button"
+          className="product__image"
+          onClick={() => setShowDetails(true)}
+          aria-label={`Ver detalhes de ${product.name}`}
+        >
           <img src={fileUrl(product.image)} alt="" loading="lazy" />
-          <span className="product__price">
-            {product.enabled ? formatPrice(product.price) : "Em breve"}
-          </span>
-        </div>
+        </button>
         <div className="product__body">
-          <h3 className="title product__name">{product.name}</h3>
-          <button
-            type="button"
-            className="btn btn--block"
-            disabled={!product.enabled}
-            onClick={handleAdd}
+          <h3 className="product__name">{product.name}</h3>
+          <p
+            className={`product__price${product.enabled ? "" : " product__price--soon"}`}
           >
-            {product.enabled ? "Comprar" : "Em breve"}
-          </button>
-          <button
-            type="button"
-            className="btn btn--wood btn--block btn--small"
-            onClick={() => setShowDetails(true)}
-          >
-            Detalhes
-          </button>
+            {product.enabled ? formatPrice(product.price) : "Em breve"}
+          </p>
+          <div className="product__actions">
+            {product.enabled && (
+              <button type="button" className="btn btn--small" onClick={handleAdd}>
+                Adicionar
+              </button>
+            )}
+            <button
+              type="button"
+              className="btn btn--ghost btn--small"
+              onClick={() => setShowDetails(true)}
+            >
+              Detalhes
+            </button>
+          </div>
         </div>
       </article>
       <ProductModal
