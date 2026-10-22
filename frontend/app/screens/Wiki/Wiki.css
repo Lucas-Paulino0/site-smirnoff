@@ -101,6 +101,23 @@
   border-bottom: 1px solid var(--line);
 }
 
+.wiki-home__subgroup {
+  font-size: 18px !important;
+  margin: 28px 0 10px;
+}
+
+.wiki-results .wiki-columns {
+  columns: 3 220px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.wiki-results .wiki-columns li {
+  padding: 4px 0;
+  break-inside: avoid;
+}
+
 .wiki-cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -390,5 +407,179 @@
     order: 2;
     padding-top: 24px;
     border-top: 1px solid var(--line);
+  }
+}
+
+/* links de coisas do jogo e o cartão do mouse */
+
+.entity__icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  vertical-align: -2px;
+}
+
+.hover-card {
+  position: fixed;
+  z-index: 1000;
+  transform: translate(-50%, -100%);
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 45%);
+  pointer-events: none;
+}
+
+.hover-card--below {
+  transform: translate(-50%, 0);
+}
+
+.hover-card p {
+  margin: 6px 0 0;
+}
+
+.hover-card__head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.hover-card__head img {
+  flex-shrink: 0;
+}
+
+.hover-card__head strong {
+  display: block;
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.hover-card__head span,
+.hover-card__muted {
+  color: var(--text-muted);
+}
+
+/* raridades, nas cores do jogo */
+
+.rarity {
+  font-weight: 700;
+}
+
+.rarity--0 {
+  color: #b8b8b8;
+}
+
+.rarity--1 {
+  color: #6fd66f;
+}
+
+.rarity--2 {
+  color: #7d8cff;
+}
+
+.rarity--3 {
+  color: #c77ad6;
+}
+
+.rarity--4 {
+  color: #f0b03a;
+}
+
+.rarity--5 {
+  color: #f06a5a;
+}
+
+/* páginas de item e material: ficha ao lado */
+
+.wiki-article.wiki-entity {
+  max-width: none;
+}
+
+.wiki-entity__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 36px;
+  align-items: start;
+}
+
+.wiki-entity__main > .wiki-article__section:first-child {
+  margin-top: 24px;
+}
+
+.infobox {
+  grid-column: 2;
+  grid-row: 1;
+  margin-top: 24px;
+  font-size: 15px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.infobox__title {
+  display: block;
+  padding: 10px 14px;
+  font-size: 18px;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.infobox__image {
+  display: flex;
+  justify-content: center;
+  padding: 18px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.infobox dl {
+  margin: 0;
+}
+
+.infobox dl > div {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 10px;
+  padding: 7px 14px;
+  border-top: 1px solid var(--line);
+}
+
+.infobox dl > div:first-child {
+  border-top: 0;
+}
+
+.infobox dt {
+  color: var(--text-muted);
+}
+
+.infobox dd {
+  margin: 0;
+}
+
+.wiki-columns {
+  columns: 2 220px;
+}
+
+@media (max-width: 1060px) {
+  .wiki-entity__body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .infobox {
+    grid-column: 1;
+    grid-row: auto;
+    max-width: 420px;
+  }
+}
+
+@media (max-width: 600px) {
+  .infobox {
+    max-width: none;
   }
 }

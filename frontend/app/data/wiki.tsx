@@ -13,7 +13,6 @@ import {
   RARITIES,
   classIcon,
   classesByRarity,
-  getClass,
   rarityIcon,
 } from "~/data/classes";
 import { JOB_ARTICLES } from "~/data/wikiJobs";
@@ -34,6 +33,7 @@ import {
   Table,
   WikiLink,
 } from "~/screens/Wiki/components";
+import { ClassLink } from "~/screens/Wiki/entities";
 
 export type WikiSection = {
   id: string;
@@ -56,11 +56,6 @@ export type WikiCategory = {
   articles: string[];
 };
 
-const className = (id: string) => getClass(id)?.name ?? id;
-
-const ClassLink = ({ id }: { id: string }) => (
-  <WikiLink to={`/classes/${id}`}>{className(id)}</WikiLink>
-);
 
 const joinNodes = (nodes: React.ReactNode[]) =>
   nodes.map((node, i) => (
@@ -1231,7 +1226,10 @@ const ARTICLE_LIST: WikiArticle[] = [
               Entre as regiões há zonas de transição com monstros próprios, e
               as masmorras podem ter níveis diferentes da região em volta
               (algumas passam do nível 300). Veja quem vive onde em{" "}
-              <WikiLink to="monstros">Monstros</WikiLink>.
+              <WikiLink to="monstros">Monstros</WikiLink>. As construções com
+              monstros ainda não têm nome oficial: os nomes usados na wiki e no
+              mapa (Fortaleza Oni, Templo dos Onis...) só descrevem o lugar e
+              podem mudar.
             </p>
           </>
         ),
@@ -1972,7 +1970,7 @@ export const WIKI_CATEGORIES: WikiCategory[] = [
   },
   {
     title: "Profissões",
-    articles: ["profissoes", "receitas", "onde-coletar"],
+    articles: ["profissoes", "receitas", "materiais", "onde-coletar"],
   },
   {
     title: "Sistemas",

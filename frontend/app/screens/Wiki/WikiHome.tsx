@@ -7,6 +7,7 @@ import {
   searchWiki,
   type WikiArticle,
 } from "~/data/wiki";
+import { ItemLink, MaterialLink, searchEntities } from "./entities";
 import WikiLayout from "./WikiLayout";
 
 function ArticleCard({ article }: { article: WikiArticle }) {
@@ -30,7 +31,9 @@ function ArticleCard({ article }: { article: WikiArticle }) {
 export default function WikiHome() {
   const [query, setQuery] = useState("");
   const results = searchWiki(query);
+  const entities = searchEntities(query);
   const searching = query.trim().length > 0;
+  const found = results.length + entities.items.length + entities.materials.length;
 
   return (
     <WikiLayout>
@@ -51,17 +54,39 @@ export default function WikiHome() {
       </header>
 
       {searching ? (
-        <section aria-live="polite">
+        <section className="wiki-results" aria-live="polite">
           <h2 className="title wiki-home__group">
-            {results.length > 0
-              ? `${results.length} ${results.length === 1 ? "resultado" : "resultados"}`
-              : "Nada encontrado"}
+            {found > 0 ? `${found} ${found === 1 ? "resultado" : "resultados"}` : "Nada encontrado"}
           </h2>
           <div className="wiki-cards">
             {results.map((article) => (
               <ArticleCard key={article.slug} article={article} />
             ))}
           </div>
+          {entities.items.length > 0 && (
+            <>
+              <h3 className="title wiki-home__subgroup">Itens</h3>
+              <ul className="wiki-columns">
+                {entities.items.map((slug) => (
+                  <li key={slug}>
+                    <ItemLink slug={slug} />
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {entities.materials.length > 0 && (
+            <>
+              <h3 className="title wiki-home__subgroup">Materiais</h3>
+              <ul className="wiki-columns">
+                {entities.materials.map((slug) => (
+                  <li key={slug}>
+                    <MaterialLink slug={slug} />
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </section>
       ) : (
         WIKI_CATEGORIES.map((category) => (

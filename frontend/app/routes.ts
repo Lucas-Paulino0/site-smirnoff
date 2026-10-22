@@ -12,6 +12,8 @@ export default [
   route("mapa", "routes/map.tsx"),
   ...prefix("wiki", [
     index("routes/wiki.tsx"),
+    route("itens/:slug", "routes/wiki_item.tsx"),
+    route("materiais/:slug", "routes/wiki_material.tsx"),
     route(":slug", "routes/wiki_article.tsx"),
   ]),
   route("termos", "routes/terms.tsx"),

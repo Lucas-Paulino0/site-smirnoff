@@ -4,6 +4,7 @@
 
 import {
   CRAFT_BATCH,
+  JOB_MATERIALS,
   JOB_MAX_LEVEL,
   JOBS,
   RARITIES,
@@ -13,13 +14,17 @@ import {
   TOOL_BONUS,
   TOOLS,
   type JobId,
-  type Material,
 } from "~/data/jobs";
 import type { WikiArticle } from "~/data/wiki";
 import { levelColor, MAP_AREAS, mapLink } from "~/data/worldMap";
 import { Callout, Soon, Table, WikiLink } from "~/screens/Wiki/components";
-
-const jobName = (id: JobId) => JOBS.find((job) => job.id === id)?.name ?? id;
+import {
+  ITEM_BY_SLUG,
+  ItemLink,
+  jobName,
+  MaterialLink,
+  MaterialList,
+} from "~/screens/Wiki/entities";
 
 const CRAFTING: { id: JobId; makes: string }[] = [
   { id: "blacksmith", makes: "Espadas, adagas, arcos, cajados e machados. Também repara armas e itens da segunda mão." },
@@ -48,7 +53,7 @@ const pct = (value: number) => `${Math.round(value * 100)}%`;
 const firstTier = (job: JobId) => RECIPE_CATEGORIES.filter((c) => c.job === job)[0];
 const lastTier = (job: JobId) => RECIPE_CATEGORIES.filter((c) => c.job === job).at(-1)!;
 
-function Region({ name }: { name: string }) {
+export function Region({ name }: { name: string }) {
   const area = MAP_AREAS.find((a) => a.name === name);
   return (
     <span className="wiki-region">
@@ -58,30 +63,11 @@ function Region({ name }: { name: string }) {
   );
 }
 
-function Materials({ materials }: { materials: Material[] }) {
-  return (
-    <>
-      {materials.map(([name, amount, source], i) => (
-        <span key={name} title={source}>
-          {i > 0 && ", "}
-          {amount} {name}
-        </span>
-      ))}
-    </>
-  );
-}
-
-const minLevel = (source: string) => Number(source.match(/níveis (\d+)/)?.[1] ?? 0);
-
-// Materiais de monstros usados nas receitas, na ordem do nível
-const MOB_MATERIALS = Object.values(
-  RECIPE_CATEGORIES.flatMap((c) => c.recipes.flatMap((r) => r.materials)).reduce<
-    Record<string, { name: string; source: string }>
-  >((acc, [name, , source]) => {
-    if (source.includes(", níveis ")) acc[name] ??= { name, source };
-    return acc;
-  }, {})
-).sort((a, b) => minLevel(a.source) - minLevel(b.source));
+const MOB_MATERIALS = JOB_MATERIALS.filter((m) => m.source === "monstro");
+const usesCount = (slug: string) => {
+  const material = JOB_MATERIALS.find((m) => m.slug === slug)!;
+  return material.usedBy.length + material.tools.length;
+};
 
 export const JOB_ARTICLES: WikiArticle[] = [
   {
@@ -168,7 +154,9 @@ export const JOB_ARTICLES: WikiArticle[] = [
             </p>
             <p>
               A raridade <strong>{RARITIES.at(-1)}</strong> aparece com cadeado
-              na lista de chances: por enquanto ela fica bloqueada.
+              na lista de chances: ela ainda não está liberada para os
+              jogadores. A forma de desbloquear vai ser anunciada mais para a
+              frente.
             </p>
             <p>
               As poções não têm raridade. No lugar dela, saem num{" "}
@@ -268,7 +256,8 @@ export const JOB_ARTICLES: WikiArticle[] = [
               achado, até {pct(TOOL_BONUS.max)}.
             </p>
             <p>
-              A primeira ferramenta é de graça. As outras são desbloqueadas na
+              As ferramentas de Madeira já vêm liberadas para todo mundo. As
+              outras são desbloqueadas na
               loja de ferramentas com Moedas, 36 unidades do material principal
               e 2 do achado raro da faixa anterior (a Picareta de Cobre, de
               nível 10, pede Minério de Cobre e Quartzo, do Veio de Cobre de
@@ -281,7 +270,7 @@ export const JOB_ARTICLES: WikiArticle[] = [
                 return [
                   tool.level,
                   `Picareta, Machado, Vara e Foice ${metal}`,
-                  tool.money ? tool.money.toLocaleString("pt-BR") : "Grátis",
+                  tool.money ? tool.money.toLocaleString("pt-BR") : "Já vem liberada",
                 ];
               })}
             />
@@ -308,9 +297,17 @@ export const JOB_ARTICLES: WikiArticle[] = [
               esses materiais.
             </p>
             <Table
-              head={["Material", "Quem derruba"]}
-              rows={MOB_MATERIALS.map((m) => [<strong>{m.name}</strong>, m.source])}
+              head={["Material", "Quem derruba", "Níveis"]}
+              rows={MOB_MATERIALS.filter((m) => m.usedBy.length > 0).map((m) => [
+                <MaterialLink slug={m.slug} />,
+                m.family,
+                m.levels,
+              ])}
             />
+            <p>
+              A lista completa, com os materiais que ainda não entram em
+              nenhuma receita, está em <WikiLink to="materiais#monstros">Materiais</WikiLink>.
+            </p>
           </>
         ),
       },
@@ -351,14 +348,72 @@ export const JOB_ARTICLES: WikiArticle[] = [
                 spot.level,
                 <Region name={spot.region} />,
                 <strong>{spot.name}</strong>,
-                spot.main,
-                spot.special,
+                <MaterialLink slug={JOB_MATERIALS.find((m) => m.id === spot.main)!.slug} />,
+                <MaterialLink slug={JOB_MATERIALS.find((m) => m.id === spot.special)!.slug} />,
                 tools.find((tool) => tool.level === spot.level)?.name ?? "",
               ])}
             />
           ),
         };
       }),
+    ],
+  },
+  {
+    slug: "materiais",
+    title: "Materiais",
+    icon: "/itens/quartz_gem.png",
+    summary: "Todos os materiais das profissões: de onde vêm e onde são usados.",
+    keywords:
+      "material materiais minério tora peixe erva flor gema drop monstro coleta recurso",
+    sections: [
+      {
+        id: "sobre",
+        title: "Sobre os materiais",
+        body: (
+          <p>
+            Os materiais vêm de dois lugares: dos{" "}
+            <WikiLink to="onde-coletar">pontos de coleta</WikiLink>, que dão um
+            material principal e um achado raro, e dos monstros comuns e de
+            elite, que derrubam o material da família deles. Clique num material
+            para ver de onde ele vem e todas as receitas que o usam.
+          </p>
+        ),
+      },
+      ...(["miner", "woodcutter", "fisher", "gatherer"] as JobId[]).map((job) => ({
+        id: jobName(job).toLowerCase(),
+        title: jobName(job),
+        body: (
+          <Table
+            head={["Nível", "Material", "Achado raro", "Região", "Receitas"]}
+            rows={SPOTS.filter((spot) => spot.job === job).map((spot) => {
+              const main = JOB_MATERIALS.find((m) => m.id === spot.main)!;
+              const special = JOB_MATERIALS.find((m) => m.id === spot.special)!;
+              return [
+                spot.level,
+                <MaterialLink slug={main.slug} />,
+                <MaterialLink slug={special.slug} />,
+                <Region name={spot.region} />,
+                usesCount(main.slug) + usesCount(special.slug) || "Nenhuma ainda",
+              ];
+            })}
+          />
+        ),
+      })),
+      {
+        id: "monstros",
+        title: "Materiais de monstros",
+        body: (
+          <Table
+            head={["Material", "Quem derruba", "Níveis", "Receitas"]}
+            rows={MOB_MATERIALS.map((m) => [
+              <MaterialLink slug={m.slug} />,
+              m.family,
+              m.levels,
+              usesCount(m.slug) || "Nenhuma ainda",
+            ])}
+          />
+        ),
+      },
     ],
   },
   {
@@ -382,8 +437,9 @@ export const JOB_ARTICLES: WikiArticle[] = [
               alta (as raridades de baixo trazem parte deles).
             </p>
             <p>
-              Passe o mouse num material para ver de onde ele vem. Como fabricar
-              está em <WikiLink to="profissoes#estacoes">Profissões</WikiLink>.
+              Passe o mouse num item ou material para ver o resumo, e clique
+              para abrir a página dele, com os valores de cada raridade. Como
+              fabricar está em <WikiLink to="profissoes#estacoes">Profissões</WikiLink>.
             </p>
             <Callout title="Mais receitas">
               Novas categorias entram conforme as regiões de nível mais alto
@@ -414,24 +470,33 @@ export const JOB_ARTICLES: WikiArticle[] = [
                 )}
                 <Table
                   head={["Item", "Materiais", "Efeito"]}
-                  rows={category.recipes.map((recipe) => [
-                    <>
-                      <strong>{recipe.name}</strong>
-                      {recipe.amount > 1 && ` (faz ${recipe.amount})`}
-                      {!recipe.name.startsWith(recipe.kind.split(" ")[0]) && (
-                        <>
-                          <br />
-                          {recipe.kind}
-                        </>
-                      )}
-                    </>,
-                    <Materials materials={recipe.materials} />,
-                    <>
-                      {recipe.stat}
-                      {recipe.stat && recipe.bonus.length > 0 && <br />}
-                      {recipe.bonus.length > 0 && `Mítico: ${recipe.bonus.join(", ")}`}
-                    </>,
-                  ])}
+                  rows={category.items.map((slug) => {
+                    const recipe = ITEM_BY_SLUG[slug];
+                    return [
+                      <>
+                        <strong>
+                          <ItemLink slug={slug} />
+                        </strong>
+                        {recipe.amount > 1 && ` (faz ${recipe.amount})`}
+                        {!recipe.name.startsWith(recipe.kind.split(" ")[0]) && (
+                          <>
+                            <br />
+                            {recipe.kind}
+                          </>
+                        )}
+                      </>,
+                      <MaterialList materials={recipe.materials} />,
+                      <>
+                        {recipe.stat}
+                        {recipe.stat && recipe.bonus.length > 0 && <br />}
+                        {recipe.bonus.length > 0 && (
+                          <>
+                            <span className="rarity rarity--5">Mítico:</span> {recipe.bonus.join(", ")}
+                          </>
+                        )}
+                      </>,
+                    ];
+                  })}
                 />
               </div>
             ))}
