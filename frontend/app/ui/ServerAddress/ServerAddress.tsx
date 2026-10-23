@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { SITE } from "~/config/site";
 import { useAlert } from "~/context/AlertContext/useAlert";
 import { useServerStatus } from "~/hooks/useServerStatus";
+import { track } from "~/services/analytics";
 import "./ServerAddress.css";
 
 export default function ServerAddress() {
@@ -19,6 +20,7 @@ export default function ServerAddress() {
     try {
       await navigator.clipboard.writeText(SITE.serverIp);
       setCopied(true);
+      track("copiar-ip");
     } catch {
       showError(`Não deu pra copiar. O IP é ${SITE.serverIp}`);
     }

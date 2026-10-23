@@ -5,6 +5,7 @@ import { useAlert } from "~/context/AlertContext/useAlert";
 import { useCart } from "~/context/CartContext/useCart";
 import { useUser } from "~/context/UserContext/useUser";
 import { useSkinId } from "~/hooks/useSkinId";
+import { track } from "~/services/analytics";
 import { formatPrice } from "~/services/api";
 import { createPurchase } from "~/services/purchaseService";
 
@@ -41,6 +42,7 @@ export default function DonationInfo() {
       return;
     }
 
+    track("pagamento", { produtos: cart.map((product) => product.name).join(", "), total });
     clearCart();
     window.location.href = initPoint;
   };

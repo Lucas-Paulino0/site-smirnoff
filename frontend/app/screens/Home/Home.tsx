@@ -60,7 +60,7 @@ export default function Home() {
               {SITE.discordUrl ? (
                 <>
                   Peça sua vaga no{" "}
-                  <a href={SITE.discordUrl} target="_blank" rel="noreferrer">
+                  <a href={SITE.discordUrl} data-umami-event="discord" target="_blank" rel="noreferrer">
                     Discord
                   </a>
                   .

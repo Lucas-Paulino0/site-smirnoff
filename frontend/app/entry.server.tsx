@@ -24,15 +24,16 @@ const apiOrigin = (() => {
 
 // Só os scripts com o nonce desta resposta rodam: um <script> injetado na
 // página não executa. Os estilos precisam de 'unsafe-inline' porque o MUI
-// (Emotion) cria tags <style> na hora.
+// (Emotion) cria tags <style> na hora. O Umami (contagem de visitas) carrega
+// o script de cloud.umami.is e manda as visitas para gateway.umami.is.
 const contentSecurityPolicy = (nonce: string) =>
   [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}'`,
+    `script-src 'self' 'nonce-${nonce}' https://cloud.umami.is`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
     `img-src 'self' data: https://mc-heads.net ${apiOrigin}`,
-    `connect-src 'self' ${apiOrigin}`,
+    `connect-src 'self' ${apiOrigin} https://gateway.umami.is`,
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",

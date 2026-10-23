@@ -25,7 +25,7 @@ export default function Footer() {
           <Link to="/termos">Termos de uso</Link>
           <Link to="/privacidade">Política de privacidade</Link>
           {SITE.discordUrl && (
-            <a href={SITE.discordUrl} target="_blank" rel="noreferrer">
+            <a href={SITE.discordUrl} data-umami-event="discord" target="_blank" rel="noreferrer">
               Discord
             </a>
           )}

@@ -47,6 +47,7 @@ export default function Header() {
             <a
               className="header__link header__discord"
               href={SITE.discordUrl}
+              data-umami-event="discord"
               target="_blank"
               rel="noreferrer"
             >
@@ -95,6 +96,7 @@ export default function Header() {
             <a
               className="header__link"
               href={SITE.discordUrl}
+              data-umami-event="discord"
               target="_blank"
               rel="noreferrer"
             >

@@ -11,6 +11,7 @@ import {
 import { bossAnchor } from "~/data/world";
 import { BossLink, ClassLink, FamilyLink, ItemLink, MaterialLink, searchEntities } from "./entities";
 import WikiLayout from "./WikiLayout";
+import { useTrackEmptySearch } from "~/services/analytics";
 
 function ArticleCard({ article }: { article: WikiArticle }) {
   return (
@@ -54,6 +55,7 @@ export default function WikiHome() {
     entities.families.length +
     entities.items.length +
     entities.materials.length;
+  useTrackEmptySearch(query, found === 0, "início da wiki");
 
   return (
     <WikiLayout search={false}>

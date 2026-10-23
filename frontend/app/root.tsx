@@ -96,6 +96,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="theme-color" content="#131210" />
         <Meta />
         <Links />
+        {SITE.analyticsId && (
+          // só conta no endereço público (não no localhost) e respeita o "não rastrear"
+          <script
+            defer
+            src="https://cloud.umami.is/script.js"
+            data-website-id={SITE.analyticsId}
+            data-domains={new URL(SITE.url).hostname}
+            data-do-not-track="true"
+          />
+        )}
       </head>
       <body>
         <ThemeProvider theme={theme}>

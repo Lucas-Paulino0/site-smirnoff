@@ -13,7 +13,7 @@ export function meta({ location }: Route.MetaArgs) {
   });
 }
 
-const UPDATED_AT = "13 de outubro de 2026";
+const UPDATED_AT = "22 de outubro de 2026";
 
 const contact = SITE.discordUrl ? (
   <>
@@ -56,6 +56,15 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
           alguns minutos, para limitar o número de acessos e bloquear abusos.
           Não fica salvo no banco de dados.
         </li>
+        <li>
+          <strong>Contagem de visitas:</strong> quais páginas são abertas, de
+          qual site a pessoa veio, navegador, sistema, tipo de aparelho e país,
+          além de alguns usos do site (copiar o endereço do servidor, recompensas
+          postas no carrinho, buscas que não acharam nada). Os números são de
+          todos os visitantes juntos: não há cookie, conta nem nada que
+          identifique você, e quem liga o "não rastrear" no navegador não é
+          contado.
+        </li>
       </ul>
     ),
   },
@@ -65,8 +74,8 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
       <p>
         Não pedimos nome, e-mail, CPF nem senha, e não temos acesso aos dados
         do seu cartão ou da sua conta bancária: o pagamento é feito inteiro no
-        Mercado Pago, que segue a política de privacidade dele. O site não usa
-        ferramentas de análise de visitas nem anúncios.
+        Mercado Pago, que segue a política de privacidade dele. O site não tem
+        anúncios.
       </p>
     ),
   },
@@ -82,6 +91,10 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
           <strong>Carrinho:</strong> fica guardado só no seu navegador
           (armazenamento local) até você doar ou esvaziar o carrinho.
         </li>
+        <li>
+          <strong>Contagem de visitas:</strong> não usa cookies nem guarda
+          nada no seu navegador.
+        </li>
       </ul>
     ),
   },
@@ -90,7 +103,7 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
     body: (
       <p>
         Para processar a doação, entregar as recompensas no jogo, resolver
-        problemas de entrega, tratar pedidos de reembolso e estornos e proteger o
+        problemas de entrega, saber quais partes do site são mais usadas, tratar pedidos de reembolso e estornos e proteger o
         site contra fraudes e abusos. Os dados não são vendidos nem usados para
         propaganda.
       </p>
@@ -123,6 +136,11 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
             <strong>mc-heads.net:</strong> mostra a skin do nick na loja;
             recebe o identificador da conta (ou o nick) e o seu IP ao
             carregar a imagem.
+          </li>
+          <li>
+            <strong>Umami:</strong> faz a contagem de visitas, em servidores
+            nos Estados Unidos ou na Europa; recebe o seu IP ao carregar a
+            página para saber o país, mas não o guarda.
           </li>
           <li>
             <strong>Google Fonts:</strong> fornece as fontes do site; recebe o

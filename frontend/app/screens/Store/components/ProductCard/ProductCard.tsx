@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAlert } from "~/context/AlertContext/useAlert";
 import { useCart } from "~/context/CartContext/useCart";
 import type { Product } from "~/domain/Product";
+import { track } from "~/services/analytics";
 import { fileUrl, formatPrice } from "~/services/api";
 import ProductModal from "~/ui/ProductModal/ProductModal";
 
@@ -24,6 +25,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       return;
     }
     addToCart(product);
+    track("carrinho", { produto: product.name });
     showSuccess(`${product.name} foi para o carrinho.`);
   };
 

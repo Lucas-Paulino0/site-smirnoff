@@ -14,6 +14,7 @@ import {
   MAP_UNEXPLORED,
   type MapTown,
 } from "~/data/worldMap";
+import { useTrackEmptySearch } from "~/services/analytics";
 import SectionHeading from "~/ui/SectionHeading/SectionHeading";
 import "./WorldMap.css";
 
@@ -404,6 +405,7 @@ export default function WorldMap() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [active, setActive] = useState(0);
   const results = useMemo(() => searchMap(query), [query]);
+  useTrackEmptySearch(query, results.length === 0, "mapa");
 
   function goTo(hit: SearchItem) {
     const m = map.current;

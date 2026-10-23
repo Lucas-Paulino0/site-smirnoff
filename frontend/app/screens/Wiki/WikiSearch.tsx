@@ -11,6 +11,7 @@ import {
   materialPath,
   searchEntities,
 } from "./entities";
+import { useTrackEmptySearch } from "~/services/analytics";
 
 // Caixa de busca do topo das páginas da wiki: sugere artigos, seções,
 // classes, chefes, itens e materiais enquanto a pessoa digita.
@@ -101,6 +102,7 @@ export default function WikiSearch() {
 
   const { suggestions, total } = suggest(query);
   const searching = query.trim().length > 0;
+  useTrackEmptySearch(query, total === 0, "busca do topo");
   const allResults = `/wiki?q=${encodeURIComponent(query.trim())}`;
 
   // Fecha e limpa ao trocar de página

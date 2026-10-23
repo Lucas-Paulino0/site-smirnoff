@@ -8,6 +8,8 @@ export const SITE = {
   discordUrl: process.env.PUBLIC_DISCORD_URL || "",
   // Servidor em fase fechada: só entra quem está na whitelist
   whitelist: true,
+  // Website ID do site no Umami Cloud (público, aparece no HTML). Vazio: sem contagem.
+  analyticsId: "38ae4d9a-4982-4955-ad43-1fde5ab64495",
 };
 
 export const pageTitle = (page?: string) =>
