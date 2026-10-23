@@ -71,7 +71,7 @@ export default function BossPage({ boss }: { boss: Boss }) {
         )}
       </EntitySection>
 
-      <EntitySection id="comportamento" title="Como ele luta">
+      <EntitySection id="comportamento" title="A luta">
         <p>
           <strong>Antes da luta:</strong> {details.waits}
         </p>
@@ -110,7 +110,7 @@ export default function BossPage({ boss }: { boss: Boss }) {
       <EntitySection id="vida" title="Vida e fúria">
         <p>
           A vida sobe {GROUP_HEALTH_BONUS * 100}% para cada jogador a mais a até
-          32 blocos dele:
+          32 blocos do chefe:
         </p>
         <Table
           head={["Nível", "Sozinho", "2 jogadores", "3 jogadores", "4 jogadores"]}
@@ -124,10 +124,10 @@ export default function BossPage({ boss }: { boss: Boss }) {
         />
         <p>
           Depois de cerca de {minutes(furySeconds(boss.role, 1))} de luta
-          sozinho ({minutes(furySeconds(boss.role, 4))} numa party de 4), ele
-          fica <strong>furioso</strong>: o dano sobe 25% a cada 30 segundos a
-          mais. A contagem zera se ninguém ficar a até 32 blocos dele por 10
-          segundos.
+          sozinho ({minutes(furySeconds(boss.role, 4))} numa party de 4), o
+          chefe entra em <strong>fúria</strong>: o dano sobe 25% a cada 30
+          segundos a mais. A contagem zera se ninguém ficar a até 32 blocos do
+          chefe por 10 segundos.
         </p>
       </EntitySection>
 

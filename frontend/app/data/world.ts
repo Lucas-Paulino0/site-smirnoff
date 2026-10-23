@@ -137,7 +137,7 @@ export const BOSSES: Boss[] = [
     levels: "110",
     where: "Templo dos Onis, no Refúgio das Pétalas",
     description:
-      "Começa como uma estátua e acorda quando alguém chega a 8 blocos, bate ou clica nela. Luta como penitente e, abaixo da metade da vida, desaba e se levanta como o falso deus. Invoca lanternas que atiram e o curam num ritual; lanternas quebradas soltam centopeias.",
+      "Começa como uma estátua que não pode ser atacada e só acorda quando alguém clica nela com o botão direito. Luta como penitente e, abaixo da metade da vida, desaba e se levanta como o falso deus. Invoca lanternas que atiram e o curam num ritual; lanternas quebradas soltam centopeias.",
     respawn: 30,
   },
   {
@@ -147,6 +147,15 @@ export const BOSSES: Boss[] = [
     where: "Templo de Guanyin, no Refúgio das Pétalas",
     description:
       "Outra estátua que acorda ao som de um sino quando alguém chega a 8 blocos, bate ou clica nela. Ataca com pilares de luz e mãos gigantes. Volta a ser estátua 5 segundos depois que todos vão embora.",
+    respawn: 30,
+  },
+  {
+    name: "Enganadora",
+    role: "Chefe",
+    levels: "130",
+    where: "Toca da Enganadora, no Bosque do Crepúsculo",
+    description:
+      "Espera disfarçada de mulher ferida atrás das pedras e pede ajuda a quem clica nela. Quem aceita, ou a desmascara, vê a aranha gigante se erguer. Morde, prende com teias, cospe teia em quem fica longe e põe ovos que chocam filhotes.",
     respawn: 30,
   },
   {
@@ -327,10 +336,10 @@ export const MOB_FAMILIES: MobFamily[] = [
   },
   {
     name: "Aranhas",
-    mobs: "Aranha Caçadora (teia que prende), Aranha Venenosa e Aranha Estranguladora",
-    where: "Pátio da cidade murada, níveis 34 a 42",
-    levels: [34, 42],
-    roles: ["Comum"],
+    mobs: "Aranha Caçadora (teia que prende), Aranha Venenosa e Aranha Estranguladora no pátio; Aranha Guerreira, Aranha Tecelã e Aranha Venenosa na toca; elite: Aranha Anciã",
+    where: "Pátio da cidade murada (34 a 42) e Toca da Enganadora, no Bosque do Crepúsculo (121 a 130)",
+    levels: [34, 130],
+    roles: ["Comum", "Elite"],
     drops: ["Aranhas"],
   },
   {

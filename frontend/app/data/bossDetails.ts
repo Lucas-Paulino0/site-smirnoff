@@ -186,7 +186,7 @@ export const BOSS_DETAILS: Record<string, BossDetails> = {
   "Falso Deus: Lanterna Penitente": {
     health: BOSS,
     waits:
-      "Começa como uma estátua e acorda quando alguém chega a 8 blocos, bate ou clica nela.",
+      "Começa como uma estátua que não pode ser atacada: só acorda quando alguém clica nela com o botão direito, e leva 5 segundos para se levantar.",
     resets:
       "Se ninguém fica a 80 blocos por 5 segundos, volta para o lugar, se cura e vira estátua de novo.",
     attacks: [
@@ -231,6 +231,26 @@ export const BOSS_DETAILS: Record<string, BossDetails> = {
         "O golpe forte, a cada 12 segundos: um pilar de luz no lugar de cada jogador. Dá menos de 1 segundo para sair.",
       ],
     ],
+  },
+  Enganadora: {
+    health: BOSS,
+    waits:
+      "Espera disfarçada de Mulher Ferida atrás das pedras e não pode ser atacada. Clique nela com o botão direito e responda: aceitar ajudar, ou desmascará-la com \"Mostre quem é!\", faz a aranha se erguer. Ir embora não começa a luta.",
+    resets:
+      "Depois de 8 segundos sem ninguém a 32 blocos, os ovos e os filhotes somem e ela volta a ser a mulher, no lugar dela.",
+    attacks: [
+      ["Mordida e patada", "Em quem está a até 4,5 blocos dela."],
+      ["Teia", "Deixa lento e puxa o jogador para perto."],
+      ["Cuspe de teia", "A cada 4 segundos acerta quem está entre 4,5 e 32 blocos: ficar longe não protege."],
+      [
+        "Tiro de teia",
+        "O golpe forte, a cada 12 segundos: acerta o lugar de cada jogador, atordoa por 1,5 segundo e enrola num casulo.",
+      ],
+      ["Ovos", "Põe Ovos de Aranha pela arena."],
+    ],
+    helpers:
+      "Ovos de Aranha: bater num ovo envenena quem está a até 9 blocos, e a cada 44 segundos ele choca de 2 a 4 Aranhas Filhotes. Nenhum dos dois dá recompensa.",
+    family: "Aranhas",
   },
   "Pontífice Demoníaco": {
     health: BOSS,

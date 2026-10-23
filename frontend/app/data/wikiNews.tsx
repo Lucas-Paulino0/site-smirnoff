@@ -18,8 +18,15 @@ const NEWS: NewsDay[] = [
         <WikiLink to="party-e-pvp">Party e PvP</WikiLink>.
       </>,
       <>
-        Chefe novo: <BossLink name="Pontífice Demoníaco" />, nível 140, no
-        Bosque do Crepúsculo.
+        Chefes novos no Bosque do Crepúsculo: o{" "}
+        <BossLink name="Pontífice Demoníaco" />, nível 140, e a{" "}
+        <BossLink name="Enganadora" />, nível 130, que espera disfarçada de
+        mulher ferida. A toca dela é cheia de <FamilyLink name="Aranhas" />{" "}
+        (121 a 130), que derrubam a Presa Venenosa de Aranha.
+      </>,
+      <>
+        O <BossLink name="Falso Deus: Lanterna Penitente" /> agora só acorda
+        com um clique direito na estátua, e antes disso não pode ser atacado.
       </>,
       <>
         <BossLink name="Bodhisattva Guanyin" /> acorda no Templo de Guanyin, e

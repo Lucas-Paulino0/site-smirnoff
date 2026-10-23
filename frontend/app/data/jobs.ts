@@ -643,6 +643,7 @@ export const JOB_MATERIALS: JobMaterial[] = [
   {"id": "elder_mycelium", "name": "Micélio Ancião", "source": "monstro", "family": "Cogumelos", "level": 101, "levels": "101 a 110", "slug": "micelio-anciao", "usedBy": [], "tools": [], "icon": "/itens/elder_mycelium.png"},
   {"id": "yokai_mask", "name": "Máscara de Yokai", "source": "monstro", "family": "Yokais", "level": 101, "levels": "101 a 110", "slug": "mascara-de-yokai", "usedBy": [], "tools": [], "icon": "/itens/yokai_mask.png"},
   {"id": "ent_seed", "name": "Semente de Ent", "source": "monstro", "family": "Ents", "level": 101, "levels": "101 a 110", "slug": "semente-de-ent", "usedBy": [], "tools": [], "icon": "/itens/ent_seed.png"},
+  {"id": "spider_venom_fang", "name": "Presa Venenosa de Aranha", "source": "monstro", "family": "Aranhas", "level": 121, "levels": "121 a 130", "slug": "presa-venenosa-de-aranha", "usedBy": [], "tools": [], "icon": "/itens/spider_venom_fang.png"},
   {"id": "lizard_scale", "name": "Escama de Lagarto", "source": "monstro", "family": "Lagartos", "level": 161, "levels": "161 a 170", "slug": "escama-de-lagarto", "usedBy": [], "tools": [], "icon": "/itens/lizard_scale.png"},
   {"id": "lizard_fang", "name": "Presa de Lagarto", "source": "monstro", "family": "Lagartos", "level": 171, "levels": "171 a 180", "slug": "presa-de-lagarto", "usedBy": [], "tools": [], "icon": "/itens/lizard_fang.png"},
 ];
