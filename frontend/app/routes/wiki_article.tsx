@@ -1,6 +1,6 @@
 import { data } from "react-router";
 import WikiArticle from "~/screens/Wiki/WikiArticle";
-import { pageTitle } from "~/config/site";
+import { seo } from "~/config/seo";
 import { WIKI_ARTICLES } from "~/data/wiki";
 import type { Route } from "./+types/wiki_article";
 
@@ -11,13 +11,14 @@ export function loader({ params }: Route.LoaderArgs) {
   return { slug: params.slug };
 }
 
-export function meta({ params }: Route.MetaArgs) {
+export function meta({ params, location }: Route.MetaArgs) {
   const article = WIKI_ARTICLES[params.slug];
-  if (!article) return [{ title: pageTitle("Wiki") }];
-  return [
-    { title: pageTitle(`${article.title} · Wiki`) },
-    { name: "description", content: article.summary },
-  ];
+  if (!article) return seo({ title: "Wiki", path: location.pathname });
+  return seo({
+    title: `${article.title} · Wiki`,
+    description: article.summary,
+    path: location.pathname,
+  });
 }
 
 export default function WikiArticleRoute({ loaderData }: Route.ComponentProps) {

@@ -232,12 +232,12 @@ export const BOSS_DETAILS: Record<string, BossDetails> = {
       ],
     ],
   },
-  "Cavaleiro Demoníaco": {
+  "Pontífice Demoníaco": {
     health: BOSS,
     waits:
-      "Dorme em pé, com a espada fincada no chão, até alguém chegar a 10 blocos ou acertá-lo. Acorda num fogo de almas, com um rugido.",
+      "Dorme em pé, com a espada fincada no chão, até alguém chegar a 20 blocos ou acertá-lo. Acorda num fogo de almas, com um rugido.",
     resets:
-      "Depois de 8 segundos sem ninguém a 32 blocos, some num fogo de almas, volta para o lugar e dorme de novo.",
+      "Depois de 8 segundos sem ninguém a 90 blocos, some num fogo de almas, volta para o lugar e dorme de novo.",
     attacks: [
       ["Combos", "Sequências de golpes em quem está perto."],
       ["Golpe de fogo", "A cada 3 segundos acerta quem está entre 7 e 32 blocos dele: ficar longe não protege."],

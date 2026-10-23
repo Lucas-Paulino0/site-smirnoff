@@ -1,13 +1,16 @@
 import { Link } from "react-router";
-import { SITE, pageTitle } from "~/config/site";
+import { seo } from "~/config/seo";
+import { SITE } from "~/config/site";
 import SectionHeading from "~/ui/SectionHeading/SectionHeading";
 import type { Route } from "./+types/terms";
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: pageTitle("Termos de uso") },
-    { name: "description", content: "Termos das doações da loja." },
-  ];
+export function meta({ location }: Route.MetaArgs) {
+  return seo({
+    title: "Termos de uso",
+    description:
+      "Termos das doações da loja.",
+    path: location.pathname,
+  });
 }
 
 // Texto base: a equipe deve revisar antes de abrir a loja ao público.

@@ -1,9 +1,13 @@
 import PurchasePending from "~/screens/PurchasePending/PurchasePending";
-import { pageTitle } from "~/config/site";
+import { seo } from "~/config/seo";
 import type { Route } from "./+types/purchase_pending";
 
-export function meta({}: Route.MetaArgs) {
-  return [{ title: pageTitle("Pagamento pendente") }];
+export function meta({ location }: Route.MetaArgs) {
+  return seo({
+    title: "Pagamento pendente",
+    path: location.pathname,
+    noindex: true,
+  });
 }
 
 export default function PurchasePendingRoute() {

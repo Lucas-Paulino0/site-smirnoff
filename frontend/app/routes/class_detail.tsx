@@ -1,7 +1,7 @@
 import { data } from "react-router";
 import ClassDetail from "~/screens/ClassDetail/ClassDetail";
-import { pageTitle } from "~/config/site";
-import { getClass, getRarity } from "~/data/classes";
+import { seo } from "~/config/seo";
+import { classIcon, getClass, getRarity } from "~/data/classes";
 import type { Route } from "./+types/class_detail";
 
 export function loader({ params }: Route.LoaderArgs) {
@@ -11,16 +11,15 @@ export function loader({ params }: Route.LoaderArgs) {
   return { id: params.id };
 }
 
-export function meta({ params }: Route.MetaArgs) {
+export function meta({ params, location }: Route.MetaArgs) {
   const rpgClass = getClass(params.id);
-  if (!rpgClass) return [{ title: pageTitle("Classes") }];
-  return [
-    { title: pageTitle(`${rpgClass.name} · Classes`) },
-    {
-      name: "description",
-      content: `Classe ${getRarity(rpgClass.rarity).label.toLowerCase()} ${rpgClass.name}: como conseguir, arma, bônus e todas as habilidades.`,
-    },
-  ];
+  if (!rpgClass) return seo({ title: "Classes", path: location.pathname });
+  return seo({
+    title: `${rpgClass.name} · Classes`,
+    description: `Classe ${getRarity(rpgClass.rarity).label.toLowerCase()} ${rpgClass.name}: como conseguir, arma, bônus e todas as habilidades.`,
+    path: location.pathname,
+    image: classIcon(rpgClass.id),
+  });
 }
 
 export default function ClassDetailRoute({ loaderData }: Route.ComponentProps) {

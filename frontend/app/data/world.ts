@@ -150,12 +150,12 @@ export const BOSSES: Boss[] = [
     respawn: 30,
   },
   {
-    name: "Cavaleiro Demoníaco",
+    name: "Pontífice Demoníaco",
     role: "Chefe",
     levels: "140",
-    where: "Masmorra do Cavaleiro Demoníaco, no Bosque do Crepúsculo",
+    where: "Masmorra do Pontífice Demoníaco, no Bosque do Crepúsculo",
     description:
-      "Dorme em pé, com as mãos na espada fincada no chão, até alguém chegar a 10 blocos ou acertá-lo. Acordado, ataca em combos, lança fogo em quem fica longe, faz cair raios nos lugares marcados e agarra jogadores: arremessa longe ou executa quem estiver com pouca vida.",
+      "Dorme em pé, com as mãos na espada fincada no chão, até alguém chegar a 20 blocos ou acertá-lo. Acordado, ataca em combos, lança fogo em quem fica longe, faz cair raios nos lugares marcados e agarra jogadores: arremessa longe ou executa quem estiver com pouca vida.",
     respawn: 30,
   },
   {

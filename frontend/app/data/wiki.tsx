@@ -2,7 +2,7 @@
 // (RPGCore, RPGClasses, RPGItems, RPGJobs, EternalCore, MythicMobs, menus e
 // HUD no hail-admin-kit, conferidas em 2026-10-22). Quando algo mudar no
 // jogo, atualize o artigo correspondente aqui. As profissões ficam em
-// data/wikiJobs.tsx.
+// data/wikiJobs.tsx e as novidades em data/wikiNews.tsx.
 
 import { SITE } from "~/config/site";
 import { matchesTerms, searchTerms } from "~/data/search";
@@ -17,6 +17,7 @@ import {
   rarityIcon,
 } from "~/data/classes";
 import { JOB_ARTICLES } from "~/data/wikiJobs";
+import { NEWS_ARTICLE } from "~/data/wikiNews";
 import { BOSSES, bossAnchor, bossPath, MOB_FAMILIES, TOWNS, type Boss } from "~/data/world";
 import {
   levelColor,
@@ -1976,7 +1977,7 @@ const ARTICLE_LIST: WikiArticle[] = [
 export const WIKI_CATEGORIES: WikiCategory[] = [
   {
     title: "Começando",
-    articles: ["primeiros-passos", "regras", "perguntas-frequentes"],
+    articles: ["primeiros-passos", "novidades", "regras", "perguntas-frequentes"],
   },
   {
     title: "Personagem",
@@ -1995,7 +1996,7 @@ export const WIKI_CATEGORIES: WikiCategory[] = [
   },
   {
     title: "Profissões",
-    articles: ["profissoes", "receitas", "materiais", "onde-coletar"],
+    articles: ["profissoes", "receitas", "materiais", "calculadora", "onde-coletar"],
   },
   {
     title: "Sistemas",
@@ -2007,7 +2008,7 @@ export const WIKI_CATEGORIES: WikiCategory[] = [
   },
 ];
 
-ARTICLE_LIST.push(...JOB_ARTICLES);
+ARTICLE_LIST.push(...JOB_ARTICLES, NEWS_ARTICLE);
 
 export const WIKI_ARTICLES: Record<string, WikiArticle> = Object.fromEntries(
   ARTICLE_LIST.map((article) => [article.slug, article])

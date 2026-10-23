@@ -16,8 +16,10 @@ import {
   type JobId,
 } from "~/data/jobs";
 import type { WikiArticle } from "~/data/wiki";
-import { levelColor, MAP_AREAS, mapLink } from "~/data/worldMap";
-import { Callout, Soon, Table, WikiLink } from "~/screens/Wiki/components";
+import { mapLink } from "~/data/worldMap";
+import Calculator from "~/screens/Wiki/Calculator";
+import { Callout, Region, Soon, Table, WikiLink } from "~/screens/Wiki/components";
+import { MaterialFinder, RecipeFinder } from "~/screens/Wiki/Finders";
 import {
   DropFamilyLink,
   ITEM_BY_SLUG,
@@ -53,16 +55,6 @@ const pct = (value: number) => `${Math.round(value * 100)}%`;
 
 const firstTier = (job: JobId) => RECIPE_CATEGORIES.filter((c) => c.job === job)[0];
 const lastTier = (job: JobId) => RECIPE_CATEGORIES.filter((c) => c.job === job).at(-1)!;
-
-export function Region({ name }: { name: string }) {
-  const area = MAP_AREAS.find((a) => a.name === name);
-  return (
-    <span className="wiki-region">
-      <span style={{ background: levelColor(area?.minLevel ?? 1) }} />
-      {name}
-    </span>
-  );
-}
 
 const MOB_MATERIALS = JOB_MATERIALS.filter((m) => m.source === "monstro");
 const usesCount = (slug: string) => {
@@ -380,6 +372,11 @@ export const JOB_ARTICLES: WikiArticle[] = [
           </p>
         ),
       },
+      {
+        id: "filtrar",
+        title: "Filtrar materiais",
+        body: <MaterialFinder />,
+      },
       ...(["miner", "woodcutter", "fisher", "gatherer"] as JobId[]).map((job) => ({
         id: jobName(job).toLowerCase(),
         title: jobName(job),
@@ -449,6 +446,19 @@ export const JOB_ARTICLES: WikiArticle[] = [
           </>
         ),
       },
+      {
+        id: "filtrar",
+        title: "Filtrar receitas",
+        body: (
+          <>
+            <RecipeFinder />
+            <p>
+              Para somar os materiais de vários itens, use a{" "}
+              <WikiLink to="calculadora">Calculadora de materiais</WikiLink>.
+            </p>
+          </>
+        ),
+      },
       ...CRAFTING.map((job) => ({
         id: jobName(job.id)
           .normalize("NFD")
@@ -504,6 +514,44 @@ export const JOB_ARTICLES: WikiArticle[] = [
           </>
         ),
       })),
+    ],
+  },
+  {
+    slug: "calculadora",
+    title: "Calculadora de materiais",
+    icon: "/itens/iron_ore.png",
+    summary: "Escolha os itens que quer fabricar e veja o total de materiais e de onde vem cada um.",
+    keywords: "calculadora calcular total materiais lista compras fabricar armadura completa craft quantidade",
+    sections: [
+      {
+        id: "calculadora",
+        title: "Calculadora",
+        body: <Calculator />,
+      },
+      {
+        id: "como-funciona",
+        title: "Como funciona",
+        body: (
+          <ul>
+            <li>
+              A conta usa as receitas de <WikiLink to="receitas">Receitas</WikiLink>:
+              quantidade de cada material vezes o número de fabricações.
+            </li>
+            <li>
+              Algumas receitas fazem mais de um item por vez (as poções, por
+              exemplo). Aí a calculadora arredonda as fabricações para cima.
+            </li>
+            <li>
+              A lista fica no endereço da página: copie o link para guardar ou
+              mandar para alguém.
+            </li>
+            <li>
+              Na página de cada item há um link que já abre a calculadora com
+              ele.
+            </li>
+          </ul>
+        ),
+      },
     ],
   },
 ];

@@ -1,9 +1,13 @@
 import Cart from "~/screens/Cart/Cart";
-import { pageTitle } from "~/config/site";
+import { seo } from "~/config/seo";
 import type { Route } from "./+types/cart";
 
-export function meta({}: Route.MetaArgs) {
-  return [{ title: pageTitle("Carrinho") }];
+export function meta({ location }: Route.MetaArgs) {
+  return seo({
+    title: "Carrinho",
+    path: location.pathname,
+    noindex: true,
+  });
 }
 
 export default function CartRoute() {

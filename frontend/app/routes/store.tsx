@@ -1,12 +1,14 @@
 import Store from "~/screens/Store/Store";
-import { pageTitle } from "~/config/site";
+import { seo } from "~/config/seo";
 import type { Route } from "./+types/store";
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: pageTitle("Loja") },
-    { name: "description", content: "Apoie o servidor na nossa loja." },
-  ];
+export function meta({ location }: Route.MetaArgs) {
+  return seo({
+    title: "Loja",
+    description:
+      "Apoie o servidor na nossa loja.",
+    path: location.pathname,
+  });
 }
 
 export default function StoreRoute() {

@@ -9,6 +9,7 @@ export default defineConfig(({ mode }) => {
       "process.env.PUBLIC_API_URL": JSON.stringify(env.PUBLIC_API_URL),
       "process.env.PUBLIC_SERVER_IP": JSON.stringify(env.PUBLIC_SERVER_IP),
       "process.env.PUBLIC_DISCORD_URL": JSON.stringify(env.PUBLIC_DISCORD_URL),
+      "process.env.PUBLIC_SITE_URL": JSON.stringify(env.PUBLIC_SITE_URL),
     },
     plugins: [reactRouter(), tsconfigPaths()],
   };

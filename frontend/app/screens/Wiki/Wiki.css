@@ -664,3 +664,140 @@
   margin-top: 24px;
   font-size: 18px;
 }
+
+/* Filtros das tabelas e calculadora */
+.wiki-filters__bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  align-items: flex-end;
+  padding: 14px 16px;
+  margin: 12px 0 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.wiki-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.wiki-filter > span {
+  color: var(--text-muted);
+}
+
+.wiki-filter input,
+.wiki-filter select {
+  font: inherit;
+  font-size: 15px;
+  padding: 7px 10px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+}
+
+.wiki-filter input:focus,
+.wiki-filter select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.wiki-filter--text {
+  flex: 1 1 220px;
+}
+
+.wiki-filter--level input {
+  width: 110px;
+}
+
+.wiki-filter--check {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+}
+
+.wiki-filter--check > span {
+  color: var(--text);
+}
+
+.wiki-filter--check input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+}
+
+.wiki-filters__hint,
+.wiki-filters__count {
+  color: var(--text-muted);
+}
+
+.wiki-filters__clear,
+.calculator__remove {
+  font: inherit;
+  color: var(--accent);
+  background: none;
+  border: 0;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.calculator__search {
+  position: relative;
+}
+
+.calculator__suggestions {
+  position: absolute;
+  z-index: 20;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin: 4px 0 0;
+  padding: 4px 0;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 45%);
+}
+
+.calculator__suggestions button {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  padding: 7px 12px;
+  font: inherit;
+  font-size: 15px;
+  text-align: left;
+  color: var(--text);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.calculator__suggestions button:hover,
+.calculator__suggestions button:focus-visible {
+  background: var(--surface-2);
+}
+
+.calculator__quantity {
+  width: 80px;
+  font: inherit;
+  padding: 4px 8px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+}
+
+.calculator__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}

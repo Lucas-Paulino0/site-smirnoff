@@ -1,6 +1,5 @@
 import { TOOLS, type JobMaterial } from "~/data/jobs";
-import { Region } from "~/data/wikiJobs";
-import { Table, WikiLink } from "./components";
+import { Region, Table, WikiLink } from "./components";
 import EntityPage, { EntitySection, type InfoRow } from "./EntityPage";
 import { DropFamilyLink, ITEM_BY_SLUG, ItemLink, jobName, materialSource } from "./entities";
 

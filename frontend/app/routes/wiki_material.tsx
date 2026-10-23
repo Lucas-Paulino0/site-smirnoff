@@ -1,5 +1,5 @@
 import { data } from "react-router";
-import { pageTitle } from "~/config/site";
+import { ogIcon, seo } from "~/config/seo";
 import MaterialPage from "~/screens/Wiki/MaterialPage";
 import { MATERIAL_BY_SLUG, materialSource } from "~/screens/Wiki/entities";
 import type { Route } from "./+types/wiki_material";
@@ -11,13 +11,16 @@ export function loader({ params }: Route.LoaderArgs) {
   return { slug: params.slug };
 }
 
-export function meta({ params }: Route.MetaArgs) {
+export function meta({ params, location }: Route.MetaArgs) {
   const material = MATERIAL_BY_SLUG[params.slug];
-  if (!material) return [{ title: pageTitle("Wiki") }];
-  return [
-    { title: pageTitle(`${material.name} · Wiki`) },
-    { name: "description", content: `${material.name}: ${materialSource(material)}. Onde é usado.` },
-  ];
+  if (!material) return seo({ title: "Wiki", path: location.pathname });
+  const uses = material.usedBy.length + material.tools.length;
+  return seo({
+    title: `${material.name} · Wiki`,
+    description: `${materialSource(material)}. ${uses ? `Usado em ${uses} ${uses === 1 ? "receita" : "receitas"}.` : "Ainda não é usado em receitas."}`,
+    path: location.pathname,
+    image: ogIcon(material.icon),
+  });
 }
 
 export default function WikiMaterialRoute({ loaderData }: Route.ComponentProps) {

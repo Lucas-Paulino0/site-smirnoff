@@ -1,16 +1,14 @@
 import WikiHome from "~/screens/Wiki/WikiHome";
-import { pageTitle } from "~/config/site";
+import { seo } from "~/config/seo";
 import type { Route } from "./+types/wiki";
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: pageTitle("Wiki") },
-    {
-      name: "description",
-      content:
-        "Wiki do servidor: primeiros passos, regras, classes, atributos, chefes, comandos e mais.",
-    },
-  ];
+export function meta({ location }: Route.MetaArgs) {
+  return seo({
+    title: "Wiki",
+    description:
+      "Wiki do servidor: primeiros passos, regras, classes, atributos, chefes, profissões, receitas e mais.",
+    path: location.pathname,
+  });
 }
 
 export default function WikiRoute() {

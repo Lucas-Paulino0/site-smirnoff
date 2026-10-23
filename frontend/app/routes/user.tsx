@@ -1,9 +1,13 @@
 import User from "~/screens/User/User";
-import { pageTitle } from "~/config/site";
+import { seo } from "~/config/seo";
 import type { Route } from "./+types/user";
 
-export function meta({}: Route.MetaArgs) {
-  return [{ title: pageTitle("Seu nick") }];
+export function meta({ location }: Route.MetaArgs) {
+  return seo({
+    title: "Seu nick",
+    path: location.pathname,
+    noindex: true,
+  });
 }
 
 export default function UserRoute() {

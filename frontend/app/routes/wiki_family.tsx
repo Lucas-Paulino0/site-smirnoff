@@ -1,5 +1,5 @@
 import { data } from "react-router";
-import { pageTitle } from "~/config/site";
+import { seo } from "~/config/seo";
 import { MOB_FAMILIES, slugify } from "~/data/world";
 import FamilyPage from "~/screens/Wiki/FamilyPage";
 import type { Route } from "./+types/wiki_family";
@@ -13,16 +13,14 @@ export function loader({ params }: Route.LoaderArgs) {
   return { slug: params.slug };
 }
 
-export function meta({ params }: Route.MetaArgs) {
+export function meta({ params, location }: Route.MetaArgs) {
   const family = findFamily(params.slug);
-  if (!family) return [{ title: pageTitle("Wiki") }];
-  return [
-    { title: pageTitle(`${family.name} · Wiki`) },
-    {
-      name: "description",
-      content: `${family.name}, monstros de nível ${family.levels[0]} a ${family.levels[1]}: onde aparecem, vida e materiais.`,
-    },
-  ];
+  if (!family) return seo({ title: "Wiki", path: location.pathname });
+  return seo({
+    title: `${family.name} · Wiki`,
+    description: `Monstros de nível ${family.levels[0]} a ${family.levels[1]}. ${family.mobs}. ${family.where}.`,
+    path: location.pathname,
+  });
 }
 
 export default function WikiFamilyRoute({ loaderData }: Route.ComponentProps) {

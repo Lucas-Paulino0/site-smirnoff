@@ -1,16 +1,16 @@
 import { Link } from "react-router";
-import { SITE, pageTitle } from "~/config/site";
+import { seo } from "~/config/seo";
+import { SITE } from "~/config/site";
 import SectionHeading from "~/ui/SectionHeading/SectionHeading";
 import type { Route } from "./+types/privacy";
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: pageTitle("Política de privacidade") },
-    {
-      name: "description",
-      content: "Quais dados o site guarda, para quê e como pedir a exclusão.",
-    },
-  ];
+export function meta({ location }: Route.MetaArgs) {
+  return seo({
+    title: "Política de privacidade",
+    description:
+      "Quais dados o site guarda, para quê e como pedir a exclusão.",
+    path: location.pathname,
+  });
 }
 
 const UPDATED_AT = "13 de outubro de 2026";

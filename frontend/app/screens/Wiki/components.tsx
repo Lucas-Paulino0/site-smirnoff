@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { levelColor, MAP_AREAS } from "~/data/worldMap";
 
 // Blocos usados nos artigos da wiki
 
@@ -89,5 +90,16 @@ export function IconList({
         </li>
       ))}
     </ul>
+  );
+}
+
+// Nome de uma região com a cor do nível dela
+export function Region({ name }: { name: string }) {
+  const area = MAP_AREAS.find((a) => a.name === name);
+  return (
+    <span className="wiki-region">
+      <span style={{ background: levelColor(area?.minLevel ?? 1) }} />
+      {name}
+    </span>
   );
 }

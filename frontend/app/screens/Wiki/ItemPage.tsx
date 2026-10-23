@@ -1,6 +1,7 @@
 import { ITEM_RARITIES } from "~/data/jobRarities";
 import { JOBS, RARITIES, RECIPE_CATEGORIES, type JobItem } from "~/data/jobs";
 import { mapLink } from "~/data/worldMap";
+import { calculatorPath } from "./Calculator";
 import { Table, WikiLink } from "./components";
 import EntityPage, { EntitySection, type InfoRow } from "./EntityPage";
 import { ItemLink, MATERIAL_BY_SLUG, MaterialLink, materialSource } from "./entities";
@@ -58,6 +59,9 @@ export default function ItemPage({ item }: { item: JobItem }) {
             materialSource(MATERIAL_BY_SLUG[slug]),
           ])}
         />
+        <p>
+          <WikiLink to={calculatorPath(item.slug)}>Calcular os materiais para mais de um</WikiLink>
+        </p>
       </EntitySection>
 
       {rarities ? (

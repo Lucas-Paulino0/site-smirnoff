@@ -1,16 +1,13 @@
 import Home from "~/screens/Home/Home";
-import { pageTitle } from "~/config/site";
+import { seo } from "~/config/seo";
 import type { Route } from "./+types/home";
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: pageTitle() },
-    {
-      name: "description",
-      content:
-        "Servidor de Minecraft RPG com 30 classes, 8 atributos, chefes e um mundo medieval para explorar.",
-    },
-  ];
+export function meta({ location }: Route.MetaArgs) {
+  return seo({
+    description:
+      "Servidor de Minecraft RPG com 30 classes, 8 atributos, chefes e um mundo medieval para explorar.",
+    path: location.pathname,
+  });
 }
 
 export default function HomeRoute() {

@@ -1,9 +1,13 @@
 import PurchaseFail from "~/screens/PurchaseFail/PurchaseFail";
-import { pageTitle } from "~/config/site";
+import { seo } from "~/config/seo";
 import type { Route } from "./+types/purchase_fail";
 
-export function meta({}: Route.MetaArgs) {
-  return [{ title: pageTitle("Pagamento não aprovado") }];
+export function meta({ location }: Route.MetaArgs) {
+  return seo({
+    title: "Pagamento não aprovado",
+    path: location.pathname,
+    noindex: true,
+  });
 }
 
 export default function PurchaseFailRoute() {
