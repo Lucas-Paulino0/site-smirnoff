@@ -1,3 +1,5 @@
+import { BOSS_PICTURES, FAMILY_PICTURES } from "./pictures";
+
 // Cidades com warp (/warp), na ordem do menu "Viagem rápida", que segue a
 // progressão de níveis. Cidades e estradas não têm monstros.
 export const TOWNS = [
@@ -38,6 +40,12 @@ export function slugify(name: string) {
 export const bossAnchor = slugify;
 export const bossPath = (name: string) => `/wiki/chefes/${slugify(name)}`;
 export const familyPath = (name: string) => `/wiki/monstros/${slugify(name)}`;
+
+// renders dos modelos 3D (scripts/render-modelos), quando existem
+export const bossPicture = (name: string) =>
+  BOSS_PICTURES.has(slugify(name)) ? `/chefes/${slugify(name)}.png` : undefined;
+export const familyPicture = (name: string) =>
+  FAMILY_PICTURES.has(slugify(name)) ? `/monstros/${slugify(name)}.png` : undefined;
 
 // Chefes e mini-chefes posicionados no mapa (context/mobs.md no servidor)
 export const BOSSES: Boss[] = [

@@ -11,6 +11,7 @@ export default function EntityPage({
   title,
   subtitle,
   icon,
+  picture,
   info,
   children,
 }: {
@@ -18,6 +19,8 @@ export default function EntityPage({
   title: string;
   subtitle: string;
   icon?: string;
+  // render grande do modelo (chefes), no lugar do ícone da ficha
+  picture?: string;
   info: InfoRow[];
   children: React.ReactNode;
 }) {
@@ -46,7 +49,11 @@ export default function EntityPage({
         <div className="wiki-entity__body">
           <aside className="infobox" aria-label={`Ficha de ${title}`}>
             <strong className="infobox__title font-head">{title}</strong>
-            {icon && (
+            {picture ? (
+              <div className="infobox__image infobox__image--picture">
+                <img src={picture} alt={title} width={260} height={260} />
+              </div>
+            ) : icon && (
               <div className="infobox__image">
                 <img className="pixelated" src={icon} alt={title} width={96} height={96} />
               </div>

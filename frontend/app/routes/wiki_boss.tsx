@@ -1,6 +1,6 @@
 import { data, redirect } from "react-router";
 import { seo } from "~/config/seo";
-import { BOSSES, slugify } from "~/data/world";
+import { BOSSES, bossPicture, slugify } from "~/data/world";
 import BossPage from "~/screens/Wiki/BossPage";
 import type { Route } from "./+types/wiki_boss";
 
@@ -26,6 +26,7 @@ export function meta({ params, location }: Route.MetaArgs) {
     title: `${boss.name} · Wiki`,
     description: `${boss.role} de nível ${boss.levels}, ${boss.where}. ${boss.description}`,
     path: location.pathname,
+    image: bossPicture(boss.name),
   });
 }
 

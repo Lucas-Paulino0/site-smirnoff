@@ -1,6 +1,6 @@
 import { data } from "react-router";
 import { seo } from "~/config/seo";
-import { MOB_FAMILIES, slugify } from "~/data/world";
+import { familyPicture, MOB_FAMILIES, slugify } from "~/data/world";
 import FamilyPage from "~/screens/Wiki/FamilyPage";
 import type { Route } from "./+types/wiki_family";
 
@@ -20,6 +20,7 @@ export function meta({ params, location }: Route.MetaArgs) {
     title: `${family.name} · Wiki`,
     description: `Monstros de nível ${family.levels[0]} a ${family.levels[1]}. ${family.mobs}. ${family.where}.`,
     path: location.pathname,
+    image: familyPicture(family.name),
   });
 }
 

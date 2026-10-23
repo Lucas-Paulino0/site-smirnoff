@@ -48,4 +48,6 @@ export function seo({ title, description, path, image, noindex }: Seo): MetaDesc
 }
 
 // Ícone de 16 px ampliado por scripts/gerar-og.py
-export const ogIcon = (icon?: string) => icon?.replace(/^\/itens\//, "/og/itens/");
+// (os renders 3D de public/itens/3d já são grandes e ficam como estão)
+export const ogIcon = (icon?: string) =>
+  icon?.startsWith("/itens/3d/") ? icon : icon?.replace(/^\/itens\//, "/og/itens/");

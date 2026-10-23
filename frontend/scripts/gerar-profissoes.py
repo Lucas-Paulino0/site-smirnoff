@@ -17,7 +17,8 @@ Baixe estes arquivos do servidor (SFTP, ver hail-admin-kit) para uma pasta e rod
   dos materiais)
 - plugins/Nexo/pack/assets/rpgjobs/textures/crafted/<gema>_<necklace|earring|ring>.png
   e <metal>_<chestplate|leggings|boots>.png -> sprites/crafted/ (os únicos itens
-  fabricados com ícone plano; os outros são modelos 3D)
+  fabricados com ícone plano; os outros são modelos 3D, com render em
+  public/itens/3d/ feito por scripts/render-modelos)
 
 Os nomes e os textos de bônus são os mesmos que o jogador vê no jogo.
 """
@@ -308,6 +309,9 @@ def main(folder):
                     "bonus": bonus,
                 }
                 found = icon("crafted", icon_id) if icon_id else None
+                # os modelos 3D têm render feito por scripts/render-modelos
+                if not found and os.path.exists(os.path.join(public, "3d", f"{slug}.png")):
+                    found = f"/itens/3d/{slug}.png"
                 if found:
                     item["icon"] = found
                 items.append(item)

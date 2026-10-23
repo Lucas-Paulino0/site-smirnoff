@@ -15,8 +15,10 @@ import { matchesTerms, searchTerms } from "~/data/search";
 import {
   BOSSES,
   bossPath,
+  bossPicture,
   familyOfDrop,
   familyPath,
+  familyPicture,
   MOB_FAMILIES,
   type Boss,
   type MobFamily,
@@ -163,7 +165,7 @@ export function ItemCard({ item }: { item: JobItem }) {
 export function BossCard({ boss }: { boss: Boss }) {
   return (
     <>
-      <CardHead title={boss.name} subtitle={`${boss.role} · nível ${boss.levels}`} />
+      <CardHead icon={bossPicture(boss.name)} title={boss.name} subtitle={`${boss.role} · nível ${boss.levels}`} />
       <p>{boss.where}.</p>
       <p className="hover-card__muted">Volta {boss.respawn} minutos depois de derrotado.</p>
     </>
@@ -175,6 +177,7 @@ export function FamilyCard({ family }: { family: MobFamily }) {
   return (
     <>
       <CardHead
+        icon={familyPicture(family.name)}
         title={family.name}
         subtitle={`Família de monstros · níveis ${family.levels[0]} a ${family.levels[1]}`}
       />

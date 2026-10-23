@@ -1,0 +1,279 @@
+{
+ "chefes": {
+  "bodhisattva-guanyin": {
+   "modelo": "GatlingBodhisattva/gatling_bodhisattva",
+   "animacao": "phase2_idle"
+  },
+  "campeao-bandido": {
+   "modelo": "DungeonBandits/banditchampion"
+  },
+  "capitao-barba-morta": {
+   "modelo": "LittleRoomPirates/piratepack_captain"
+  },
+  "comandante-do-martelo": {
+   "modelo": "VDHistoricalInfantry/vd_historical_infantry1crimson_mob_knight_warhammer"
+  },
+  "cuboss-slime": {
+   "modelo": "CubossSlime/cuboss-slime"
+  },
+  "enganadora": {
+   "modelo": "Deceptor/mf_deceptor",
+   "animacao": "idle_awake"
+  },
+  "falso-deus-lanterna-penitente": {
+   "modelo": "FalseGod/wolfmob39phase2",
+   "animacao": "walk"
+  },
+  "flor-mutante": {
+   "modelo": "SamusPlants/mutant_flower"
+  },
+  "golems-de-cristal": {
+   "modelo": "LittleRoomGolems/diamondgolem"
+  },
+  "kazk-a-rainha": {
+   "modelo": "LittleRoomKazk/kazk_queen"
+  },
+  "kriger": {
+   "modelo": "LittleRoomKriger/kriger"
+  },
+  "mestre-oni-samurai": {
+   "modelo": "AmondeOni/oni_samurai_master"
+  },
+  "minotauro": {
+   "modelo": "LittleRoomMinotaur/lr_minotaur"
+  },
+  "o-arquivista": {
+   "modelo": "LittleRoomArchivist/the_archivist"
+  },
+  "os-amantes": {
+   "modelo": "TheLovers/the_lovers_phase_1"
+  },
+  "pontifice-demoniaco": {
+   "modelo": "DemonKnight/demon_knight",
+   "animacao": "dormant"
+  },
+  "rainha-bandida-jiaxin": {
+   "modelo": "DungeonBandits/banditchief"
+  },
+  "rei-goblin": {
+   "modelo": "HeaLongGoblins/goblinking"
+  },
+  "rei-golem-corrompido": {
+   "modelo": "LittleRoomCorruptGolemKing/golem_king",
+   "animacao": "awake_idle"
+  },
+  "senhor-da-guerra-kragan": {
+   "modelo": "WarlordKragan/warlord_kragan_the_bloodfury"
+  },
+  "tezcacoatl-o-ancestral": {
+   "modelo": "DungeonLizard/lizardboss_ancestral"
+  },
+  "tita-da-pedra-runica": {
+   "modelo": "GolemPack/boss_runestone_titan"
+  }
+ },
+ "monstros": {
+  "aranhas": {
+   "modelo": "BLSpiders/bl_hunter_spider"
+  },
+  "bandidos": {
+   "modelo": "DungeonBandits/banditswordsman"
+  },
+  "bokoblins": {
+   "modelo": "NocsyFantasy/nocsy_moblin"
+  },
+  "cavaleiros": {
+   "modelo": "VDHistoricalInfantry/vd_historical_infantry1blue_mob_knight_halberd"
+  },
+  "cogumelos": {
+   "modelo": "MushBrothers/eldermush"
+  },
+  "criaturas-da-selva": {
+   "modelo": "VDJungleCreatures/vd_jungle_creatures1_mob_chromotherium"
+  },
+  "ents": {
+   "modelo": "TreeEnts/oak_tree_ent"
+  },
+  "goblins": {
+   "modelo": "HeaLongGoblins/goblinsoldier"
+  },
+  "golems": {
+   "modelo": "GolemPack/mob_cobble_golem"
+  },
+  "javali": {
+   "modelo": "GatlinPigs/gatlin_javali_1"
+  },
+  "lagartos": {
+   "modelo": "DungeonLizard/lizardsword"
+  },
+  "mini-slimes": {
+   "modelo": "CubossSlime/mini_slime_cubee1"
+  },
+  "mosquitos": {
+   "modelo": "VDJungleCreatures/vd_jungle_creatures1_mob_mosquito"
+  },
+  "murlocs": {
+   "modelo": "VoxelspawnsMurlocs/voxelspawns_murloc_green"
+  },
+  "onis": {
+   "modelo": "AmondeOni/oni_samurai"
+  },
+  "passaros-berserker": {
+   "modelo": "NocsyBirdBerserker/tofnocsy_blackbird_berserker"
+  },
+  "piratas": {
+   "modelo": "LittleRoomPirates/piratepack_crew"
+  },
+  "plantas-despertas": {
+   "modelo": "SamusPlants/vine_guardian"
+  },
+  "sentinela-dourado": {
+   "modelo": "SentinelGold/gm_sentinell_sword_statue_active"
+  },
+  "tooms": {
+   "modelo": "NocsyTooms/nocsy_toom_warrior"
+  },
+  "ursos-e-bichos-do-campo": {
+   "modelo": "LittleRoomWilderness/bear",
+   "animacao": "idle_awake"
+  },
+  "velas": {
+   "modelo": "QCTCandles/qct_candlesword"
+  },
+  "yokais": {
+   "modelo": "LittleRoomYokai/oni"
+  }
+ },
+ "itens": {
+  "adaga-de-cobalto": "cobalt_dagger",
+  "adaga-de-cobre": "copper_dagger",
+  "adaga-de-estanho": "tin_dagger",
+  "adaga-de-ferro": "iron_dagger",
+  "adaga-de-mithril": "mithril_dagger",
+  "adaga-de-ouro": "gold_dagger",
+  "adaga-de-platina": "platinum_dagger",
+  "adaga-de-prata": "silver_dagger",
+  "adaga-de-titanio": "titanium_dagger",
+  "arco-de-acacia": "acacia_bow",
+  "arco-de-betula": "birch_bow",
+  "arco-de-carvalho": "oak_bow",
+  "arco-de-carvalho-escuro": "dark_oak_bow",
+  "arco-de-cedro": "cedar_bow",
+  "arco-de-ebano": "ebony_bow",
+  "arco-de-freixo": "ash_bow",
+  "arco-de-mogno": "mahogany_bow",
+  "arco-de-pinheiro": "pine_bow",
+  "bobo-de-caranguejo": "crab_bobo",
+  "bolinho-de-traira": "traira_fritter",
+  "cajado-de-agua-marinha": "aquamarine_staff",
+  "cajado-de-ametista": "amethyst_staff",
+  "cajado-de-esmeralda": "emerald_staff",
+  "cajado-de-granada": "garnet_staff",
+  "cajado-de-quartzo": "quartz_staff",
+  "cajado-de-rubi": "ruby_staff",
+  "cajado-de-safira": "sapphire_staff",
+  "cajado-de-topazio": "topaz_staff",
+  "cajado-de-turmalina": "tourmaline_staff",
+  "caldeirada-de-tucunare": "tucunare_stew",
+  "caldo-de-pintado-com-ginseng": "ginseng_pintado_broth",
+  "caldo-de-robalo": "sea_bass_broth",
+  "capacete-de-cobalto": "cobalt_helmet",
+  "capacete-de-cobre": "copper_helmet",
+  "capacete-de-estanho": "tin_helmet",
+  "capacete-de-ferro": "iron_helmet",
+  "capacete-de-mithril": "mithril_helmet",
+  "capacete-de-ouro": "gold_helmet",
+  "capacete-de-platina": "platinum_helmet",
+  "capacete-de-prata": "silver_helmet",
+  "capacete-de-titanio": "titanium_helmet",
+  "ceviche-de-tucunare": "tucunare_ceviche",
+  "cha-de-arruda": "rue_tea",
+  "cha-de-beladona": "belladonna_tea",
+  "cha-de-hortela": "mint_tea",
+  "cha-de-lavanda": "lavender_tea",
+  "costela-de-pacu": "pacu_ribs",
+  "dourado-grelhado": "grilled_dourado",
+  "ensopado-de-pacu": "pacu_stew",
+  "ensopado-de-truta": "trout_stew",
+  "ensopado-do-cacador": "hunter_stew",
+  "espada-de-cobalto": "cobalt_sword",
+  "espada-de-cobre": "copper_sword",
+  "espada-de-estanho": "tin_sword",
+  "espada-de-ferro": "iron_sword",
+  "espada-de-mithril": "mithril_sword",
+  "espada-de-ouro": "gold_sword",
+  "espada-de-platina": "platinum_sword",
+  "espada-de-prata": "silver_sword",
+  "espada-de-titanio": "titanium_sword",
+  "espetinho-de-caca": "game_skewer",
+  "espeto-de-pintado": "pintado_skewer",
+  "file-de-robalo-com-ervas": "herbed_sea_bass",
+  "gelatina-de-hortela": "mint_jelly",
+  "infusao-de-alecrim": "rosemary_infusion",
+  "infusao-de-mandragora": "mandrake_infusion",
+  "infusao-de-salvia": "sage_infusion",
+  "lambari-frito": "fried_lambari",
+  "machado-de-mithril": "mithril_battleaxe",
+  "machado-de-ouro": "gold_battleaxe",
+  "machado-de-platina": "platinum_battleaxe",
+  "machado-de-titanio": "titanium_battleaxe",
+  "moqueca-de-traira": "traira_moqueca",
+  "pacu-recheado": "stuffed_pacu",
+  "pintado-ao-rum": "rum_pintado",
+  "pocao-de-estamina-de-alecrim": "rosemary_stamina_potion",
+  "pocao-de-estamina-de-arruda": "rue_stamina_potion",
+  "pocao-de-estamina-de-beladona": "belladonna_stamina_potion",
+  "pocao-de-estamina-de-camomila": "chamomile_stamina_potion",
+  "pocao-de-estamina-de-ginseng": "ginseng_stamina_potion",
+  "pocao-de-estamina-de-hortela": "mint_stamina_potion",
+  "pocao-de-estamina-de-lavanda": "lavender_stamina_potion",
+  "pocao-de-estamina-de-mandragora": "mandrake_stamina_potion",
+  "pocao-de-estamina-de-salvia": "sage_stamina_potion",
+  "pocao-de-mana-de-alecrim": "rosemary_mana_potion",
+  "pocao-de-mana-de-arruda": "rue_mana_potion",
+  "pocao-de-mana-de-beladona": "belladonna_mana_potion",
+  "pocao-de-mana-de-camomila": "chamomile_mana_potion",
+  "pocao-de-mana-de-ginseng": "ginseng_mana_potion",
+  "pocao-de-mana-de-hortela": "mint_mana_potion",
+  "pocao-de-mana-de-lavanda": "lavender_mana_potion",
+  "pocao-de-mana-de-mandragora": "mandrake_mana_potion",
+  "pocao-de-mana-de-salvia": "sage_mana_potion",
+  "pocao-de-vida-grande-de-alecrim": "rosemary_potion_large",
+  "pocao-de-vida-grande-de-arruda": "rue_potion_large",
+  "pocao-de-vida-grande-de-beladona": "belladonna_potion_large",
+  "pocao-de-vida-grande-de-camomila": "chamomile_potion_large",
+  "pocao-de-vida-grande-de-ginseng": "ginseng_potion_large",
+  "pocao-de-vida-grande-de-hortela": "mint_potion_large",
+  "pocao-de-vida-grande-de-lavanda": "lavender_potion_large",
+  "pocao-de-vida-grande-de-mandragora": "mandrake_potion_large",
+  "pocao-de-vida-grande-de-salvia": "sage_potion_large",
+  "pocao-de-vida-media-de-alecrim": "rosemary_potion_medium",
+  "pocao-de-vida-media-de-arruda": "rue_potion_medium",
+  "pocao-de-vida-media-de-beladona": "belladonna_potion_medium",
+  "pocao-de-vida-media-de-camomila": "chamomile_potion_medium",
+  "pocao-de-vida-media-de-ginseng": "ginseng_potion_medium",
+  "pocao-de-vida-media-de-hortela": "mint_potion_medium",
+  "pocao-de-vida-media-de-lavanda": "lavender_potion_medium",
+  "pocao-de-vida-media-de-mandragora": "mandrake_potion_medium",
+  "pocao-de-vida-media-de-salvia": "sage_potion_medium",
+  "pocao-de-vida-pequena-de-alecrim": "rosemary_potion_small",
+  "pocao-de-vida-pequena-de-arruda": "rue_potion_small",
+  "pocao-de-vida-pequena-de-beladona": "belladonna_potion_small",
+  "pocao-de-vida-pequena-de-camomila": "chamomile_potion_small",
+  "pocao-de-vida-pequena-de-ginseng": "ginseng_potion_small",
+  "pocao-de-vida-pequena-de-hortela": "mint_potion_small",
+  "pocao-de-vida-pequena-de-lavanda": "lavender_potion_small",
+  "pocao-de-vida-pequena-de-mandragora": "mandrake_potion_small",
+  "pocao-de-vida-pequena-de-salvia": "sage_potion_small",
+  "robalo-grelhado": "grilled_sea_bass",
+  "rolinho-de-tilapia": "tilapia_roll",
+  "salada-de-caranguejo": "crab_salad",
+  "sopa-de-camomila": "chamomile_soup",
+  "tilapia-grelhada": "grilled_tilapia",
+  "tonico-de-ginseng": "ginseng_tonic",
+  "traira-assada-com-alecrim": "roast_traira",
+  "truta-defumada": "smoked_trout",
+  "truta-recheada": "stuffed_trout",
+  "tucunare-na-brasa": "grilled_tucunare"
+ }
+}

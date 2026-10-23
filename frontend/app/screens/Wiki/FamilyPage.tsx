@@ -1,7 +1,7 @@
 import { BOSS_DETAILS } from "~/data/bossDetails";
 import { JOB_MATERIALS } from "~/data/jobs";
 import { formatNumber, healthAt, ROLE_HEALTH } from "~/data/mobStats";
-import { BOSSES, type MobFamily } from "~/data/world";
+import { BOSSES, familyPicture, type MobFamily } from "~/data/world";
 import { Table, WikiLink } from "./components";
 import EntityPage, { EntitySection, type InfoRow } from "./EntityPage";
 import { BossLink, MaterialLink } from "./entities";
@@ -25,6 +25,7 @@ export default function FamilyPage({ family }: { family: MobFamily }) {
       trail={[{ to: "/wiki/monstros", label: "Monstros" }]}
       title={family.name}
       subtitle={`Família de monstros · níveis ${min} a ${max}`}
+      picture={familyPicture(family.name)}
       info={info}
     >
       <EntitySection id="monstros" title="Monstros">

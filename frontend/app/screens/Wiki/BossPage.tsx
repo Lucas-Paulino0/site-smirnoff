@@ -6,7 +6,7 @@ import {
   healthAt,
   ROLE_REWARD,
 } from "~/data/mobStats";
-import type { Boss } from "~/data/world";
+import { bossPicture, type Boss } from "~/data/world";
 import { MAP_BOSSES, mapLink } from "~/data/worldMap";
 import { Table, WikiLink } from "./components";
 import EntityPage, { EntitySection, type InfoRow } from "./EntityPage";
@@ -45,6 +45,7 @@ export default function BossPage({ boss }: { boss: Boss }) {
       trail={[{ to: "/wiki/chefes", label: "Chefes" }]}
       title={boss.name}
       subtitle={`${boss.role} · ${levelText}`}
+      picture={bossPicture(boss.name)}
       info={info}
     >
       <p className="wiki-entity__lead">{boss.description}</p>

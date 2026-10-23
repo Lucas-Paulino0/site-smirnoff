@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8">
+<!-- usado por renderizar.mjs --><style>html,body{margin:0;background:transparent}</style></head>
+<body>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from "three";
+
+// Modelo de item do Minecraft (JSON do Nexo), na pose de inventário ("gui")
+const params = new URLSearchParams(location.search);
+const SIZE = Number(params.get("size") || 512);
+const model = await (await fetch(params.get("model"))).json();
+
+const rad = THREE.MathUtils.degToRad;
+const loader = new THREE.TextureLoader();
+const materials = {};
+const missing = [];
+async function material(ref) {
+  let key = ref;
+  for (let i = 0; i < 5 && key?.startsWith("#"); i++) key = model.textures[key.slice(1)];
+  if (!key) return null;
+  if (key in materials) return materials[key];
+  const file = `/modelos/itens/texturas/${key.split("/").pop()}.png`;
+  materials[key] = await new Promise((resolve) => {
+    loader.load(
+      file,
+      (tex) => {
+        tex.magFilter = THREE.NearestFilter;
+        tex.minFilter = THREE.NearestFilter;
+        tex.colorSpace = THREE.SRGBColorSpace;
+        // textura animada: só o primeiro quadro
+        const frames = Math.max(1, Math.round(tex.image.height / tex.image.width));
+        resolve({ mat: new THREE.MeshLambertMaterial({ map: tex, alphaTest: 0.1, transparent: true, side: THREE.DoubleSide }), frames });
+      },
+      undefined,
+      () => { missing.push(key); resolve(null); }
+    );
+  });
+  return materials[key];
+}
+
+const hidden = new THREE.MeshBasicMaterial({ visible: false });
+const FACE_ORDER = ["east", "west", "up", "down", "south", "north"];
+const AXES = { x: new THREE.Vector3(1, 0, 0), y: new THREE.Vector3(0, 1, 0), z: new THREE.Vector3(0, 0, 1) };
+
+const root = new THREE.Group();
+for (const el of model.elements || []) {
+  const size = [0, 1, 2].map((i) => Math.max(el.to[i] - el.from[i], 0.001));
+  const geo = new THREE.BoxGeometry(...size);
+  const uv = geo.attributes.uv;
+  const mats = [];
+  for (const [f, name] of FACE_ORDER.entries()) {
+    const face = el.faces?.[name];
+    const m = face && (await material(face.texture));
+    if (!m) { mats.push(hidden); continue; }
+    // sem uv: o Minecraft usa a posição do cubo
+    const [u1, v1, u2, v2] = face.uv ?? defaultUV(el, name);
+    const V = (v) => 1 - v / 16 / m.frames;
+    let corners = [[u1 / 16, V(v1)], [u2 / 16, V(v1)], [u1 / 16, V(v2)], [u2 / 16, V(v2)]];
+    for (let r = 0; r < ((face.rotation || 0) / 90) % 4; r++) corners = [corners[2], corners[0], corners[3], corners[1]];
+    corners.forEach(([u, v], k) => uv.setXY(f * 4 + k, u, v));
+    mats.push(m.mat);
+  }
+  uv.needsUpdate = true;
+  const mesh = new THREE.Mesh(geo, mats);
+  const center = [0, 1, 2].map((i) => (el.from[i] + el.to[i]) / 2);
+  const holder = new THREE.Group();
+  if (el.rotation) {
+    const o = el.rotation.origin || [8, 8, 8];
+    holder.position.set(o[0] - 8, o[1] - 8, o[2] - 8);
+    holder.quaternion.setFromAxisAngle(AXES[el.rotation.axis], rad(el.rotation.angle || 0));
+    if (el.rotation.rescale) {
+      const k = 1 / Math.cos(rad(Math.abs(el.rotation.angle || 0)));
+      holder.scale.set(el.rotation.axis === "x" ? 1 : k, el.rotation.axis === "y" ? 1 : k, el.rotation.axis === "z" ? 1 : k);
+    }
+    mesh.position.set(center[0] - o[0], center[1] - o[1], center[2] - o[2]);
+  } else {
+    mesh.position.set(center[0] - 8, center[1] - 8, center[2] - 8);
+  }
+  holder.add(mesh);
+  root.add(holder);
+}
+function defaultUV(el, name) {
+  const [x1, y1, z1] = el.from, [x2, y2, z2] = el.to;
+  if (name === "up" || name === "down") return [x1, z1, x2, z2];
+  if (name === "north" || name === "south") return [x1, 16 - y2, x2, 16 - y1];
+  return [z1, 16 - y2, z2, 16 - y1];
+}
+
+// pose de inventário: translação, rotação XYZ, escala
+const gui = model.display?.gui || {};
+const pose = new THREE.Group();
+pose.add(root);
+const r = gui.rotation || [0, 0, 0];
+pose.rotation.set(rad(r[0]), rad(r[1]), rad(r[2]), "XYZ");
+const s = gui.scale || [1, 1, 1];
+pose.scale.set(s[0], s[1], s[2]);
+const t = gui.translation || [0, 0, 0];
+pose.position.set(t[0], t[1], t[2]);
+
+const scene = new THREE.Scene();
+scene.add(pose);
+scene.add(new THREE.AmbientLight(0xffffff, 1.6));
+const sun = new THREE.DirectionalLight(0xffffff, 2.0);
+sun.position.set(-0.5, 1, 1);
+scene.add(sun);
+
+pose.updateMatrixWorld(true);
+const box = new THREE.Box3().setFromObject(pose);
+const c = box.getCenter(new THREE.Vector3());
+const half = Math.max(box.max.x - box.min.x, box.max.y - box.min.y) / 2 * 1.08;
+const camera = new THREE.OrthographicCamera(-half, half, half, -half, -100, 100);
+camera.position.set(c.x, c.y, 50);
+camera.lookAt(c.x, c.y, 0);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(SIZE, SIZE);
+renderer.setClearColor(0x000000, 0);
+document.body.appendChild(renderer.domElement);
+renderer.render(scene, camera);
+window.RESULT = renderer.domElement.toDataURL("image/png");
+window.NOTE = missing.length ? `texturas que faltam: ${missing.join(", ")}` : "";
+</script>
+</body>
+</html>

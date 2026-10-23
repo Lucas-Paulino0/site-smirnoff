@@ -61,6 +61,13 @@ img.pixelated,
   image-rendering: pixelated;
 }
 
+/* renders 3D (chefes, monstros e itens fabricados): reduzidos com suavização */
+img[src^="/chefes/"],
+img[src^="/monstros/"],
+img[src^="/itens/3d/"] {
+  image-rendering: auto;
+}
+
 code {
   font-family: var(--font-mono);
   font-size: 0.88em;

@@ -453,6 +453,13 @@
   flex-shrink: 0;
 }
 
+/* render do chefe ou do monstro, maior que um ícone */
+.hover-card__head img[src^="/chefes/"],
+.hover-card__head img[src^="/monstros/"] {
+  width: 56px;
+  height: 56px;
+}
+
 .hover-card__head strong {
   display: block;
   font-size: 17px;
@@ -535,6 +542,17 @@
   padding: 18px;
   background: var(--bg);
   border-bottom: 1px solid var(--line);
+}
+
+.infobox__image--picture {
+  padding: 8px;
+  background: radial-gradient(circle at 50% 45%, rgba(217, 165, 74, 0.16), transparent 70%), var(--bg);
+}
+
+.infobox__image--picture img {
+  width: 100%;
+  max-width: 260px;
+  height: auto;
 }
 
 .infobox dl {

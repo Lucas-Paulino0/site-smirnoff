@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8">
+<!-- usado por renderizar.mjs --><style>html,body{margin:0;background:transparent}</style></head>
+<body>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from "three";
+
+const params = new URLSearchParams(location.search);
+const SIZE = Number(params.get("size") || 1024);
+const YAW = Number(params.get("yaw") ?? 35);
+const PITCH = Number(params.get("pitch") ?? 12);
+const ANIM = params.get("anim") || "idle";
+const FLAT_FX = params.get("flatfx") !== "keep";
+const HIDE = new Set((params.get("hide") || "b_hitbox,hitbox,flame").split(","));
+
+const model = await (await fetch(params.get("model"))).json();
+const uvW = model.resolution.width, uvH = model.resolution.height;
+
+// texturas: a "_e" é a camada que brilha (sem sombra)
+const textures = model.textures.map((t) => {
+  const tex = new THREE.TextureLoader().load(t.source);
+  tex.magFilter = THREE.NearestFilter;
+  tex.minFilter = THREE.NearestFilter;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+});
+await Promise.all(model.textures.map((t) => new Promise((r) => { const i = new Image(); i.onload = r; i.src = t.source; })));
+const materials = model.textures.map((t, i) =>
+  /_e(\.png)?$/.test(t.name)
+    ? new THREE.MeshBasicMaterial({ map: textures[i], transparent: true, alphaTest: 0.1, side: THREE.DoubleSide })
+    : new THREE.MeshLambertMaterial({ map: textures[i], alphaTest: 0.5, side: THREE.DoubleSide })
+);
+const hidden = new THREE.MeshBasicMaterial({ visible: false });
+
+const rad = THREE.MathUtils.degToRad;
+const euler = (r = [0, 0, 0]) => new THREE.Euler(rad(r[0]), rad(r[1]), rad(r[2]), "ZYX");
+
+// pose: o primeiro quadro da animação escolhida
+const pose = {};
+const anim = model.animations?.find((a) => a.name === ANIM) ?? model.animations?.find((a) => /idle/i.test(a.name));
+if (anim) {
+  for (const [uuid, animator] of Object.entries(anim.animators)) {
+    for (const channel of ["rotation", "position", "scale"]) {
+      const kf = animator.keyframes.filter((k) => k.channel === channel).sort((a, b) => a.time - b.time)[0];
+      if (!kf) continue;
+      const p = kf.data_points[0];
+      const num = (v) => { const n = parseFloat(v); return Number.isFinite(n) ? n : channel === "scale" ? 1 : 0; };
+      (pose[uuid] ??= {})[channel] = [num(p.x), num(p.y), num(p.z)];
+    }
+  }
+}
+
+const FACE_ORDER = ["east", "west", "up", "down", "south", "north"];
+function cube(el) {
+  const inflate = el.inflate || 0;
+  const size = [0, 1, 2].map((i) => Math.max(el.to[i] - el.from[i] + inflate * 2, 0.001));
+  const geo = new THREE.BoxGeometry(...size);
+  const uv = geo.attributes.uv;
+  const mats = [];
+  FACE_ORDER.forEach((name, f) => {
+    const face = el.faces[name];
+    if (!face || face.texture === null || face.texture === undefined || face.texture === false) {
+      mats.push(hidden);
+      return;
+    }
+    const [u1, v1, u2, v2] = face.uv;
+    // cada textura pode ter a própria resolução de UV
+    const t = model.textures[face.texture] || {};
+    const tw = t.uv_width || uvW, th = t.uv_height || uvH;
+    // textura animada (quadros empilhados): só o primeiro quadro
+    const frames = t.width && t.height ? Math.max(1, Math.round((t.height / t.width) / (th / tw))) : 1;
+    const V = (v) => 1 - v / th / frames;
+    let corners = [
+      [u1 / tw, V(v1)],
+      [u2 / tw, V(v1)],
+      [u1 / tw, V(v2)],
+      [u2 / tw, V(v2)],
+    ];
+    // rotação da face, como no Blockbench
+    for (let r = 0; r < ((face.rotation || 0) / 90) % 4; r++) {
+      corners = [corners[2], corners[0], corners[3], corners[1]];
+    }
+    corners.forEach(([u, v], k) => uv.setXY(f * 4 + k, u, v));
+    mats.push(materials[face.texture] ?? hidden);
+  });
+  uv.needsUpdate = true;
+  const mesh = new THREE.Mesh(geo, mats);
+  const pivot = new THREE.Group();
+  pivot.rotation.copy(euler(el.rotation));
+  mesh.position.set(
+    (el.from[0] + el.to[0]) / 2 - el.origin[0],
+    (el.from[1] + el.to[1]) / 2 - el.origin[1],
+    (el.from[2] + el.to[2]) / 2 - el.origin[2]
+  );
+  pivot.add(mesh);
+  return pivot;
+}
+
+const elements = Object.fromEntries(model.elements.map((e) => [e.uuid, e]));
+function build(children, parent, parentOrigin) {
+  for (const child of children) {
+    if (typeof child === "string") {
+      const el = elements[child];
+      if (!el || el.visibility === false || (el.type && el.type !== "cube")) continue;
+      // planos de efeito (raios, rastros): espessura zero e grandes, fora da capa e do chapéu
+      const dims = [0, 1, 2].map((i) => Math.abs(el.to[i] - el.from[i]));
+      if (FLAT_FX && Math.min(...dims) === 0 && Math.max(...dims) >= 14 && !/cape|hat|weapon/.test(parent.name)) continue;
+      const obj = cube(el);
+      obj.position.set(el.origin[0] - parentOrigin[0], el.origin[1] - parentOrigin[1], el.origin[2] - parentOrigin[2]);
+      parent.add(obj);
+    } else {
+      if (child.visibility === false || HIDE.has(child.name)) continue;
+      const g = new THREE.Group();
+      g.name = child.name;
+      const o = child.origin || [0, 0, 0];
+      g.position.set(o[0] - parentOrigin[0], o[1] - parentOrigin[1], o[2] - parentOrigin[2]);
+      g.rotation.copy(euler(child.rotation));
+      const p = pose[child.uuid];
+      if (p?.rotation) {
+        g.rotation.x -= rad(p.rotation[0]);
+        g.rotation.y -= rad(p.rotation[1]);
+        g.rotation.z += rad(p.rotation[2]);
+      }
+      if (p?.position) {
+        g.position.x -= p.position[0];
+        g.position.y += p.position[1];
+        g.position.z += p.position[2];
+      }
+      if (p?.scale) g.scale.set(...p.scale.map((v) => Math.max(v, 1e-4)));
+      parent.add(g);
+      build(child.children || [], g, o);
+    }
+  }
+}
+
+const root = new THREE.Group();
+build(model.outliner, root, [0, 0, 0]);
+// modelos do jogo olham para o norte (-z) no Blockbench: vira para a câmera
+root.rotation.y = rad(180 + YAW);
+
+const scene = new THREE.Scene();
+scene.add(root);
+scene.add(new THREE.AmbientLight(0xffffff, 1.5));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2);
+sun.position.set(-0.6, 1, 0.9);
+scene.add(sun);
+const fill = new THREE.DirectionalLight(0xffe2c0, 0.6);
+fill.position.set(1, 0.3, -0.5);
+scene.add(fill);
+
+// enquadra o modelo
+root.updateMatrixWorld(true);
+const box = new THREE.Box3().setFromObject(root);
+const center = box.getCenter(new THREE.Vector3());
+const sphere = box.getBoundingSphere(new THREE.Sphere());
+const camera = new THREE.PerspectiveCamera(20, 1, 1, 5000);
+const dist = sphere.radius / Math.sin(rad(10)) * 0.92;
+camera.position.set(center.x, center.y + Math.sin(rad(PITCH)) * dist, center.z + Math.cos(rad(PITCH)) * dist);
+camera.lookAt(center);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(SIZE, SIZE);
+renderer.setClearColor(0x000000, 0);
+document.body.appendChild(renderer.domElement);
+renderer.render(scene, camera);
+window.RESULT = renderer.domElement.toDataURL("image/png");
+window.NOTE = `animação ${anim?.name ?? "nenhuma"}`;
+</script>
+</body>
+</html>
