@@ -250,7 +250,7 @@ export const BOSS_DETAILS: Record<string, BossDetails> = {
     ],
     helpers:
       "Ovos de Aranha: bater num ovo envenena quem está a até 9 blocos, e a cada 44 segundos ele choca de 2 a 4 Aranhas Filhotes. Nenhum dos dois dá recompensa.",
-    family: "Aranhas",
+    family: "Aranhas da Toca",
   },
   "Pontífice Demoníaco": {
     health: BOSS,
@@ -308,7 +308,7 @@ export const BOSS_DETAILS: Record<string, BossDetails> = {
       ["Golpe forte", "A cada 9 segundos acerta os lugares marcados com o martelo."],
     ],
     phases: ["Com metade da vida o escudo quebra."],
-    family: "Cavaleiros",
+    family: "Cavaleiros carmesins",
   },
   "Campeão Bandido": {
     health: 8890,

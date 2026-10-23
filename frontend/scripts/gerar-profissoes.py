@@ -60,7 +60,7 @@ FAMILIES = {
     "striped_knight": "Cavaleiros listrados",
     "goblin": "Goblins",
     "bandit": "Bandidos",
-    "ent": "Ents",
+    "ent": "Ents",  # ent, bear e spider: divididas por nível em SPLIT_BY_LEVEL
     "beetle": "Besouros-rinoceronte",
     "bear": "Ursos",
     "candle": "Monstros de vela",
@@ -80,6 +80,15 @@ FAMILIES = {
     "oni": "Onis",
     "lizard": "Lagartos",
     "mush": "Cogumelos",
+}
+
+# Famílias que no servidor são uma só, mas vivem em áreas diferentes e
+# derrubam materiais diferentes: o nível do material diz de qual é
+# ([nível máximo, nome], na ordem)
+SPLIT_BY_LEVEL = {
+    "ent": [(60, "Ents de carvalho"), (999, "Ents de cerejeira")],
+    "bear": [(60, "Ursos"), (999, "Pandas")],
+    "spider": [(42, "Aranhas da Cidade Murada"), (999, "Aranhas da Toca")],
 }
 
 KINDS = {
@@ -204,11 +213,16 @@ def main(folder):
         material_id, levels, family = row[0], row[3], row[4]
         if family not in FAMILIES:
             sys.exit(f"Família sem nome em FAMILIES: {family}")
+        name = FAMILIES[family]
+        for top, split_name in SPLIT_BY_LEVEL.get(family, []):
+            if int(levels.split("-")[0]) <= top:
+                name = split_name
+                break
         materials[material_id] = {
             "id": material_id,
             "name": row[1],
             "source": "monstro",
-            "family": FAMILIES[family],
+            "family": name,
             "level": int(levels.split("-")[0]),
             "levels": levels.replace("-", " a "),
         }

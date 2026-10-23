@@ -73,8 +73,11 @@
   }
  },
  "monstros": {
-  "aranhas": {
+  "aranhas-da-cidade-murada": {
    "modelo": "BLSpiders/bl_hunter_spider"
+  },
+  "aranhas-da-toca": {
+   "modelo": "AmondeSpiders/spider_elite_am"
   },
   "bandidos": {
    "modelo": "DungeonBandits/banditswordsman"
@@ -82,8 +85,17 @@
   "bokoblins": {
    "modelo": "NocsyFantasy/nocsy_moblin"
   },
-  "cavaleiros": {
+  "cavaleiros-azuis": {
    "modelo": "VDHistoricalInfantry/vd_historical_infantry1blue_mob_knight_halberd"
+  },
+  "cavaleiros-carmesins": {
+   "modelo": "VDHistoricalInfantry/vd_historical_infantry1crimson_mob_knight_halberd"
+  },
+  "cavaleiros-listrados": {
+   "modelo": "VDHistoricalInfantry/vd_historical_infantry1stripes_mob_knight_halberd"
+  },
+  "cavaleiros-vermelhos": {
+   "modelo": "VDHistoricalInfantry/vd_historical_infantry1red_mob_knight_halberd"
   },
   "cogumelos": {
    "modelo": "MushBrothers/eldermush"
@@ -91,8 +103,11 @@
   "criaturas-da-selva": {
    "modelo": "VDJungleCreatures/vd_jungle_creatures1_mob_chromotherium"
   },
-  "ents": {
+  "ents-de-carvalho": {
    "modelo": "TreeEnts/oak_tree_ent"
+  },
+  "ents-de-cerejeira": {
+   "modelo": "TreeEnts/sakura_tree_ent"
   },
   "goblins": {
    "modelo": "HeaLongGoblins/goblinsoldier"
@@ -117,6 +132,10 @@
   },
   "onis": {
    "modelo": "AmondeOni/oni_samurai"
+  },
+  "pandas": {
+   "modelo": "LittleRoomWilderness/bear_panda",
+   "animacao": "idle_awake"
   },
   "passaros-berserker": {
    "modelo": "NocsyBirdBerserker/tofnocsy_blackbird_berserker"

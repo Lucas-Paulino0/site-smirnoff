@@ -21,8 +21,8 @@ const NEWS: NewsDay[] = [
         Chefes novos no Bosque do Crepúsculo: o{" "}
         <BossLink name="Pontífice Demoníaco" />, nível 140, e a{" "}
         <BossLink name="Enganadora" />, nível 130, que espera disfarçada de
-        mulher ferida. A toca dela é cheia de <FamilyLink name="Aranhas" />{" "}
-        (121 a 130), que derrubam a Presa Venenosa de Aranha.
+        mulher ferida. A toca dela é cheia de{" "}
+        <FamilyLink name="Aranhas da Toca" /> (121 a 130), que derrubam a Presa Venenosa de Aranha.
       </>,
       <>
         O <BossLink name="Falso Deus: Lanterna Penitente" /> agora só acorda
@@ -39,7 +39,9 @@ const NEWS: NewsDay[] = [
         dos Pássaros.
       </>,
       <>
-        Ents de cerejeira, pandas e <FamilyLink name="Cogumelos" /> no lago
+        <FamilyLink name="Ents de cerejeira" />,{" "}
+        <FamilyLink name="Pandas" /> e{" "}
+        <FamilyLink name="Cogumelos" /> no lago
         das cerejeiras, no Refúgio das Pétalas.
       </>,
       <>
@@ -141,7 +143,7 @@ const NEWS: NewsDay[] = [
         Kragan.
       </>,
       <>
-        <FamilyLink name="Ents" /> de carvalho nas florestas do Prado
+        <FamilyLink name="Ents de carvalho" /> nas florestas do Prado
         Verdejante.
       </>,
     ],
@@ -153,7 +155,7 @@ const NEWS: NewsDay[] = [
         <BossLink name="Senhor da Guerra Kragan" /> no trono da fortaleza dele.
       </>,
       <>
-        <FamilyLink name="Aranhas" /> no pátio da cidade murada.
+        <FamilyLink name="Aranhas da Cidade Murada" /> no pátio dela.
       </>,
     ],
   },
@@ -178,8 +180,9 @@ const NEWS: NewsDay[] = [
         <BossLink name="Comandante do Martelo" />.
       </>,
       <>
-        Castelos de <FamilyLink name="Cavaleiros" /> carmesins e listrados, e
-        esquadrões azuis na cratera.
+        Castelos dos <FamilyLink name="Cavaleiros carmesins" /> e dos{" "}
+        <FamilyLink name="Cavaleiros listrados" />, e esquadrões de{" "}
+        <FamilyLink name="Cavaleiros azuis" /> na cratera.
       </>,
     ],
   },
@@ -187,8 +190,8 @@ const NEWS: NewsDay[] = [
     date: "2026-10-12",
     items: [
       <>
-        <FamilyLink name="Golems" /> na cratera do spawn e cavaleiros
-        vermelhos no castelo deles.
+        <FamilyLink name="Golems" /> na cratera do spawn e{" "}
+        <FamilyLink name="Cavaleiros vermelhos" /> no castelo deles.
       </>,
     ],
   },
